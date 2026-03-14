@@ -4,6 +4,31 @@
 
 - [e.g. Mobile-first, dark-first, minimal, accessible]
 - [e.g. Component library: Shadcn/ui only — no custom components when a primitive exists]
+- [e.g. Emotional tone: premium, calm, confident — or: playful, expressive, bold]
+
+### Design System Checklist
+
+Define these global parameters **before** designing individual screens:
+
+- [ ] **Spacing rules** — e.g. 8px grid, Tailwind scale
+- [ ] **Typography hierarchy** — headings, body, captions, sizes, weights
+- [ ] **Grid logic** — max width, columns, breakpoints
+- [ ] **Color scheme** — tokens for light/dark modes (see below)
+- [ ] **Layout rhythm** — consistent vertical spacing between sections
+- [ ] **Emotional tone** — 2-3 adjectives that describe how the app should *feel*
+
+### Mobile-First Checklist
+
+If the project targets mobile or responsive users:
+
+- [ ] **Start with the smallest screen** — design mobile first, scale up
+- [ ] **One clear action per screen** — no competing CTAs
+- [ ] **One clear outcome per flow** — user knows what they're doing and why
+- [ ] **Touch-optimized** — buttons ≥44px, adequate spacing between tap targets
+- [ ] **Responsive scaling** — layout adapts gracefully to desktop, not just "fits"
+- [ ] **One-handed use** — primary actions reachable with thumb
+- [ ] **PWA installability** — if applicable, manifest + service worker configured
+- [ ] **Performance on mobile** — tested on real device or throttled connection
 
 ## Color Palette
 

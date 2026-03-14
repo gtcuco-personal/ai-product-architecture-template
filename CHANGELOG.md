@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.7] — 2026-03-14
+
+### Added
+
+- Debugging Escalation (4-Step Framework) in `SYSTEM_PROMPT.md` §3 — structured debugging ladder: Quick Fix → Flashlight → Third-Party → Revert (ODR-003)
+- Build Health Checker in `SYSTEM_PROMPT.md` §3 — checklist to identify structurally compromised builds
+- Security Review Questions in `SECURITY.md` — 6 practical questions before any feature goes live
+- Auth Setup Checklist in `SECURITY.md` — pre-ship auth verification steps
+- Database Design Checklist in `docs/2_ARCHITECTURE.md` — data-first design guidance
+- Design System Checklist in `docs/3_UI_UX_GUIDELINES.md` — global parameters before screens
+- Mobile-First Checklist in `docs/3_UI_UX_GUIDELINES.md` — practical mobile design rules
+- Publishing Checklist in `docs/0_GROUND_RULES.md` — pre-deploy verification steps
+
 ## [1.6] — 2026-03-14
 
 ### Added
