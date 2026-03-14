@@ -36,6 +36,10 @@ Governance and documentation template for AI product repositories. Provides a st
 - **Modular** — use what you need, delete what you don't
 - **Convention over configuration** — consistent across all your repos
 
+## Author
+
+**Gustavo Teixeira Cuco** — [GitHub](https://github.com/gtcuco-personal)
+
 ## License
 
-MIT
+[MIT](LICENSE)
