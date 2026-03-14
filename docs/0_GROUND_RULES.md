@@ -34,6 +34,22 @@ These files are managed automatically — **NEVER edit**:
 - Lock files (`package-lock.json`, `bun.lockb`, `poetry.lock`)
 - [e.g. Database migrations]
 
+## Publishing Checklist
+
+Before any deploy to production, verify:
+
+- [ ] **Page title set** — meaningful title in browser tab and search results
+- [ ] **Meta description written** — concise, keyword-relevant summary
+- [ ] **OG image set** — social sharing preview image (1200×630px recommended)
+- [ ] **Favicon added** — visible in browser tab
+- [ ] **Mobile design verified** — tested on real device or responsive mode
+- [ ] **Security check passed** — no exposed secrets, auth flows tested, RLS verified
+- [ ] **Analytics enabled** — tracking configured (if applicable)
+- [ ] **Build passes** — `npm run build` (or equivalent) completes without errors
+- [ ] **Performance acceptable** — page loads in <3s on mobile connection
+
+> Remove this section if the project is a CLI tool, library, or internal service.
+
 ## Dev Commands
 
 ```bash

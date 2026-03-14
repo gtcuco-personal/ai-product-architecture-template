@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.6 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.7 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -96,6 +96,29 @@ Not all tasks require the same rigour. Apply checks proportionally:
    - YYYY-MM-DD — Brief description of what was done → `file1.ts`, `file2.ts`
    ```
    Do not ask for permission. Do not use other formats.
+
+### Debugging Escalation (4-Step Framework)
+
+When something breaks, follow this ladder in order — do not skip steps:
+
+1. **Quick Fix** — Use the tool's built-in repair (e.g. linter auto-fix, "Try to Fix"). Most issues are missing imports, broken props, small logic regressions. If this works, move on.
+2. **Flashlight (Evidence)** — Stop guessing, start collecting evidence. Deploy, open browser console, capture errors/logs. Feed exact error messages back. If no errors visible, add logging, reproduce, capture, then feed logs back. The loop is: `bug → evidence → fix → verify` — never `bug → vibes → hope`.
+3. **Third-Party Perspective** — If stuck, analyse with a different tool or agent. The goal is a better diagnosis, not a replacement. Bring the hypothesis back and act on it.
+4. **Revert** — If fixes are making things worse, revert to the last known good version. Then ask: what change caused this? What assumption changed? How could the instruction have been clearer?
+
+> After every fix, extract the lesson: document the fix in the roadmap, then ask "what should the original instruction have been to avoid this?" and record the pattern.
+
+### Build Health Checker
+
+If a codebase shows 3+ of these symptoms, consider a **structured reset** (new branch, rebuild affected modules with lessons learned) instead of continued patching:
+
+- [ ] Every fix requires re-explaining the entire system
+- [ ] Changes touch many unrelated files
+- [ ] Multiple corrective prompts needed per change
+- [ ] Constant undo/revert cycles
+- [ ] Error count is growing, not shrinking
+
+> Starting over is not failure. Dragging broken structure forward is.
 
 ### Uncertainty Criteria
 
@@ -219,3 +242,4 @@ A task is only **done** when all applicable items are confirmed:
 | 1.4 | 2026-03-11 | Harmonised missing-doc policy with Execution Modes. Schema validator language made universal. UTC timestamp exception for domain timezone rules. User-facing locale display note. Accessibility/performance pointer to UI guidelines. Warnings policy for lint. Config lint conditional on scope. Scope criterion qualitative instead of numeric. Full changelog |
 | 1.5 | 2026-03-14 | Added Documentation Maintenance trigger matrix (§6) — proactive doc updates enforced as part of task completion. Added agent self-governance line. New checklist item in §8 |
 | 1.6 | 2026-03-14 | ODR namespace convention: `docs/decisions/` for local ODRs, `docs/decisions/template/` for template-inherited ODRs. Updated §1 source-of-truth table, §6 references, and trigger matrix row. See ODR-002 |
+| 1.7 | 2026-03-14 | Added Debugging Escalation (4-Step Framework) and Build Health Checker to §3. Added Security Review Questions and Auth Setup Checklist to SECURITY.md. Added Database Design Checklist to docs/2_ARCHITECTURE.md. Added Design System Checklist and Mobile-First Checklist to docs/3_UI_UX_GUIDELINES.md. Added Publishing Checklist to docs/0_GROUND_RULES.md. See ODR-003 |
