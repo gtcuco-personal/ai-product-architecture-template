@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.4 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.5 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -153,6 +153,27 @@ This project maintains the following files at the repository root:
 
 When a task creates a new architectural pattern or makes a non-obvious technical decision, propose creating an ADR in `docs/decisions/` using `docs/decisions/TEMPLATE.md`.
 
+### Documentation Maintenance
+
+Documentation is a living asset, not a one-time deliverable. When a code task changes any of the following, the corresponding docs **MUST** be updated in the same PR — not as a follow-up:
+
+| Change type | Update required |
+|---|---|
+| New/removed route or page | `docs/2_ARCHITECTURE.md` (routes table) |
+| New/removed component or pattern | `docs/2_ARCHITECTURE.md` (components) |
+| DB schema change (table/column) | `docs/2_ARCHITECTURE.md` (data model) |
+| New dependency or tool | `docs/0_GROUND_RULES.md` (stack table) |
+| Design token or UI rule change | `docs/3_UI_UX_GUIDELINES.md` |
+| New meta tag or structured data | `docs/4_SEO_AND_AEO.md` |
+| New environment variable | `CLAUDE.md` (env section) |
+| Business model or audience shift | `docs/1_BUSINESS_CONTEXT.md` |
+| Architectural decision (trade-off) | `docs/decisions/` (new ODR) |
+| Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
+| Security model change | `SECURITY.md` |
+| Agent permission or behaviour change | `SYSTEM_PROMPT.md` + `docs/0_GROUND_RULES.md` |
+
+> **The task is NOT complete until the corresponding docs are updated.** This is enforcement, not suggestion. This rule is verified by the Task Completion Checklist (§8).
+
 ---
 
 ## 7. Execution Modes
@@ -179,6 +200,7 @@ A task is only **done** when all applicable items are confirmed:
 - [ ] `lint` passes with zero errors, no new warnings (code tasks)
 - [ ] `test` passes (code tasks, if test infra exists)
 - [ ] `docs/5_ROADMAP_AND_TASKS.md` updated (code tasks; doc/config tasks if roadmap-relevant)
+- [ ] Documentation trigger table checked — affected docs updated (§6)
 - [ ] No secrets, keys, or PII exposed
 - [ ] No protected files modified
 - [ ] User informed of any risks, trade-offs, or follow-up items
@@ -194,3 +216,4 @@ A task is only **done** when all applicable items are confirmed:
 | 1.2 | 2026-03-11 | Missing doc → skeleton + flag (not auto-create). Checklist aligned with task types. Mode detection heuristics. Error handling references Ground Rules. Test infra missing → propose follow-up |
 | 1.3 | 2026-03-11 | Added Data Formats section (ISO 8601, 4217, 639-1, 3166-1, 3166-2, BCP 47) |
 | 1.4 | 2026-03-11 | Harmonised missing-doc policy with Execution Modes. Schema validator language made universal. UTC timestamp exception for domain timezone rules. User-facing locale display note. Accessibility/performance pointer to UI guidelines. Warnings policy for lint. Config lint conditional on scope. Scope criterion qualitative instead of numeric. Full changelog |
+| 1.5 | 2026-03-14 | Added Documentation Maintenance trigger matrix (§6) — proactive doc updates enforced as part of task completion. Added agent self-governance line. New checklist item in §8 |
