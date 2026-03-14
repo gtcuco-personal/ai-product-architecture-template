@@ -49,6 +49,7 @@ Before any feature goes live, answer these questions:
 - [Describe data sensitivity: e.g. PII handling, financial data, health data]
 - [Describe logging policy: e.g. no PII in logs]
 - [Describe validation: e.g. Zod schemas at system boundaries]
+- Transactional emails must not contain sensitive data in plain text. Use rate limiting on email-sending endpoints to prevent abuse.
 
 ### Dependencies
 
