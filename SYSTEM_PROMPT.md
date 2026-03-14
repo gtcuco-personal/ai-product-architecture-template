@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.5 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.6 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -16,7 +16,8 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
 | `docs/4_SEO_AND_AEO.md` | Meta tags, structured data, semantic HTML |
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
-| `docs/decisions/` | Architecture Decision Records (ADR/ODR series) |
+| `docs/decisions/` | Local ODRs — decisions made within this repo |
+| `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
 
 ### Conflict Resolution
 
@@ -151,7 +152,7 @@ This project maintains the following files at the repository root:
 | `SECURITY.md` | Vulnerability reporting, auth model, data protection |
 | `CHANGELOG.md` | Version history and release notes |
 
-When a task creates a new architectural pattern or makes a non-obvious technical decision, propose creating an ADR in `docs/decisions/` using `docs/decisions/TEMPLATE.md`.
+When a task creates a new architectural pattern or makes a non-obvious technical decision, propose creating a local ODR in `docs/decisions/` using `docs/decisions/TEMPLATE.md`. Template-inherited ODRs live in `docs/decisions/template/` — see `CONTRIBUTING.md` for the namespace convention.
 
 ### Documentation Maintenance
 
@@ -167,7 +168,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | New meta tag or structured data | `docs/4_SEO_AND_AEO.md` |
 | New environment variable | `CLAUDE.md` (env section) |
 | Business model or audience shift | `docs/1_BUSINESS_CONTEXT.md` |
-| Architectural decision (trade-off) | `docs/decisions/` (new ODR) |
+| Architectural decision (trade-off) | `docs/decisions/` (new local ODR) |
 | Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
 | Security model change | `SECURITY.md` |
 | Agent permission or behaviour change | `SYSTEM_PROMPT.md` + `docs/0_GROUND_RULES.md` |
@@ -211,9 +212,10 @@ A task is only **done** when all applicable items are confirmed:
 
 | Version | Date | Changes |
 |---|---|---|
-| 1.0 | 2026-03-11 | Initial template — extracted from LusiberiaStays SYSTEM_PROMPT, made universal |
+| 1.0 | 2026-03-11 | Initial template — extracted from production project SYSTEM_PROMPT, made universal |
 | 1.1 | 2026-03-11 | Added Execution Modes (A/B/C), Task Types table, Uncertainty Criteria, Task Completion Checklist, multi-task exceptions, conflict resolution, roadmap format, git workflow |
 | 1.2 | 2026-03-11 | Missing doc → skeleton + flag (not auto-create). Checklist aligned with task types. Mode detection heuristics. Error handling references Ground Rules. Test infra missing → propose follow-up |
 | 1.3 | 2026-03-11 | Added Data Formats section (ISO 8601, 4217, 639-1, 3166-1, 3166-2, BCP 47) |
 | 1.4 | 2026-03-11 | Harmonised missing-doc policy with Execution Modes. Schema validator language made universal. UTC timestamp exception for domain timezone rules. User-facing locale display note. Accessibility/performance pointer to UI guidelines. Warnings policy for lint. Config lint conditional on scope. Scope criterion qualitative instead of numeric. Full changelog |
 | 1.5 | 2026-03-14 | Added Documentation Maintenance trigger matrix (§6) — proactive doc updates enforced as part of task completion. Added agent self-governance line. New checklist item in §8 |
+| 1.6 | 2026-03-14 | ODR namespace convention: `docs/decisions/` for local ODRs, `docs/decisions/template/` for template-inherited ODRs. Updated §1 source-of-truth table, §6 references, and trigger matrix row. See ODR-002 |
