@@ -8,7 +8,7 @@ Governance and documentation template for AI product repositories. Provides a st
 ├── CLAUDE.md              # AI agent entry point — repo metadata, commands, quick reference
 ├── CONTRIBUTING.md        # Setup, branch strategy, PR process, code style
 ├── SECURITY.md            # Vulnerability reporting, auth model, data protection
-├── SYSTEM_PROMPT.md       # Universal AI agent operating instructions (v1.4)
+├── SYSTEM_PROMPT.md       # Universal AI agent operating instructions (v1.6)
 ├── CHANGELOG.md           # Version history and release notes
 └── docs/
     ├── 0_GROUND_RULES.md        # Stack, inviolable rules, protected files
@@ -18,7 +18,8 @@ Governance and documentation template for AI product repositories. Provides a st
     ├── 4_SEO_AND_AEO.md         # Meta tags, structured data, sitemap
     ├── 5_ROADMAP_AND_TASKS.md   # Execution log and backlog
     └── decisions/
-        └── TEMPLATE.md          # ODR (Organisational Decision Record) format
+        ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
+        └── template/            # ODRs inherited from this base template
 ```
 
 ## How to Use

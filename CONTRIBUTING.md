@@ -60,6 +60,25 @@ The following files must not be edited manually:
 
 - [e.g. Auto-generated types, .env, lock files, migrations]
 
+## Decision Records (ODR)
+
+This project uses Organisational Decision Records to document architectural and governance decisions.
+
+### Namespace Convention
+
+ODRs are split into two directories to avoid naming conflicts when template updates are propagated to repos:
+
+| Directory | Purpose | Managed by |
+|---|---|---|
+| `docs/decisions/` | ODRs created within this repo | Repo maintainers |
+| `docs/decisions/template/` | ODRs inherited from the base governance template | Template repo |
+
+- **Local ODRs** use sequential numbering scoped to the repo (e.g., `ODR-001-auth-strategy.md`)
+- **Template ODRs** keep their original numbering from the template repo (e.g., `ODR-001-documentation-trigger-matrix.md`)
+- The two sequences are independent — a repo can have both a local `ODR-001` and a template `ODR-001` without conflict
+- When updating from the template, only files in `docs/decisions/template/` are replaced. Local ODRs are never touched.
+- `docs/decisions/TEMPLATE.md` is the format template for creating new ODRs. It stays in the root of `decisions/`.
+
 ## Questions?
 
 Open a GitHub issue or contact the maintainer directly.
