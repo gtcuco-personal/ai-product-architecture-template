@@ -75,6 +75,10 @@ SERVICE_KEY=
 4. Open PR: `gh pr create`
 5. Wait for review and approval before merging
 
+## Cross-Reference Index
+
+If this repo contains an `INDEX.md` (common in academic/study repos), always read it before answering questions about the content it maps. The INDEX.md provides cross-references between topics, sources, and materials that are not obvious from the directory structure alone.
+
 ## Related Projects
 
 | Project | Relationship |
