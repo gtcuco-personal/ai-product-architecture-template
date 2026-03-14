@@ -18,6 +18,7 @@
 6. **No secrets** on the client side — service keys stay server-side
 7. **Atomic changes** — each PR addresses one concern
 8. **Build and lint** must pass before push
+9. **No `dangerouslySetInnerHTML`** — all user/DB content must be rendered via framework elements (React components, template engines, etc.). If raw HTML is unavoidable, sanitise with DOMPurify or equivalent before rendering
 
 ## Lint Warnings Policy
 
