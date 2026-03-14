@@ -59,6 +59,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 - Log errors with enough context to debug (function name, input summary, error message).
 - Edge functions and API handlers must return structured error responses, never raw stack traces.
 - Project-specific error patterns (response format, logging strategy) are defined in `docs/0_GROUND_RULES.md`.
+- Production applications should have error tracking configured (e.g. Sentry, LogRocket, or equivalent) to capture errors that users encounter but never report.
 
 ### Internationalisation
 - Whether the project uses i18n and which languages are supported is defined in `docs/0_GROUND_RULES.md`.
