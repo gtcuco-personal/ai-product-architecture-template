@@ -68,6 +68,45 @@
 - **Structured data:** Implement JSON-LD schema (Article, FAQPage, BreadcrumbList). Pages with comprehensive schema markup are 2.7x more likely to be cited in AI answers
 - **Raw HTML content:** Ensure content appears in HTML source, not generated via JavaScript only
 
+### GEO Layer (Generative Engine Optimization)
+
+GEO targets AI-powered search (ChatGPT, Perplexity, Google AI Overviews, Claude). Unlike SEO (ranking) and AEO (featured snippets), GEO optimizes for **being cited as a source** in AI-generated answers.
+
+#### Content Principles
+
+- **Factual density > keyword density:** Data, numbers, verifiable claims get cited. Narrative and opinion do not
+- **Declarative statements:** At least 1-2 per section in the format "X is Y because Z." AI extracts these as citable facts
+- **Content freshness:** Update key content every 7-14 days. Content without freshness signals loses citation priority after ~14 days
+- **Quick answer blocks:** First 40 words of each section should be a complete, standalone answer
+- **Schema stacking:** Multiple JSON-LD types on the same page (e.g. Article + FAQPage + Organization). Pages with comprehensive schema are 3.2x more likely to be cited by AI
+
+#### Citability Checklist
+
+High citability formats (prioritize these):
+- [ ] Lists and rankings ("Top X...", "Best Y for Z")
+- [ ] Comparison tables with specific data
+- [ ] Clear definitions ("X is...")
+- [ ] Data with sources and dates
+- [ ] FAQ with direct answers
+
+Low citability (use for humans, not AI extraction):
+- Narrative / opinion / storytelling
+- Metaphors without explanation
+- Vague or poetic language
+
+#### Technical Requirements
+
+- **robots.txt:** Explicitly allow AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended)
+- **llms.txt:** Create a `/llms.txt` file at the site root with a structured summary of what the site/brand is, what it does, key facts, and contact information. This is the AI equivalent of an elevator pitch — read by LLMs before they process your content
+- **JSON-LD completeness:** Ensure all 8 critical schema types are covered where applicable: Organization, Person, LocalBusiness, Product/Service, FAQPage, Article, Review/AggregateRating, BreadcrumbList
+- **Raw HTML:** Content must be in HTML source code, not JavaScript-rendered only. Many AI crawlers cannot execute JavaScript
+
+#### GEO Monitoring
+
+- Monitor brand mentions in ChatGPT, Perplexity, Google AI Overviews (manual checks until tooling matures)
+- Track if content appears as cited source in AI answers
+- Compare citation frequency before/after content updates to calibrate freshness cycles
+
 ---
 
 ## Social Media — Short-Form Content
