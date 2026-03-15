@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.8] — 2026-03-15
+
+### Added
+
+- `docs/6_CONTENT_AND_SOCIAL.md` — Content & social media strategy template with SEO/AEO 2026 best practices
+- Source of truth entry for content strategy in `SYSTEM_PROMPT.md` §1
+- Documentation trigger for content/social changes in `SYSTEM_PROMPT.md` §6
+- PR number requirement in roadmap entry format (`SYSTEM_PROMPT.md` §3)
+
 ## [1.7] — 2026-03-14
 
 ### Added

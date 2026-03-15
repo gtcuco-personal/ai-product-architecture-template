@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.7 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.8 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -16,6 +16,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
 | `docs/4_SEO_AND_AEO.md` | Meta tags, structured data, semantic HTML |
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
+| `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, SEO/AEO guidelines |
 | `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
 | `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
@@ -196,6 +197,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | Architectural decision (trade-off) | `docs/decisions/` (new local ODR) |
 | Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
 | Security model change | `SECURITY.md` |
+| Content strategy or social media change | `docs/6_CONTENT_AND_SOCIAL.md` |
 | Agent permission or behaviour change | `SYSTEM_PROMPT.md` + `docs/0_GROUND_RULES.md` |
 
 > **The task is NOT complete until the corresponding docs are updated.** This is enforcement, not suggestion. This rule is verified by the Task Completion Checklist (§8).
@@ -245,3 +247,4 @@ A task is only **done** when all applicable items are confirmed:
 | 1.5 | 2026-03-14 | Added Documentation Maintenance trigger matrix (§6) — proactive doc updates enforced as part of task completion. Added agent self-governance line. New checklist item in §8 |
 | 1.6 | 2026-03-14 | ODR namespace convention: `docs/decisions/` for local ODRs, `docs/decisions/template/` for template-inherited ODRs. Updated §1 source-of-truth table, §6 references, and trigger matrix row. See ODR-002 |
 | 1.7 | 2026-03-14 | Added Debugging Escalation (4-Step Framework) and Build Health Checker to §3. Added Security Review Questions and Auth Setup Checklist to SECURITY.md. Added Database Design Checklist to docs/2_ARCHITECTURE.md. Added Design System Checklist and Mobile-First Checklist to docs/3_UI_UX_GUIDELINES.md. Added Publishing Checklist to docs/0_GROUND_RULES.md. See ODR-003 |
+| 1.8 | 2026-03-15 | Added `docs/6_CONTENT_AND_SOCIAL.md` — content & social media strategy with SEO/AEO 2026 best practices. Added source-of-truth entry (§1), trigger matrix row (§6). PR number required in roadmap format (§3) |
