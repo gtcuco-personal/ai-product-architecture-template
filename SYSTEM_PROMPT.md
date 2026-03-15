@@ -16,6 +16,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
 | `docs/4_SEO_AND_AEO.md` | Meta tags, structured data, semantic HTML |
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
+| `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
 | `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
 
