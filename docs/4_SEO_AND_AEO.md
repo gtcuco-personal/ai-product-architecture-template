@@ -30,4 +30,40 @@
 ## Sitemap & Robots
 
 - `public/sitemap.xml` — auto-generated or manual
-- `public/robots.txt` — allow all (or restrict as needed)
+- `public/robots.txt` — allow all public content, explicitly allow AI crawlers:
+
+```
+# AI crawlers — explicitly allowed for GEO visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+```
+
+## llms.txt
+
+Create a `public/llms.txt` file with a structured summary of the project for LLM consumption. This is the AI equivalent of an elevator pitch — read by LLMs before they process your content.
+
+```markdown
+# [Brand Name]
+
+> [One-line description]
+
+[2-3 sentences about what the project/company does]
+
+## [Key sections: Products, Services, Locations, Contact, Key Facts]
+
+[Structured, factual information]
+```
+
+> Without `llms.txt`, AI must infer what your site is from HTML — and may misinterpret it. With it, every AI that visits your site gets a clear, structured briefing.
