@@ -18,6 +18,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
 | `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, SEO/AEO guidelines |
 | `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
+| `docs/prompts.md` | Reusable prompt templates for debugging, features, docs, security, and agent autonomy |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
 | `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
 
