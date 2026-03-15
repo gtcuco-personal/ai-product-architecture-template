@@ -95,9 +95,9 @@ Not all tasks require the same rigour. Apply checks proportionally:
 3. **Run checks** — execute `build`, `lint`, and `test` as defined in the task type table above.
 4. **Update the roadmap** — add an entry to `docs/5_ROADMAP_AND_TASKS.md` in this format:
    ```
-   - YYYY-MM-DD — Brief description of what was done → `file1.ts`, `file2.ts`
+   - YYYY-MM-DD — Brief description of what was done (PR #X) → `file1.ts`, `file2.ts`
    ```
-   Do not ask for permission. Do not use other formats.
+   Always include the PR number for traceability (deploy ↔ PR ↔ roadmap). Do not ask for permission. Do not use other formats.
 
 ### Debugging Escalation (4-Step Framework)
 
