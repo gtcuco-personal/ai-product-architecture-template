@@ -5,8 +5,10 @@
 ## Task Format
 
 ```
-- YYYY-MM-DD — Brief description of what was done → `file1`, `file2`
+- YYYY-MM-DD — Brief description of what was done (PR #N) → `file1`, `file2`
 ```
+
+> **Rule:** Every merged PR must have a completed entry here with its PR number. No exceptions.
 
 ## Completed
 
