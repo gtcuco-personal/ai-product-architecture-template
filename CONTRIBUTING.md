@@ -41,6 +41,10 @@ chore: upgrade dependencies
 - Include a clear description of what changed and why
 - Ensure build passes locally before pushing
 - Link related issues if applicable
+- **Every PR must update governance docs before merge:**
+  - `docs/5_ROADMAP_AND_TASKS.md` — add completed entry with date, description, PR number, and changed files
+  - `CHANGELOG.md` — add entry under the current date section (create section if needed)
+  - PR number must appear in both docs (e.g. `(PR #42)`)
 
 ## Code Style
 
