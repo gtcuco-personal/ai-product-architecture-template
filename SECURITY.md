@@ -59,9 +59,17 @@ Before any feature goes live, answer these questions:
 
 ## Sensitive Files
 
-The following files contain secrets and must NEVER be committed:
+The following files contain secrets and must NEVER be committed unencrypted:
 
-- `.env` / `.env.local` / `.env.production`
+- `.env` / `.env.local` / `.env.production` — in `.gitignore`, never committed
 - [Any file containing service keys or credentials]
 
-These patterns are included in `.gitignore`. Verify before every commit.
+### Encrypted files in the repository (git-crypt)
+
+For sensitive data that **must** be version-controlled (e.g. bank accounts, shared credentials), use **git-crypt** to encrypt files transparently. Files appear as plain text locally but are encrypted on GitHub.
+
+- Setup guide: [`docs/guides/git-crypt-setup.md`](docs/guides/git-crypt-setup.md)
+- Encrypted paths are defined in `.gitattributes`
+- Each repo has its own independent key — export and back it up securely
+
+**Rule:** if a file contains sensitive data and needs to be in the repo, it goes through git-crypt. If it doesn't need to be in the repo, it goes in `.env` or a password manager.
