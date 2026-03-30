@@ -6,7 +6,7 @@
 
 ## 1. Source of Truth
 
-This project uses modular documentation in `/docs/`. Consult the relevant files before any task:
+This project uses modular documentation in `/docs/`. Consult the relevant files before any task. Load only what is needed for the task type — do not load all docs by default. The **Context Loading Policy** in `CLAUDE.md` defines which files to load per task type:
 
 | File | Purpose |
 |---|---|

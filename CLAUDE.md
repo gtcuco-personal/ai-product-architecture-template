@@ -75,6 +75,22 @@ SERVICE_KEY=
 4. Open PR: `gh pr create`
 5. Wait for review and approval before merging
 
+## Context Loading Policy
+
+Before starting any task, load only the files relevant to that task type. Do not load all `/docs/` files by default.
+
+| Task type | Load | Skip |
+|---|---|---|
+| Code — feature or fix | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — UI component | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md` |
+| Code — DB / schema | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Security review | `docs/0_GROUND_RULES.md`, `SECURITY.md` | All others |
+| SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |
+| Roadmap / planning | `docs/5_ROADMAP_AND_TASKS.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
+| Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
+
+> Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
+
 ## Cross-Reference Index
 
 If this repo contains an `INDEX.md` (common in academic/study repos), always read it before answering questions about the content it maps. The INDEX.md provides cross-references between topics, sources, and materials that are not obvious from the directory structure alone.
