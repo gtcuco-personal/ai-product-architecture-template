@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.9] — 2026-03-30
+
+### Added
+
+- Context Loading Policy in `CLAUDE.md` — task-type → docs mapping table; agents load only relevant files per task type, not all docs by default (PR #20)
+- `docs/guides/git-crypt-setup.md` — git-crypt setup guide for encrypting secrets in repos (PR #18)
+
+### Changed
+
+- `SYSTEM_PROMPT.md` §1 updated to delegate context-loading decisions to `CLAUDE.md`, eliminating ambiguity between the two files (PR #20)
+- `SECURITY.md` updated with encrypted files policy (PR #18)
+- Roadmap entry format now requires PR number for traceability (PR #17)
+- Every PR now required to update roadmap + changelog before merge (PR #16)
+
+### Removed
+
+- Duplicate files `docs/6_CONTENT_AND_SOCIAL 2.md` and `docs/prompts 2.md`
+
 ## [1.8] — 2026-03-15
 
 ### Added
