@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.8 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.10 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -249,3 +249,5 @@ A task is only **done** when all applicable items are confirmed:
 | 1.6 | 2026-03-14 | ODR namespace convention: `docs/decisions/` for local ODRs, `docs/decisions/template/` for template-inherited ODRs. Updated §1 source-of-truth table, §6 references, and trigger matrix row. See ODR-002 |
 | 1.7 | 2026-03-14 | Added Debugging Escalation (4-Step Framework) and Build Health Checker to §3. Added Security Review Questions and Auth Setup Checklist to SECURITY.md. Added Database Design Checklist to docs/2_ARCHITECTURE.md. Added Design System Checklist and Mobile-First Checklist to docs/3_UI_UX_GUIDELINES.md. Added Publishing Checklist to docs/0_GROUND_RULES.md. See ODR-003 |
 | 1.8 | 2026-03-15 | Added `docs/6_CONTENT_AND_SOCIAL.md` — content & social media strategy with SEO/AEO 2026 best practices. Added source-of-truth entry (§1), trigger matrix row (§6). PR number required in roadmap format (§3) |
+| 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
+| 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
