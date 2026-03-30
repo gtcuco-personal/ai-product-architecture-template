@@ -19,6 +19,7 @@
 7. **Atomic changes** — each PR addresses one concern
 8. **Build and lint** must pass before push
 9. **No `dangerouslySetInnerHTML`** — all user/DB content must be rendered via framework elements (React components, template engines, etc.). If raw HTML is unavoidable, sanitise with DOMPurify or equivalent before rendering
+10. **Repo is the single source of truth** — all data that enters the database (schema, seed, content, configuration) must originate from files in this repository. Nothing is inserted directly into the database via UI, admin tools, or any mechanism that bypasses the repo.
 
 ## Lint Warnings Policy
 
