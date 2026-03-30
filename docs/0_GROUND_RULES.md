@@ -18,7 +18,7 @@
 6. **No secrets** on the client side — service keys stay server-side
 7. **Atomic changes** — each PR addresses one concern
 8. **Build and lint** must pass before push
-9. **No `dangerouslySetInnerHTML`** — all user/DB content must be rendered via framework elements (React components, template engines, etc.). If raw HTML is unavoidable, sanitise with DOMPurify or equivalent before rendering
+9. **No raw HTML rendering** — all user/DB content must be rendered via framework elements (components, template engines, etc.). If raw HTML is unavoidable (e.g. `dangerouslySetInnerHTML`, `v-html`, `innerHTML`), sanitise with DOMPurify or equivalent before rendering
 10. **Repo is the single source of truth** — all data that enters the database (schema, seed, content, configuration) must originate from files in this repository. Nothing is inserted directly into the database via UI, admin tools, or any mechanism that bypasses the repo.
 
 ## Lint Warnings Policy
@@ -45,7 +45,7 @@ Before any deploy to production, verify:
 - [ ] **OG image set** — social sharing preview image (1200×630px recommended)
 - [ ] **Favicon added** — visible in browser tab
 - [ ] **Mobile design verified** — tested on real device or responsive mode
-- [ ] **Security check passed** — no exposed secrets, auth flows tested, RLS verified
+- [ ] **Security check passed** — no exposed secrets, auth flows tested, access control verified
 - [ ] **Analytics enabled** — tracking configured (if applicable)
 - [ ] **Build passes** — `npm run build` (or equivalent) completes without errors
 - [ ] **Performance acceptable** — page loads in <3s on mobile connection
@@ -60,4 +60,5 @@ npm run dev
 npm run build
 npm run lint
 npm run test
+# [deploy command]   # e.g. vercel deploy, fly deploy, gh workflow run deploy.yml
 ```
