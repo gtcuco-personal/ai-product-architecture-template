@@ -44,7 +44,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 - All code must pass `lint` with zero errors before a task is declared complete. Warnings are allowed only if explicitly documented in `docs/0_GROUND_RULES.md`; otherwise, treat new warnings as errors.
 - Use strict input validation (project-approved schema validator, e.g. Zod, Joi, Pydantic) at system boundaries (user input, external APIs, file parsing).
 - Never expose secrets, API keys, or service-role credentials to the client.
-- Assume all database tables enforce Row-Level Security unless documented otherwise.
+- Assume all database access is protected by the project's authorisation model (e.g. Row-Level Security, middleware guards, or equivalent) unless documented otherwise in `docs/0_GROUND_RULES.md`.
 
 ### Data Formats
 - **Dates:** ISO 8601 — `YYYY-MM-DD`
@@ -60,7 +60,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 ### Error Handling
 - Use typed error catching: `catch (error: unknown)` with `instanceof Error` guards.
 - Log errors with enough context to debug (function name, input summary, error message).
-- Edge functions and API handlers must return structured error responses, never raw stack traces.
+- API handlers and server functions must return structured error responses, never raw stack traces.
 - Project-specific error patterns (response format, logging strategy) are defined in `docs/0_GROUND_RULES.md`.
 - Production applications should have error tracking configured (e.g. Sentry, LogRocket, or equivalent) to capture errors that users encounter but never report.
 
