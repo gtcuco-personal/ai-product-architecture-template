@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.10] — 2026-03-30
+
+### Changed
+
+- `SYSTEM_PROMPT.md` — RLS replaced with generic authorisation model; Edge functions → API handlers and server functions (PR #22)
+- `docs/0_GROUND_RULES.md` — `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS; RLS verified → access control verified (PR #22)
+- `CLAUDE.md` + `docs/0_GROUND_RULES.md` — deploy command placeholder added to Dev Commands (PR #22)
+
 ## [1.9] — 2026-03-30
 
 ### Added
