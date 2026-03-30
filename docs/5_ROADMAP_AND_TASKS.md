@@ -12,6 +12,7 @@
 
 ## Completed
 
+- 2026-03-30 — Remove stack-specific language; add deploy command placeholder (PR #22) → `CLAUDE.md`, `SYSTEM_PROMPT.md`, `docs/0_GROUND_RULES.md`
 - 2026-03-30 — Add Context Loading Policy — task-type → docs mapping table to prevent context bloat (PR #20) → `CLAUDE.md`, `SYSTEM_PROMPT.md`
 - 2026-03-28 — Add git-crypt guide and update SECURITY.md with encrypted files policy (PR #18) → `SECURITY.md`, `docs/guides/git-crypt-setup.md`
 - 2026-03-28 — Require PR number in commit/PR title for visibility (PR #17) → `SYSTEM_PROMPT.md`
