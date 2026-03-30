@@ -30,6 +30,7 @@ npm run dev          # Dev server
 npm run build        # Production build
 npm run lint         # Linter
 npm run test         # Tests
+# [deploy command]   # e.g. vercel deploy, fly deploy, gh workflow run deploy.yml
 ```
 
 ## Project Structure

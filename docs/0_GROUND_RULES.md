@@ -60,4 +60,5 @@ npm run dev
 npm run build
 npm run lint
 npm run test
+# [deploy command]   # e.g. vercel deploy, fly deploy, gh workflow run deploy.yml
 ```
