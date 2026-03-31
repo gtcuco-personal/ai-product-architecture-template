@@ -137,3 +137,77 @@ Before approving any delivery, evaluate against:
 4. **Mobile Readiness** — does it work on phone?
 5. **Clarity** — is every element's purpose obvious?
 6. **Execution Quality** — is it well-built or patched together?
+
+---
+
+## UI Patterns
+
+Recurring compositions of components that solve common UX problems. Check here before building a new layout.
+
+### Form Pattern
+- Single column, `max-w-lg`, centered on desktop
+- Labels above inputs — never floating or placeholder-as-label
+- Inline validation errors below each field (`text-destructive text-sm`)
+- Submit button: right-aligned, primary variant
+- Cancel: ghost variant, left of submit
+- Use `react-hook-form` + `zod` — never a naked `<form>`
+
+### Data Table Pattern
+- Use shadcn DataTable (Tanstack Table)
+- Always include: column sorting, search/filter bar, pagination
+- Row actions: `DropdownMenu` — not inline buttons
+- Empty state: centered message + single CTA (see States section)
+- Loading state: `Skeleton` rows matching column count
+
+### Page Layout Pattern
+- Sidebar navigation (desktop) / Sheet navigation (mobile)
+- Page header: `h1` + optional description + primary action button (right-aligned)
+- Content area: `max-w-7xl mx-auto px-4`
+- Breadcrumbs only if depth > 2
+
+### Auth Pattern
+- Single centered card, `max-w-sm`
+- Logo above form
+- Social login buttons above email/password (if applicable)
+- "Forgot password" as a text link below password field
+
+### Modal / Confirmation Pattern
+- Use `Dialog` for destructive actions and confirmations only
+- Use `Sheet` for data entry and edit forms
+- Destructive confirm: destructive variant button on right, ghost "Cancel" on left
+- Never put long forms inside a `Dialog`
+
+---
+
+## States
+
+Every async-loaded or data-dependent UI must handle all five states. This is the most skipped part of UI work.
+
+### Empty State
+- Centered layout
+- Lucide icon (`size-12`, `text-muted-foreground`)
+- `h3` title (e.g. "No properties yet")
+- `p` description (`text-muted-foreground`)
+- Single CTA button (primary variant)
+
+### Loading State
+- `Skeleton` components matching the layout of the loaded content (`bg-muted animate-pulse`)
+- Never use a spinner alone for content areas — use skeletons
+- Spinner (`Loader2` lucide, `animate-spin`) only for button actions in progress
+
+### Error State
+- `AlertCircle` icon (`text-destructive`)
+- Short message explaining what failed (`text-muted-foreground`)
+- Retry button (outline variant) if the action is retryable
+- Never expose raw API error messages to the user
+
+### Permission / Restricted State
+- `Lock` icon (`text-muted-foreground`)
+- Message in i18n key — never hardcoded
+- Optional: contact or upgrade CTA
+
+### Destructive Action Pattern
+- Always require explicit `Dialog` confirmation
+- Confirm button: destructive variant, verb-first label ("Delete property", not "Yes")
+- Cancel: ghost variant
+- Never auto-execute destructive actions

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.11] — 2026-03-31
+
+### Added
+
+- `docs/3_UI_UX_GUIDELINES.md` — UI Patterns section: Form, Data Table, Page Layout, Auth, Modal/Confirmation patterns
+- `docs/3_UI_UX_GUIDELINES.md` — States section: Empty, Loading, Error, Permission, Destructive action patterns
+- `docs/prompts.md` — Lovable Vocabulary Reference table (controlled terms to eliminate prompt drift)
+- `docs/prompts.md` — Prompt Structure skeleton and DO NOT list (10 explicit Lovable restrictions)
+- `docs/7_CONTENT_I18N.md` — New file: UI copy rules, i18n key naming convention, namespace strategy, copy rules, length constraints
+
 ## [1.10] — 2026-03-30
 
 ### Changed
