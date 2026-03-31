@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.10 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.11 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -18,7 +18,8 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
 | `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, SEO/AEO guidelines |
 | `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
-| `docs/prompts.md` | Reusable prompt templates for debugging, features, docs, security, and agent autonomy |
+| `docs/7_CONTENT_I18N.md` | UI copy rules, i18n key naming convention, namespace strategy, copy rules, length constraints |
+| `docs/prompts.md` | Reusable prompt templates, Lovable vocabulary reference, and DO NOT list |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
 | `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
 
@@ -199,6 +200,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
 | Security model change | `SECURITY.md` |
 | Content strategy or social media change | `docs/6_CONTENT_AND_SOCIAL.md` |
+| UI copy, i18n keys, or locale rules change | `docs/7_CONTENT_I18N.md` |
 | Agent permission or behaviour change | `SYSTEM_PROMPT.md` + `docs/0_GROUND_RULES.md` |
 
 > **The task is NOT complete until the corresponding docs are updated.** This is enforcement, not suggestion. This rule is verified by the Task Completion Checklist (§8).
@@ -251,3 +253,4 @@ A task is only **done** when all applicable items are confirmed:
 | 1.8 | 2026-03-15 | Added `docs/6_CONTENT_AND_SOCIAL.md` — content & social media strategy with SEO/AEO 2026 best practices. Added source-of-truth entry (§1), trigger matrix row (§6). PR number required in roadmap format (§3) |
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
+| 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
