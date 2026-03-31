@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.12] — 2026-03-31
+
+### Added
+
+- `docs/8_DATA_AND_ANALYSIS.md` — stack-agnostic and domain-agnostic data governance template: metric registry, assumptions log, source contracts, pipeline & execution order, data quality checks, cohort definitions, data privacy rules, decisions log
+- `SYSTEM_PROMPT.md` §1 — new entry in source-of-truth table for `docs/8_DATA_AND_ANALYSIS.md`
+- `SYSTEM_PROMPT.md` §6 — new trigger matrix row: "Metric definition, assumption, source contract, or pipeline change → `docs/8_DATA_AND_ANALYSIS.md`"
+- `CLAUDE.md` — new row in Context Loading Policy: "Code — data/analysis"
+
 ## [1.11] — 2026-03-31
 
 ### Added
