@@ -91,8 +91,15 @@ Before starting any task, load only the files relevant to that task type. Do not
 | SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |
 | Roadmap / planning | `docs/5_ROADMAP_AND_TASKS.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
 | Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
+| Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
 
 > Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
+
+## Agent Skills
+
+Este repo inclui um directório `skills/` com templates para criar Agent Skills específicas ao projecto. Skills globais (usadas em múltiplos repos) vivem em `~/.claude/skills/`.
+
+Ver `docs/9_AGENT_SKILLS.md` para o guia completo (framework KEPT, estrutura, regras).
 
 ## Cross-Reference Index
 
