@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.12 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.13 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -145,6 +145,29 @@ If the user requests multiple tasks in one prompt:
 
 ---
 
+## 3A. Workflow Orchestration
+
+### Plan Node Default
+For any task with 3+ steps or architectural decisions: enter plan mode first. Outline steps, identify risks, then execute. If execution diverges (unexpected error, wrong assumption, scope change), STOP and re-plan — do not push forward on a broken plan.
+
+### Subagent Strategy
+When a task requires research, exploration, or analysis separable from the main work: delegate to a subagent. One task per subagent. Use subagents for: documentation lookups, codebase exploration, test generation, alternative analysis. Keep the main context window clean.
+
+### Self-Improvement Loop
+After ANY correction from the user, append an entry to `tasks/lessons.md`:
+```
+### YYYY-MM-DD — [one-line summary]
+- **Trigger:** [what went wrong]
+- **Lesson:** [what to do differently]
+- **Applies to:** [scope]
+```
+At session start, if `tasks/lessons.md` exists, read it before starting work. Lessons are only useful if reviewed.
+
+### Demand Elegance
+For non-trivial changes (new patterns, multi-file refactors, architectural decisions): pause and ask "is there a simpler approach?" before implementing. For simple fixes (typos, imports, one-liners): skip this and execute directly. Threshold: "would a senior engineer want to review this approach before I start?"
+
+---
+
 ## 4. Git Workflow
 
 - **Never push directly to `main`**. Always create a feature branch.
@@ -256,4 +279,5 @@ A task is only **done** when all applicable items are confirmed:
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
 | 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
+| 1.13 | 2026-04-07 | Added §3A Workflow Orchestration — plan-first for 3+ step tasks, subagent delegation strategy, self-improvement loop via `tasks/lessons.md`, demand elegance for non-trivial changes |
 | 1.12 | 2026-03-31 | New `docs/8_DATA_AND_ANALYSIS.md` — stack-agnostic data governance: metric registry, assumptions log, source contracts, pipeline order, data quality checks, cohort definitions; updated §1 and §6 |
