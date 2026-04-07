@@ -94,6 +94,7 @@ Before starting any task, load only the files relevant to that task type. Do not
 | Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
 
 > Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
+> Always load `tasks/lessons.md` at session start for any task type — it contains repo-specific corrections.
 
 ## Agent Skills
 
