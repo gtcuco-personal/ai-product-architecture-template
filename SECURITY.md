@@ -57,6 +57,30 @@ Before any feature goes live, answer these questions:
 - Lock files are committed and protected
 - Regular dependency audits via `npm audit` / `pip audit`
 
+## Pre-commit Hook — Secrets Scanner
+
+A pre-commit hook at `.githooks/pre-commit` blocks any commit containing dangerous patterns:
+
+- `service_role` / `SUPABASE_SERVICE_ROLE`
+- `SECRET_KEY` / `PRIVATE_KEY`
+- PEM private keys (`-----BEGIN ... PRIVATE KEY`)
+- API tokens (`sk-*` — OpenAI, Stripe, etc.)
+- Hardcoded passwords
+
+### Activate for this repo
+
+```bash
+git config core.hooksPath .githooks
+```
+
+### False positives
+
+If the hook blocks a legitimate commit (e.g. documentation mentioning `service_role`), bypass with:
+
+```bash
+git commit --no-verify
+```
+
 ## Sensitive Files
 
 The following files contain secrets and must NEVER be committed unencrypted:

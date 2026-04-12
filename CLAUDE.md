@@ -76,6 +76,16 @@ SERVICE_KEY=
 4. Open PR: `gh pr create`
 5. Wait for review and approval before merging
 
+### Pre-commit Hook
+
+Activate the secrets scanner on first clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+See `SECURITY.md` for details on blocked patterns and false positives.
+
 ## Context Loading Policy
 
 Before starting any task, load only the files relevant to that task type. Do not load all `/docs/` files by default.
@@ -92,6 +102,7 @@ Before starting any task, load only the files relevant to that task type. Do not
 | Roadmap / planning | `docs/5_ROADMAP_AND_TASKS.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
 | Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
 | Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
+| Agent safety review | `docs/10_AGENT_SAFETY.md`, `SYSTEM_PROMPT.md` | All others |
 
 > Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
 > Always load `tasks/lessons.md` at session start for any task type — it contains repo-specific corrections.
