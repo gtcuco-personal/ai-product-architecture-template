@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Pre-commit hook: block commits that contain dangerous secret patterns.
+# Catches service_role keys, private keys, and common secret patterns
+# BEFORE they enter git history.
+#
+# Activate for this repo:
+#   git config core.hooksPath .githooks
+#
+# Or activate globally (all repos on this machine):
+#   git config --global core.hooksPath ~/.git-hooks
+#   cp .githooks/pre-commit ~/.git-hooks/pre-commit
+
+FORBIDDEN_PATTERNS=(
+  'service_role'
+  'SUPABASE_SERVICE_ROLE'
+  'SECRET_KEY\s*='
+  'PRIVATE_KEY\s*='
+  '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY'
+  'sk-[a-zA-Z0-9]{20,}'
+  'password\s*=\s*["\x27][^"\x27]+'
+)
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+FOUND=0
+
+for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+  MATCHES=$(echo "$STAGED" | xargs grep -lEn "$pattern" 2>/dev/null)
+  if [ -n "$MATCHES" ]; then
+    if [ $FOUND -eq 0 ]; then
+      echo ""
+      echo "🚫 COMMIT BLOCKED — potential secrets detected:"
+      echo ""
+    fi
+    FOUND=1
+    for file in $MATCHES; do
+      echo "  $file"
+      git diff --cached "$file" | grep -En "$pattern" | head -3 | sed 's/^/    /'
+    done
+    echo ""
+  fi
+done
+
+if [ $FOUND -ne 0 ]; then
+  echo "Remove the secrets and try again."
+  echo "If this is a false positive, use: git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0
