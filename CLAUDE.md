@@ -113,6 +113,19 @@ Este repo inclui um directório `skills/` com templates para criar Agent Skills 
 
 Ver `docs/9_AGENT_SKILLS.md` para o guia completo (framework KEPT, estrutura, regras).
 
+## Context7 — Documentação de Bibliotecas
+
+Para qualquer biblioteca, framework, SDK, API ou CLI listada no **Tech Stack** acima, usar **Context7** antes de responder sobre ela — evita sintaxe desactualizada e garante que as respostas reflectem a versão em uso.
+
+| Quando usar | Como usar |
+|---|---|
+| Pergunta sobre API/sintaxe de uma lib | `mcp__context7__resolve-library-id` → `mcp__context7__query-docs` |
+| Review de arquitectura (`/arch-review`) | Context7 para cada tecnologia do stack |
+| Debugging de lib específica | Context7 com tópico relevante (ex: `authentication`, `rls`, `hooks`) |
+| Migração de versão | Context7 com tópico `migration` ou `changelog` |
+
+> Não usar Context7 para: lógica de negócio, refactoring, code review, conceitos gerais de programação.
+
 ## Cross-Reference Index
 
 If this repo contains an `INDEX.md` (common in academic/study repos), always read it before answering questions about the content it maps. The INDEX.md provides cross-references between topics, sources, and materials that are not obvious from the directory structure alone.
