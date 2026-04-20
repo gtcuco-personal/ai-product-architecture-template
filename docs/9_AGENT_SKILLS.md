@@ -32,6 +32,16 @@ skills/
         └── frameworks.md
 ```
 
+## Minimal Privilege
+
+Cada skill declara explicitamente as suas `permissions` no frontmatter. O agente opera **apenas dentro desses limites**.
+
+Se a tarefa requer permissões não declaradas: **PARAR e informar o utilizador.** Nunca auto-expandir permissões.
+
+Ver `docs/10_AGENT_SAFETY.md` para a tabela completa de valores válidos, defaults, e a política de Trust Hierarchy.
+
+---
+
 ## Regra principal: SKILL.md lean
 
 **O SKILL.md deve ter ≤ 60 linhas.**
@@ -52,6 +62,12 @@ O conteúdo detalhado (tabelas, queries, critérios) vai para `assets/` e é car
 ---
 name: skill-name
 description: Uma linha clara sobre quando usar esta skill — seja específico
+permissions:
+  tools: [Read, Glob, Grep]
+  filesystem: read-only
+  git: none
+  network: none
+  external_services: []
 ---
 
 # Skill Name
