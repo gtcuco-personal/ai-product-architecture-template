@@ -57,28 +57,63 @@ Before any feature goes live, answer these questions:
 - Lock files are committed and protected
 - Regular dependency audits via `npm audit` / `pip audit`
 
-## Pre-commit Hook — Secrets Scanner
+## Pre-commit Hook — Secrets Scanner (gitleaks)
 
-A pre-commit hook at `.githooks/pre-commit` blocks any commit containing dangerous patterns:
+A pre-commit hook at `.githooks/pre-commit` runs [gitleaks](https://github.com/gitleaks/gitleaks) against staged changes, blocking commits that contain potential secret values.
 
-- `service_role` / `SUPABASE_SERVICE_ROLE`
-- `SECRET_KEY` / `PRIVATE_KEY`
-- PEM private keys (`-----BEGIN ... PRIVATE KEY`)
-- API tokens (`sk-*` — OpenAI, Stripe, etc.)
-- Hardcoded passwords
+Unlike naive name-matching scanners, gitleaks detects by **value shape** (JWT format, API token patterns, private key blocks, etc.) — so documentation referencing env var names like `SUPABASE_SERVICE_ROLE_KEY` is not flagged.
 
-### Activate for this repo
+### Coverage
+
+- 800+ built-in patterns for major cloud providers and APIs (AWS, GCP, Azure, GitHub, Stripe, OpenAI, Anthropic, Supabase, Slack, etc.)
+- JWT tokens, PEM private keys, SSH keys
+- Repo-specific custom rules via `.gitleaks.toml`
+
+### Setup
 
 ```bash
+# 1. Install gitleaks (once per machine)
+brew install gitleaks
+
+# 2. Activate the hook for this repo
 git config core.hooksPath .githooks
+```
+
+### Per-repo allowlist — `.gitleaks.toml`
+
+Each repo can declare its own allowlist and custom rules in `.gitleaks.toml` at the root. Template file is included — extend as needed. Common customisations:
+
+- Exclude paths (e.g. `docs/`, `*.md`)
+- Allow env var names documented without values
+- Add project-specific regex patterns
+
+### Per-line bypass
+
+Add a comment to the specific line:
+
+```ts
+const key = "abc123"; // gitleaks:allow — test fixture, not a real secret
 ```
 
 ### False positives
 
-If the hook blocks a legitimate commit (e.g. documentation mentioning `service_role`), bypass with:
+If gitleaks flags a legitimate commit:
+
+1. **Preferred:** add the path/pattern to `.gitleaks.toml` allowlist
+2. **Per-line:** add `gitleaks:allow` comment to the line
+3. **Last resort:** `git commit --no-verify` (document the reason in commit message)
+
+### Running gitleaks manually
 
 ```bash
-git commit --no-verify
+# Scan the whole repo history
+gitleaks detect --verbose
+
+# Scan only staged changes (same as the hook)
+gitleaks protect --staged --verbose
+
+# Scan a single file
+gitleaks detect --source path/to/file --no-git
 ```
 
 ## Sensitive Files
