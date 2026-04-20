@@ -1,6 +1,12 @@
 ---
 name: skill-name
 description: Uma linha clara sobre quando usar esta skill — o agente usa isto para decidir se activa a skill
+permissions:
+  tools: [Read, Glob, Grep]        # ferramentas Claude Code permitidas
+  filesystem: read-only            # read-only | write:{path} | write:any
+  git: none                        # none | branch-only | push
+  network: none                    # none | read | any
+  external_services: []            # ex: [supabase, stripe, github]
 ---
 
 # Skill Name
@@ -30,3 +36,5 @@ Exemplos de triggers:
 ## Notas
 
 [Limitações, edge cases, dependências conhecidas]
+
+> **Minimal Privilege:** Esta skill opera apenas dentro das `permissions` declaradas no frontmatter. Se a tarefa exigir acesso adicional, PARAR e informar o utilizador. Ver `docs/10_AGENT_SAFETY.md`.
