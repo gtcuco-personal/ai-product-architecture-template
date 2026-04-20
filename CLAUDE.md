@@ -76,15 +76,19 @@ SERVICE_KEY=
 4. Open PR: `gh pr create`
 5. Wait for review and approval before merging
 
-### Pre-commit Hook
+### Pre-commit Hook (secrets scanner)
 
-Activate the secrets scanner on first clone:
+Activate the gitleaks-based secrets scanner on first clone:
 
 ```bash
+# Install gitleaks (once per machine)
+brew install gitleaks
+
+# Activate the hook for this repo
 git config core.hooksPath .githooks
 ```
 
-See `SECURITY.md` for details on blocked patterns and false positives.
+Per-repo allowlist and custom rules live in `.gitleaks.toml`. See `SECURITY.md` for full details on coverage, allowlisting, and false positives.
 
 ## Context Loading Policy
 

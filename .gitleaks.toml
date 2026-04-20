@@ -1,0 +1,54 @@
+# Per-repo gitleaks configuration
+# Extends default rules (800+ patterns) with repo-specific allowlist + custom rules.
+#
+# Docs: https://github.com/gitleaks/gitleaks#configuration
+#
+# Note: gitleaks uses Go's RE2 regex engine — lookaheads (?! and ?=) are NOT
+# supported. Use paths allowlist or stopwords for fine-grained exceptions.
+
+# Inherit all default rules
+[extend]
+useDefault = true
+
+# ============================================================
+# Allowlist — paths that should NOT be scanned
+# ============================================================
+[allowlist]
+description = "Allowlist documentation paths and example files"
+
+# Documentation files rarely contain real secrets — only env var names or examples
+paths = [
+  '''\.md$''',
+  '''^docs/''',
+  '''^CLAUDE\.md$''',
+  '''^SECURITY\.md$''',
+  '''^README\.md$''',
+  '''^CONTRIBUTING\.md$''',
+  '''^CHANGELOG\.md$''',
+  '''^SYSTEM_PROMPT\.md$''',
+  '''\.env\.example$''',
+  '''\.env\.template$''',
+]
+
+# Stopwords — tokens that always signal a placeholder (never a real secret)
+stopwords = [
+  "example",
+  "placeholder",
+  "your-key-here",
+  "xxxxxxxx",
+  "REPLACE_ME",
+  "changeme",
+]
+
+# ============================================================
+# Custom rules — project-specific patterns (optional)
+# ============================================================
+# Example: Supabase JWT tokens have the format eyJ.eyJ.signature
+# The default gitleaks config already detects JWTs via the 'jwt' rule,
+# but you can add stricter Supabase-specific detection if needed:
+#
+# [[rules]]
+# id = "supabase-service-role-key"
+# description = "Supabase service role key (JWT value assigned to env var)"
+# regex = '''SUPABASE_SERVICE_ROLE_KEY\s*=\s*['"]?eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}'''
+# tags = ["supabase", "jwt", "critical"]
