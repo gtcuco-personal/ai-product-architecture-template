@@ -117,6 +117,30 @@ Este repo inclui um directório `skills/` com templates para criar Agent Skills 
 
 Ver `docs/9_AGENT_SKILLS.md` para o guia completo (framework KEPT, estrutura, regras).
 
+## Isolated Work (worktree subagents)
+
+Este repo inclui subagents pré-configurados em `.claude/agents/` para trabalho que não deve tocar directamente no working directory principal.
+
+| Subagent | Isolamento | Quando delegar |
+|---|---|---|
+| `isolated-worker` | `worktree` (git worktree temporário) | Refactors >3 ficheiros, migrações de schema, upgrades de dependências, experiências arriscadas |
+| `safe-explorer` | read-only (sem Write/Edit/Bash) | Perguntas de exploração, "onde está X", "como funciona Y", investigações de arquitectura |
+
+**Como invocar (a partir da sessão principal):**
+
+```
+Agent({
+  subagent_type: "isolated-worker",
+  isolation: "worktree",
+  description: "Refactor auth middleware",
+  prompt: "<detailed task brief>"
+})
+```
+
+**Limitação conhecida:** A sessão principal do Claude Code edita sempre directamente no working directory — o isolamento por worktree só se aplica a subagents spawnados via `Agent` tool. Para trabalho directo na sessão principal, manter a regra *"nunca push directo para `main`"* (ver Git Workflow acima).
+
+**Quando NÃO usar isolated-worker:** edits simples (<3 ficheiros), bug fixes pontuais, alterações de copy/content. O overhead de criar worktree não compensa.
+
 ## Context7 — Documentação de Bibliotecas
 
 Para qualquer biblioteca, framework, SDK, API ou CLI listada no **Tech Stack** acima, usar **Context7** antes de responder sobre ela — evita sintaxe desactualizada e garante que as respostas reflectem a versão em uso.

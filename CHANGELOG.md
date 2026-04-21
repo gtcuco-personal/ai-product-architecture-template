@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.13] — 2026-04-21
+
+### Added
+
+- `.claude/agents/isolated-worker.md` — worktree-isolated subagent for heavy/risky work (refactors, migrations, upgrades). Runs inside a temporary git worktree so the primary working directory is never mutated until the user merges.
+- `.claude/agents/safe-explorer.md` — read-only subagent for exploration and architecture questions. No Write/Edit/Bash; hard guarantee nothing on disk changes.
+- `CLAUDE.md` — new "Isolated Work (worktree subagents)" section documenting when to delegate to each subagent, invocation example, and the main-session limitation (worktree isolation is subagent-only).
+
 ## [1.12] — 2026-03-31
 
 ### Added

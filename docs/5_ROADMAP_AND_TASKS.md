@@ -1,6 +1,6 @@
 # Roadmap & Tasks
 
-> **Last updated:** 2026-03-31
+> **Last updated:** 2026-04-21
 
 ## Task Format
 
@@ -12,6 +12,7 @@
 
 ## Completed
 
+- 2026-04-21 — Add worktree-isolated subagents to template (PR #33) → `.claude/agents/isolated-worker.md`, `.claude/agents/safe-explorer.md`, `CLAUDE.md`, `CHANGELOG.md`
 - 2026-03-31 — Add stack-agnostic data & analysis governance (PR #26) → `docs/8_DATA_AND_ANALYSIS.md`, `SYSTEM_PROMPT.md`, `CLAUDE.md`
 - 2026-03-31 — Add UI Patterns, States, Vocabulary table, DO NOT list, and Content/i18n guidelines (PR #25) → `docs/3_UI_UX_GUIDELINES.md`, `docs/prompts.md`, `docs/7_CONTENT_I18N.md`
 - 2026-03-30 — Remove stack-specific language; add deploy command placeholder (PR #22) → `CLAUDE.md`, `SYSTEM_PROMPT.md`, `docs/0_GROUND_RULES.md`
