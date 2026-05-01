@@ -154,9 +154,23 @@ Para qualquer biblioteca, framework, SDK, API ou CLI listada no **Tech Stack** a
 
 > Não usar Context7 para: lógica de negócio, refactoring, code review, conceitos gerais de programação.
 
-## Cross-Reference Index
+## INDEX.md — mandatory governance file
 
-If this repo contains an `INDEX.md` (common in academic/study repos), always read it before answering questions about the content it maps. The INDEX.md provides cross-references between topics, sources, and materials that are not obvious from the directory structure alone.
+**Every repo governed by this template must have an `INDEX.md` at the root.** It is a live map of active initiatives, folder purpose, and archived work. Treat it with the same priority as `CHANGELOG.md` and `docs/5_ROADMAP_AND_TASKS.md`.
+
+### How agents must use it
+
+1. **Always read `INDEX.md` first** when entering a repo, before exploring with `find`/`grep`. It saves tokens and gives the canonical map.
+2. **If `INDEX.md` has `[preencher]` placeholders** (never populated), offer to auto-populate it from the roadmap, stakeholder folder, and folder structure — before continuing with the user's task.
+3. **If `INDEX.md` is stale** (date > 30 days or missing recent initiatives visible in roadmap/commits), flag it and offer to refresh.
+
+### Maintenance obligations
+
+- `/sync-repos` audits presence and auto-populates on first creation
+- `/sync-docs` refreshes the INDEX on every sync (active initiatives from roadmap, archive from completed items, updates "Last updated")
+- Every PR that adds, moves, or removes artifacts in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/` (or equivalent) must update `INDEX.md` — same rule as CHANGELOG and roadmap
+
+See `INDEX.md` template for the required structure.
 
 ## Related Projects
 
