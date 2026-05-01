@@ -18,7 +18,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
 | `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, SEO/AEO guidelines |
 | `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
-| `docs/7_CONTENT_I18N.md` | UI copy rules, i18n key naming convention, namespace strategy, copy rules, length constraints |
+| `docs/7_CONTENT_I18N.md` | Content architecture doctrine (i18n vs storage vs MD — tech-agnostic) and i18n layer rules (key naming, namespaces, copy, length) |
 | `docs/8_DATA_AND_ANALYSIS.md` | Metric registry, assumptions log, source contracts, pipeline order, data quality checks |
 | `docs/prompts.md` | Reusable prompt templates, Lovable vocabulary reference, and DO NOT list |
 | `docs/10_AGENT_SAFETY.md` | Trust hierarchy, minimal privilege, irreversible action gates, prompt injection policy, red flags |
@@ -226,6 +226,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | Security model change | `SECURITY.md` |
 | Content strategy or social media change | `docs/6_CONTENT_AND_SOCIAL.md` |
 | UI copy, i18n keys, or locale rules change | `docs/7_CONTENT_I18N.md` |
+| Content layer decision (move text from i18n → storage, add `page_seo`/`legal_pages`/`content_sections` tables, change translation pattern) | `docs/7_CONTENT_I18N.md` + `docs/2_ARCHITECTURE.md` |
 | Metric definition, assumption, source contract, or pipeline change | `docs/8_DATA_AND_ANALYSIS.md` |
 | Agent permission, safety policy, or trust hierarchy change | `SYSTEM_PROMPT.md` + `docs/10_AGENT_SAFETY.md` |
 
