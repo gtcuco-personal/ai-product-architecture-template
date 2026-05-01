@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.14] — 2026-05-01
+
+### Added
+
+- `docs/7_CONTENT_I18N.md` — expanded with **Part 1: Cross-Layer Doctrine** (i18n vs storage vs MD, tech-agnostic). Decision framework (3 questions), classification table, translation pattern matrix per storage technology, anti-patterns, MD source-of-truth pattern, audit checklist for existing repos
+- `docs/decisions/template/ODR-004-content-layer-doctrine.md` — Organisational Decision Record for the doctrine
+- `CLAUDE.md` Context Loading Policy — new row "Code — content layer decision"; updated "Code — DB / schema" to load `docs/7_CONTENT_I18N.md` when content tables are involved
+- `SYSTEM_PROMPT.md` §6 — new trigger matrix row for content-layer decisions (i18n → storage migrations, `page_seo`/`legal_pages`/`content_sections` tables, translation pattern changes)
+
+### Changed
+
+- `SYSTEM_PROMPT.md` §1 — source-of-truth entry for `docs/7_CONTENT_I18N.md` updated to reflect cross-layer scope (doctrine + i18n rules)
+- `docs/7_CONTENT_I18N.md` Part 2 — existing i18n rules preserved, recontextualised as the rules for the i18n layer specifically; added smell-test pointer (any locale value > 200 chars or any namespace > 400 keys → reread Part 1)
+
 ## [1.13] — 2026-04-21
 
 ### Added
