@@ -12,6 +12,7 @@
 
 ## Completed
 
+- 2026-05-03 — Add compliance frameworks directory + AI governance template (PR #36) → `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/14_AI_GOVERNANCE.md`, `SYSTEM_PROMPT.md`, `CLAUDE.md`, `CHANGELOG.md`
 - 2026-05-01 — Add cross-layer content doctrine (i18n vs storage vs MD) — tech-agnostic framework codified in `7_CONTENT_I18N.md` Part 1, ODR-004, updated CLAUDE/SYSTEM_PROMPT context-loading and trigger matrix (PR #35) → `docs/7_CONTENT_I18N.md`, `docs/decisions/template/ODR-004-content-layer-doctrine.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `CHANGELOG.md`
 - 2026-04-21 — Add worktree-isolated subagents to template (PR #33) → `.claude/agents/isolated-worker.md`, `.claude/agents/safe-explorer.md`, `CLAUDE.md`, `CHANGELOG.md`
 - 2026-03-31 — Add stack-agnostic data & analysis governance (PR #26) → `docs/8_DATA_AND_ANALYSIS.md`, `SYSTEM_PROMPT.md`, `CLAUDE.md`
