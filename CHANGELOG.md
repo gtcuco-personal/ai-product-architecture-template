@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.15] — 2026-05-03
+
+### Added
+
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — modular compliance directory: Tier 1 universal (data formats, WCAG 2.2 AA, ISO/IEC 25010), Tier 2 AI governance (EU AI Act, ISO 42001, NIST AI RMF), Tier 3 security/privacy (ISO 27001, SOC 2, GDPR, LGPD), Tier 4 domain-specific profiles (health, finance, climate, government). Activation via `compliance_profiles` flag in `docs/0_GROUND_RULES.md`
+- `docs/14_AI_GOVERNANCE.md` — AI governance template: EU AI Act risk classification checklist (Art. 5 prohibited practices, GPAI, Annex III high-risk, limited/minimal risk), ISO/IEC 42001:2023 AIMS core requirements + Annex A controls, NIST AI RMF 1.0 + GenAI Profile, AI inventory template, AI risk register, human oversight checklist, production monitoring metrics, incident response SLAs
+- `SYSTEM_PROMPT.md` §1 — two new source-of-truth entries for `docs/13_COMPLIANCE_FRAMEWORKS.md` and `docs/14_AI_GOVERNANCE.md`
+- `SYSTEM_PROMPT.md` §6 — three new trigger matrix rows: compliance profile change, AI system/model change, EU AI Act risk level change
+- `CLAUDE.md` Context Loading Policy — two new rows: compliance review, AI governance
+
 ## [1.14] — 2026-05-01
 
 ### Added

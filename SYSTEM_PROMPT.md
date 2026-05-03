@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.14 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.15 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -22,6 +22,8 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/8_DATA_AND_ANALYSIS.md` | Metric registry, assumptions log, source contracts, pipeline order, data quality checks |
 | `docs/prompts.md` | Reusable prompt templates, Lovable vocabulary reference, and DO NOT list |
 | `docs/10_AGENT_SAFETY.md` | Trust hierarchy, minimal privilege, irreversible action gates, prompt injection policy, red flags |
+| `docs/13_COMPLIANCE_FRAMEWORKS.md` | Compliance framework directory — which standards apply per profile (universal, ai-governance, security, health, finance, climate) and when to activate them |
+| `docs/14_AI_GOVERNANCE.md` | AI governance — EU AI Act risk classification, ISO/IEC 42001:2023 AIMS, NIST AI RMF, AI inventory, risk register, human oversight, incident response |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
 | `docs/decisions/template/` | Template ODRs — inherited from the base governance template |
 
@@ -229,6 +231,9 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | Content layer decision (move text from i18n → storage, add `page_seo`/`legal_pages`/`content_sections` tables, change translation pattern) | `docs/7_CONTENT_I18N.md` + `docs/2_ARCHITECTURE.md` |
 | Metric definition, assumption, source contract, or pipeline change | `docs/8_DATA_AND_ANALYSIS.md` |
 | Agent permission, safety policy, or trust hierarchy change | `SYSTEM_PROMPT.md` + `docs/10_AGENT_SAFETY.md` |
+| Compliance profile added/removed, regulation version bumped | `docs/13_COMPLIANCE_FRAMEWORKS.md` + `docs/0_GROUND_RULES.md` (compliance_profiles) |
+| AI system added, model changed, or AI risk level updated | `docs/14_AI_GOVERNANCE.md` (AI inventory + risk register) |
+| EU AI Act risk classification changed (e.g. product now high-risk) | `docs/14_AI_GOVERNANCE.md` + `SYSTEM_PROMPT.md` (version bump) |
 
 > **The task is NOT complete until the corresponding docs are updated.** This is enforcement, not suggestion. This rule is verified by the Task Completion Checklist (§8).
 
@@ -306,6 +311,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
 | 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
+| 1.15 | 2026-05-03 | Added `docs/13_COMPLIANCE_FRAMEWORKS.md` (Tier 1 universal, Tier 2 AI, Tier 3 security/privacy, Tier 4 domain) and `docs/14_AI_GOVERNANCE.md` (EU AI Act, ISO 42001, NIST AI RMF, AI inventory, risk register). Updated §1 source-of-truth table and §6 trigger matrix with compliance and AI governance rows |
 | 1.14 | 2026-04-08 | Added §9 Trust Hierarchy + Prompt Injection Policy + Minimal Privilege. New `docs/10_AGENT_SAFETY.md`. Updated §6 trigger matrix and §8 checklist. Response to Mythos Preview release and agentic safety learnings |
 | 1.13 | 2026-04-07 | Added §3A Workflow Orchestration — plan-first for 3+ step tasks, subagent delegation strategy, self-improvement loop via `tasks/lessons.md`, demand elegance for non-trivial changes |
 | 1.12 | 2026-03-31 | New `docs/8_DATA_AND_ANALYSIS.md` — stack-agnostic data governance: metric registry, assumptions log, source contracts, pipeline order, data quality checks, cohort definitions; updated §1 and §6 |

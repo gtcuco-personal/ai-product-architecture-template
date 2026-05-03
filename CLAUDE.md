@@ -108,6 +108,8 @@ Before starting any task, load only the files relevant to that task type. Do not
 | Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
 | Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
 | Agent safety review | `docs/10_AGENT_SAFETY.md`, `SYSTEM_PROMPT.md` | All others |
+| Compliance review | `docs/0_GROUND_RULES.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `SECURITY.md` | All others |
+| AI governance / EU AI Act / risk classification | `docs/14_AI_GOVERNANCE.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
 
 > Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
 > Always load `tasks/lessons.md` at session start for any task type — it contains repo-specific corrections.
