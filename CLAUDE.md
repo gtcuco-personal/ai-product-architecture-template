@@ -6,7 +6,7 @@
 
 | Key | Value |
 |-----|-------|
-| **Local path** | `~/Documents/github/[repo-name]` |
+| **Local path** | `~/devs/github/[repo-name]` |
 | **Remote** | `https://github.com/[org]/[repo-name].git` |
 | **GitHub account** | `[account]` |
 | **Production URL** | `[url or N/A]` |
