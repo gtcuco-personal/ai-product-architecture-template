@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## 2026-05-07 — Migração path local: ~/Documents/github → ~/devs/github (#37)
+
+- Repo movido localmente para fora do iCloud Drive (eviction provocava falhas de acesso)
+- Path references actualizadas em CLAUDE.md (mergeada em PR #37)
+
 ## [1.15] — 2026-05-03
 
 ### Added

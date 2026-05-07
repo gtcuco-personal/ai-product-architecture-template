@@ -1,6 +1,6 @@
 # Roadmap & Tasks
 
-> **Last updated:** 2026-05-01
+> **Last updated:** 2026-05-07
 
 ## Task Format
 
@@ -11,6 +11,12 @@
 > **Rule:** Every merged PR must have a completed entry here with its PR number. No exceptions.
 
 ## Completed
+
+
+### 2026-05-07 — Migração path local: ~/Documents/github → ~/devs/github (#37)
+
+- 2026-05-07 — Repo movido localmente para fora do iCloud Drive (eviction de ficheiros provocava falhas de acesso intermitentes)
+- 2026-05-07 —  actualizado em PR #37
 
 - 2026-05-03 — Add compliance frameworks directory + AI governance template (PR #36) → `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/14_AI_GOVERNANCE.md`, `SYSTEM_PROMPT.md`, `CLAUDE.md`, `CHANGELOG.md`
 - 2026-05-01 — Add cross-layer content doctrine (i18n vs storage vs MD) — tech-agnostic framework codified in `7_CONTENT_I18N.md` Part 1, ODR-004, updated CLAUDE/SYSTEM_PROMPT context-loading and trigger matrix (PR #35) → `docs/7_CONTENT_I18N.md`, `docs/decisions/template/ODR-004-content-layer-doctrine.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `CHANGELOG.md`
