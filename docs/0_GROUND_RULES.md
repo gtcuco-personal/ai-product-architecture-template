@@ -49,6 +49,9 @@ Before any deploy to production, verify:
 - [ ] **Analytics enabled** — tracking configured (if applicable)
 - [ ] **Build passes** — `npm run build` (or equivalent) completes without errors
 - [ ] **Performance acceptable** — page loads in <3s on mobile connection
+- [ ] **SBOM generated** — Software Bill of Materials committed/attached to release (required if sold in EU market or enterprise/government clients)
+- [ ] **Privacy by Design assessed** — Art. 25 checklist completed if feature processes personal data (see `docs/13_COMPLIANCE_FRAMEWORKS.md`)
+- [ ] **CRA security support period declared** — if software sold in EU market with digital elements, document how long security updates will be provided
 
 > Remove this section if the project is a CLI tool, library, or internal service.
 

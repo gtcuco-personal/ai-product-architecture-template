@@ -2,13 +2,22 @@
 
 ## Reporting Vulnerabilities
 
-If you discover a security vulnerability, please report it responsibly:
+If you discover a security vulnerability, please report it responsibly. This process follows **ISO/IEC 29147:2018** (Vulnerability Disclosure) and **ISO/IEC 30111:2019** (Vulnerability Handling).
 
 - **Preferred:** [GitHub Private Vulnerability Reporting](../../security/advisories/new)
 - **Alternative:** Direct contact via repository owner
 - **Do NOT** open a public GitHub issue for security vulnerabilities
 
-We will acknowledge receipt within 48 hours and provide a detailed response within 5 business days.
+### Disclosure Timeline
+
+| Stage | Deadline | Action |
+|---|---|---|
+| Acknowledgement | 48 hours | Confirm receipt and assign severity |
+| Initial assessment | 5 business days | Provide detailed response with severity classification |
+| Patch target | 7 days (Critical), 30 days (High), 90 days (Medium/Low) | Fix and release |
+| Public disclosure | 90 days after report (coordinated) | Publish CVE / security advisory |
+
+> **EU Cyber Resilience Act (CRA):** From 11 September 2026, actively exploited vulnerabilities in products with digital elements sold in the EU must be reported to **ENISA within 24 hours** and to affected users within **72 hours**. Update this policy before that date if the product is in scope.
 
 ## Security Practices
 
@@ -51,11 +60,29 @@ Before any feature goes live, answer these questions:
 - [Describe validation: e.g. Zod schemas at system boundaries]
 - Transactional emails must not contain sensitive data in plain text. Use rate limiting on email-sending endpoints to prevent abuse.
 
+### SBOM (Software Bill of Materials)
+
+Required by the **EU Cyber Resilience Act** from 11 September 2026 for software sold in the EU market. Also increasingly required by enterprise and government procurement.
+
+- **Format:** SPDX 2.3 or CycloneDX 1.5 (machine-readable)
+- **Generation:** automate in CI on every release (tools: [`syft`](https://github.com/anchore/syft), [`cyclonedx-cli`](https://github.com/CycloneDX/cyclonedx-cli))
+- **Storage:** commit to `sbom/` directory or attach to GitHub Release as artifact
+- **Update trigger:** any dependency change (add, remove, version bump)
+- **Contents:** all direct and transitive dependencies with name, version, licence, and source URL
+
+```bash
+# Generate SBOM with syft (example — adjust to your stack)
+syft . -o spdx-json > sbom/sbom.spdx.json
+syft . -o cyclonedx-json > sbom/sbom.cdx.json
+```
+
+> See `docs/12_DEPENDENCY_MANAGEMENT.md` for full dependency governance policy including licence compliance and SLSA supply chain security.
+
 ### Dependencies
 
-- Dependencies are reviewed before addition
+- Dependencies are reviewed before addition — see `docs/12_DEPENDENCY_MANAGEMENT.md` for governance policy
 - Lock files are committed and protected
-- Regular dependency audits via `npm audit` / `pip audit`
+- Regular dependency audits via `npm audit` / `pip audit` / `cargo audit`
 
 ## Pre-commit Hook — Secrets Scanner (gitleaks)
 

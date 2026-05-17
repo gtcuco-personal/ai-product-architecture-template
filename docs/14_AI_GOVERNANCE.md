@@ -84,7 +84,7 @@ Most products using third-party AI APIs are **deployers**, not providers. Deploy
 
 ## 2. ISO/IEC 42001:2023 — AI Management System (AIMS)
 
-The first certifiable management system standard for AI. Structure mirrors ISO 9001 / 27001 (Plan-Do-Check-Act).
+The first certifiable management system standard for AI. Structure mirrors ISO 9001 / 27001 (Plan-Do-Check-Act) — adopts **Annex SL**, the common high-level structure shared across all ISO management system standards. Organisations already certified for ISO 27001 or ISO 9001 have significant overlap in governance infrastructure (policies, internal audit, management review, corrective action) and can integrate ISO 42001 incrementally.
 
 ### Core Requirements Summary
 
@@ -196,6 +196,7 @@ Maintain an inventory of all AI systems used by or embedded in the product. Upda
 | Opt-out available | `yes` / `no` / `partial` |
 | Logging | What is logged and where |
 | Last assessed | Date of last impact assessment |
+| Testing strategy | Link to eval suite in `evals/` — see `docs/11_TESTING.md` §AI-Specific Testing |
 
 ---
 
