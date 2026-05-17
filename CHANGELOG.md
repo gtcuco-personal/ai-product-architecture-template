@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.17] — 2026-05-17 — Testing governance: docs/11_TESTING.md + 4-location sync policy
+
+### Added
+
+- `docs/11_TESTING.md` — testing strategy: pyramid (70/20/10), framework selection per stack, coverage thresholds, CI/CD gates, test data strategy, Done definition, AI-specific testing (ISO 42001 A.7.2 — output regression, prompt injection, bias drift, hallucination rate)
+- `docs/decisions/template/ODR-005-testing-governance-and-doc-sync-policy.md` — formalises (1) why testing has a dedicated doc and (2) the 4-location sync policy that must be followed whenever a doc is added/removed from `docs/`
+
+### Changed
+
+- `SYSTEM_PROMPT.md` — §1 source table: `docs/11_TESTING.md` entry added; §6 trigger matrix: 3 new rows (testing, dependency management, SBOM/vulnerability); version 1.17 changelog entry
+- `CLAUDE.md` — Context Loading Policy: 2 new task types ("Code — test / CI pipeline", "Code — AI feature with eval")
+- `README.md` — "What's Included" directory listing updated with `11_TESTING.md`, `13_COMPLIANCE_FRAMEWORKS.md`, `14_AI_GOVERNANCE.md`
+
 ## [1.16] — 2026-05-17 — Compliance refresh: CRA, ISO 25010:2023, GDPR Art. 25, OWASP ASVS
 
 ### Added

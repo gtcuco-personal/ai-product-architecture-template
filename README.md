@@ -17,6 +17,9 @@ Governance and documentation template for AI product repositories. Provides a st
     ├── 3_UI_UX_GUIDELINES.md    # Design tokens, typography, spacing, UI rules
     ├── 4_SEO_AND_AEO.md         # Meta tags, structured data, sitemap
     ├── 5_ROADMAP_AND_TASKS.md   # Execution log and backlog
+    ├── 11_TESTING.md            # Testing strategy, framework selection, coverage, CI/CD gates, AI evals
+    ├── 13_COMPLIANCE_FRAMEWORKS.md  # ISO/regulatory compliance directory (Tier 1-4)
+    ├── 14_AI_GOVERNANCE.md      # EU AI Act, ISO 42001, NIST AI RMF, AI inventory
     └── decisions/
         ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
         └── template/            # ODRs inherited from this base template

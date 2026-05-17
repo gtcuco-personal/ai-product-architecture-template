@@ -12,6 +12,10 @@
 
 ## Completed
 
+### 2026-05-17 — Testing governance v1.17 (PR #40)
+
+- 2026-05-17 — Add `docs/11_TESTING.md` (pyramid, frameworks, coverage, CI gates, AI evals linked to ISO 42001 A.7.2) + ODR-005 (testing governance + 4-location sync policy) + sync chain (SYSTEM_PROMPT §1+§6, CLAUDE.md Context Loading Policy, README.md) → `docs/11_TESTING.md`, `docs/decisions/template/ODR-005-testing-governance-and-doc-sync-policy.md`, `SYSTEM_PROMPT.md`, `CLAUDE.md`, `README.md`
+
 ### 2026-05-17 — Compliance refresh v1.16 (PR #39)
 
 - 2026-05-17 — EU Cyber Resilience Act (CRA) + SBOM added to Tier 3; ISO 25010:2023 Safety + Flexibility; GDPR Art. 25 + RoPA; OWASP ASVS + NIST SSDF; NIS2 scope note; ISO 42001 Annex SL; vulnerability disclosure timeline (ISO 29147/30111); 3 trigger matrix rows added → `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/14_AI_GOVERNANCE.md`, `SECURITY.md`, `docs/0_GROUND_RULES.md`, `SYSTEM_PROMPT.md`
