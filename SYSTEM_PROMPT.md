@@ -22,6 +22,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/8_DATA_AND_ANALYSIS.md` | Metric registry, assumptions log, source contracts, pipeline order, data quality checks |
 | `docs/prompts.md` | Reusable prompt templates, Lovable vocabulary reference, and DO NOT list |
 | `docs/10_AGENT_SAFETY.md` | Trust hierarchy, minimal privilege, irreversible action gates, prompt injection policy, red flags |
+| `docs/11_TESTING.md` | Testing strategy, framework selection, coverage requirements, CI/CD gates, AI-specific test patterns and eval framework |
 | `docs/13_COMPLIANCE_FRAMEWORKS.md` | Compliance framework directory — which standards apply per profile (universal, ai-governance, security, health, finance, climate) and when to activate them |
 | `docs/14_AI_GOVERNANCE.md` | AI governance — EU AI Act risk classification, ISO/IEC 42001:2023 AIMS, NIST AI RMF, AI inventory, risk register, human oversight, incident response |
 | `docs/decisions/` | Local ODRs — decisions made within this repo |
@@ -314,6 +315,8 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
 | 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
+<<<<<<< HEAD
+| 1.17 | 2026-05-17 | Added `docs/11_TESTING.md` (testing pyramid, framework selection, coverage, CI/CD gates, AI-specific evals linked to ISO 42001 A.7.2). Added ODR-005 (testing governance + 4-location doc sync policy). Updated §1 source table, §6 trigger matrix, CLAUDE.md Context Loading Policy (2 new task types), README.md directory listing |
 | 1.16 | 2026-05-17 | Compliance refresh: EU Cyber Resilience Act (CRA, Reg. 2024/2847) + SBOM added to Tier 3; ISO 25010:2023 Safety characteristic + Flexibility rename; ISO 42001 Annex SL note; OWASP ASVS + NIST SSDF in Tier 3; GDPR Art. 25 + RoPA; Privacy by Design checklist; NIS2 scope note; PCI DSS v3.2.1 EOL; NIST CSF 2.0 Govern function note; vulnerability disclosure timeline + ISO 29147/30111 reference; §6 trigger matrix rows for SBOM/testing/dependency |
 | 1.15 | 2026-05-03 | Added `docs/13_COMPLIANCE_FRAMEWORKS.md` (Tier 1 universal, Tier 2 AI, Tier 3 security/privacy, Tier 4 domain) and `docs/14_AI_GOVERNANCE.md` (EU AI Act, ISO 42001, NIST AI RMF, AI inventory, risk register). Updated §1 source-of-truth table and §6 trigger matrix with compliance and AI governance rows |
 | 1.14 | 2026-04-08 | Added §9 Trust Hierarchy + Prompt Injection Policy + Minimal Privilege. New `docs/10_AGENT_SAFETY.md`. Updated §6 trigger matrix and §8 checklist. Response to Mythos Preview release and agentic safety learnings |

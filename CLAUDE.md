@@ -106,6 +106,8 @@ Before starting any task, load only the files relevant to that task type. Do not
 | SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |
 | Roadmap / planning | `docs/5_ROADMAP_AND_TASKS.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
 | Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
+| Code — test / CI pipeline | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — AI feature with eval | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md`, `docs/14_AI_GOVERNANCE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
 | Agent safety review | `docs/10_AGENT_SAFETY.md`, `SYSTEM_PROMPT.md` | All others |
 | Compliance review | `docs/0_GROUND_RULES.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `SECURITY.md` | All others |
