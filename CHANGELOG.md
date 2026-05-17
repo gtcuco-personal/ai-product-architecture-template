@@ -4,42 +4,43 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.18] — 2026-05-17 — Dependency management governance: docs/12_DEPENDENCY_MANAGEMENT.md
+
+### Added
+
+- `docs/12_DEPENDENCY_MANAGEMENT.md` — dependency governance: licence policy (allowed/review/blocked), SBOM conventions (SPDX 2.3/CycloneDX 1.5), SLSA Level 2 implementation checklist, Dependabot/Renovate upgrade strategy (patch auto-merge, major = ODR), CVE response SLAs by CVSS severity, EOL tracking and migration planning, quarterly health check items
+- `docs/decisions/template/ODR-006-dependency-governance-tier.md` — decision record: why dependency governance is a separate doc (not a SECURITY.md section); sync table (4 locations updated); review schedule
+
+### Changed
+
+- `SECURITY.md` §Dependencies — minimal 3-line section replaced with pointer to `docs/12_DEPENDENCY_MANAGEMENT.md` + quick reference (licence, lock files, audit, blocked licences)
+- `SYSTEM_PROMPT.md` — §1 source table: `docs/12_DEPENDENCY_MANAGEMENT.md` row; §6 trigger matrix rows; v1.18 changelog entry
+- `CLAUDE.md` — Context Loading Policy: "Code — dependency change" row added
+- `README.md` — directory listing: `12_DEPENDENCY_MANAGEMENT.md` added
+
 ## [1.17] — 2026-05-17 — Testing governance: docs/11_TESTING.md + 4-location sync policy
 
 ### Added
 
 - `docs/11_TESTING.md` — testing strategy: pyramid (70/20/10), framework selection per stack, coverage thresholds, CI/CD gates, test data strategy, Done definition, AI-specific testing (ISO 42001 A.7.2 — output regression, prompt injection, bias drift, hallucination rate)
-- `docs/decisions/template/ODR-005-testing-governance-and-doc-sync-policy.md` — formalises (1) why testing has a dedicated doc and (2) the 4-location sync policy that must be followed whenever a doc is added/removed from `docs/`
+- `docs/decisions/template/ODR-005-testing-governance-and-doc-sync-policy.md` — formalises (1) why testing has a dedicated doc and (2) the 4-location sync policy
 
 ### Changed
 
-- `SYSTEM_PROMPT.md` — §1 source table: `docs/11_TESTING.md` entry added; §6 trigger matrix: 3 new rows (testing, dependency management, SBOM/vulnerability); version 1.17 changelog entry
-- `CLAUDE.md` — Context Loading Policy: 2 new task types ("Code — test / CI pipeline", "Code — AI feature with eval")
-- `README.md` — "What's Included" directory listing updated with `11_TESTING.md`, `13_COMPLIANCE_FRAMEWORKS.md`, `14_AI_GOVERNANCE.md`
+- `SYSTEM_PROMPT.md` — §1 source table: `docs/11_TESTING.md` entry; §6 trigger matrix rows; CLAUDE.md 2 new task types; README.md updated
 
 ## [1.16] — 2026-05-17 — Compliance refresh: CRA, ISO 25010:2023, GDPR Art. 25, OWASP ASVS
 
 ### Added
 
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — EU Cyber Resilience Act (CRA, Reg. 2024/2847) in Tier 3 with SBOM checklist and timeline (11 Sep 2026 vulnerability reporting, 11 Dec 2027 full compliance)
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — OWASP ASVS v4.0 and NIST SSDF (SP 800-218) in Tier 3 Security
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — Privacy by Design Checklist (GDPR Art. 25) with 7-item checklist and EDPB Feb 2026 guidance note
-- `SECURITY.md` — SBOM section with format, tooling, storage, and CRA obligation notes
-- `SECURITY.md` — Vulnerability disclosure timeline table (ISO/IEC 29147:2018 + ISO/IEC 30111:2019); CRA ENISA 24h / 72h notification requirements
-- `docs/0_GROUND_RULES.md` — 3 new items in Publishing Checklist: SBOM, Privacy by Design, CRA security support period
-- `SYSTEM_PROMPT.md` — 3 new trigger matrix rows: SBOM/vulnerability, testing, dependency management
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — EU Cyber Resilience Act (CRA, Reg. 2024/2847), OWASP ASVS v4.0, NIST SSDF, GDPR Art. 25 Privacy by Design checklist, RoPA (Art. 30)
+- `SECURITY.md` — SBOM section, vulnerability disclosure timeline (ISO 29147/30111), CRA ENISA obligations
+- `docs/0_GROUND_RULES.md` — 3 Publishing Checklist items: SBOM, Privacy by Design, CRA support period
 
 ### Changed
 
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — ISO 25010:2023: "Portability" renamed to "Flexibility", "Safety" added as 9th characteristic; header updated from "Eight" to "Nine quality characteristics"
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — ISO 42001 Annex SL integration note added (interoperability with ISO 27001/9001)
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — GDPR minimum obligations: added RoPA (Art. 30) and Privacy by Design (Art. 25) items
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — PCI DSS: v3.2.1 EOL note (superseded 31 Mar 2025, v4.0 mandatory)
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — NIST CSF 2.0: Govern function note added
-- `docs/13_COMPLIANCE_FRAMEWORKS.md` — NIS2: scope note clarifying sector-triggered applicability (not only government profile)
-- `docs/14_AI_GOVERNANCE.md` — ISO 42001 Annex SL note; AI Inventory: "Testing strategy" field added
-- `SECURITY.md` — Dependencies section updated with pointer to `docs/12_DEPENDENCY_MANAGEMENT.md` (PR 3)
-- `SYSTEM_PROMPT.md` — Version 1.16 changelog entry
+- ISO 25010:2023: "Portability" → "Flexibility", Safety added as 9th characteristic
+- ISO 42001 Annex SL note; NIS2 scope note; PCI DSS v3.2.1 EOL; NIST CSF 2.0 Govern function note
 
 ## 2026-05-07 — Migração path local: ~/Documents/github → ~/devs/github (#37)
 

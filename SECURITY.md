@@ -80,9 +80,13 @@ syft . -o cyclonedx-json > sbom/sbom.cdx.json
 
 ### Dependencies
 
-- Dependencies are reviewed before addition — see `docs/12_DEPENDENCY_MANAGEMENT.md` for governance policy
-- Lock files are committed and protected
-- Regular dependency audits via `npm audit` / `pip audit` / `cargo audit`
+See **`docs/12_DEPENDENCY_MANAGEMENT.md`** for the full dependency governance policy: licence compliance, SBOM, SLSA supply chain security, upgrade strategy, CVE response SLAs, and EOL management.
+
+Quick reference:
+- Dependencies reviewed before addition — licence and maintenance signals checked
+- Lock files committed and protected (never in `.gitignore`)
+- `npm audit` / `pip audit` / `cargo audit` run in CI on every PR
+- No dependency with a blocked licence (GPL, AGPL, no-licence) without legal clearance
 
 ## Pre-commit Hook — Secrets Scanner (gitleaks)
 
