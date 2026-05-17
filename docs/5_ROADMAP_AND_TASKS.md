@@ -12,6 +12,9 @@
 
 ## Completed
 
+### 2026-05-17 — Compliance refresh v1.16 (PR #39)
+
+- 2026-05-17 — EU Cyber Resilience Act (CRA) + SBOM added to Tier 3; ISO 25010:2023 Safety + Flexibility; GDPR Art. 25 + RoPA; OWASP ASVS + NIST SSDF; NIS2 scope note; ISO 42001 Annex SL; vulnerability disclosure timeline (ISO 29147/30111); 3 trigger matrix rows added → `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/14_AI_GOVERNANCE.md`, `SECURITY.md`, `docs/0_GROUND_RULES.md`, `SYSTEM_PROMPT.md`
 
 ### 2026-05-07 — Migração path local: ~/Documents/github → ~/devs/github (#37)
 

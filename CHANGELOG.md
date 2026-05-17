@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.16] — 2026-05-17 — Compliance refresh: CRA, ISO 25010:2023, GDPR Art. 25, OWASP ASVS
+
+### Added
+
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — EU Cyber Resilience Act (CRA, Reg. 2024/2847) in Tier 3 with SBOM checklist and timeline (11 Sep 2026 vulnerability reporting, 11 Dec 2027 full compliance)
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — OWASP ASVS v4.0 and NIST SSDF (SP 800-218) in Tier 3 Security
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — Privacy by Design Checklist (GDPR Art. 25) with 7-item checklist and EDPB Feb 2026 guidance note
+- `SECURITY.md` — SBOM section with format, tooling, storage, and CRA obligation notes
+- `SECURITY.md` — Vulnerability disclosure timeline table (ISO/IEC 29147:2018 + ISO/IEC 30111:2019); CRA ENISA 24h / 72h notification requirements
+- `docs/0_GROUND_RULES.md` — 3 new items in Publishing Checklist: SBOM, Privacy by Design, CRA security support period
+- `SYSTEM_PROMPT.md` — 3 new trigger matrix rows: SBOM/vulnerability, testing, dependency management
+
+### Changed
+
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — ISO 25010:2023: "Portability" renamed to "Flexibility", "Safety" added as 9th characteristic; header updated from "Eight" to "Nine quality characteristics"
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — ISO 42001 Annex SL integration note added (interoperability with ISO 27001/9001)
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — GDPR minimum obligations: added RoPA (Art. 30) and Privacy by Design (Art. 25) items
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — PCI DSS: v3.2.1 EOL note (superseded 31 Mar 2025, v4.0 mandatory)
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — NIST CSF 2.0: Govern function note added
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — NIS2: scope note clarifying sector-triggered applicability (not only government profile)
+- `docs/14_AI_GOVERNANCE.md` — ISO 42001 Annex SL note; AI Inventory: "Testing strategy" field added
+- `SECURITY.md` — Dependencies section updated with pointer to `docs/12_DEPENDENCY_MANAGEMENT.md` (PR 3)
+- `SYSTEM_PROMPT.md` — Version 1.16 changelog entry
+
 ## 2026-05-07 — Migração path local: ~/Documents/github → ~/devs/github (#37)
 
 - Repo movido localmente para fora do iCloud Drive (eviction provocava falhas de acesso)
