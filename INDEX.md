@@ -1,6 +1,6 @@
 # [Repo Name] — Index
 
-> **Last updated:** YYYY-MM-DD
+> **Last updated:** 2026-05-17
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
 
 ## Purpose
@@ -18,7 +18,7 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 - Links para artifacts principais (proposals, research, decisions, stakeholders)
 - Status actual
 
-_[preencher com iniciativas activas; remover este placeholder]_
+_No active initiatives — template is in maintenance mode. Next: propagate v1.16–1.18 to child repos via `/sync-repos`._
 
 Exemplo:
 
@@ -35,15 +35,23 @@ Exemplo:
 
 Estrutura de pastas principais com 1 linha de propósito:
 
-- `docs/` — governance (roadmap, changelog, business context, health check)
-- `tasks/` — tarefas activas e `lessons.md`
-- _[adicionar pastas específicas deste repo]_
+- `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check, architecture, content, SEO
+- `docs/decisions/` — local ODRs (project-specific decisions)
+- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-006)
+- `docs/guides/` — setup guides (git-crypt, etc.)
+- `skills/` — template for creating project-level Agent Skills
+- `tasks/` — `lessons.md` for session corrections
+- `.claude/agents/` — pre-configured subagents (isolated-worker, safe-explorer)
+- `.githooks/` — pre-commit secrets scanner (gitleaks)
 
 ## 🗄️ Archive
 
 Iniciativas completas, pausadas ou abandonadas. Mantêm-se aqui para contexto histórico sem poluir a vista activa.
 
-_[preencher; remover placeholder quando houver conteúdo]_
+### Compliance & Architecture refresh (v1.16–1.18) — 2026-05-17
+- PRs #39, #40, #41 merged to main
+- Added: EU Cyber Resilience Act, ISO 25010:2023 Safety, GDPR Art. 25, OWASP ASVS, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, ODR-005, ODR-006
+- **Status:** Complete
 
 ## Convention
 
