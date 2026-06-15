@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.19] — 2026-06-15 — Universal CI workflow (.github/workflows/ci.yml)
+
+### Added
+
+- `.github/workflows/ci.yml` — universal, **stack-auto-detecting** CI. `build-test` runs only if `package.json` exists (`npm ci` + lint/build/test via `--if-present`); `deno-check` runs only if `supabase/functions/*/index.ts` exist (type-checks edge functions that sit outside the frontend tsconfig). Safe in any repo: docs/data repos conclude green doing nothing. `deno-check` is network-tolerant — a CDN outage (esm.sh/deno.land 5xx) warns but does not fail; only real type errors fail. Triggers on PRs + pushes to `main`.
+
+### Changed
+
+- `docs/11_TESTING.md` — documents the shipped universal CI (job matrix, triggers) + propagation gotchas (workflow OAuth scope for org repos → web editor; bun↔npm lockfile drift → sync with `npx npm@10`; `/sync-repos` flags missing CI).
+
 ## [1.18] — 2026-05-17 — Dependency management governance: docs/12_DEPENDENCY_MANAGEMENT.md
 
 ### Added

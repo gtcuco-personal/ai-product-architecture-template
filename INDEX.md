@@ -1,6 +1,6 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-05-17
+> **Last updated:** 2026-06-15
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
 
 ## Purpose
