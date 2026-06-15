@@ -53,6 +53,24 @@ Adjust to the project's approved stack (defined in `docs/0_GROUND_RULES.md`). Co
 
 ## CI/CD Integration
 
+### Shipped with the template — `.github/workflows/ci.yml`
+
+A **universal, stack-auto-detecting** CI ships with this template. Each job only acts if the relevant files exist, so the same file is safe in any repo — a docs/data repo concludes green doing nothing; a webapp runs the full checks.
+
+| Job | Runs when | What runs |
+|---|---|---|
+| `build-test` | `package.json` exists | `npm ci` (if lockfile) + `lint`/`build`/`test` via `--if-present` (tolerates missing scripts) |
+| `deno-check` | `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
+
+Triggers: PRs + pushes to `main` (push-to-main matters for repos where an external tool — e.g. Lovable — commits straight to `main` without local checks).
+
+**Propagation gotchas:**
+- Adding/editing a workflow file requires the `workflow` OAuth scope on the git token. Org repos whose bot token lacks it → add `ci.yml` via the GitHub **web editor**.
+- Lovable repos manage deps via **bun** (`bun.lockb`); the npm `package-lock.json` rots and `npm ci` rejects it. Sync with the runner's npm version: `npx npm@10 install --package-lock-only`.
+- `/sync-repos` should flag repos missing `.github/workflows/ci.yml`.
+
+### Reference model (aspirational stages — adapt per repo)
+
 | Stage | What runs | Blocking? |
 |---|---|---|
 | **Pre-commit** | Type-check + lint + unit tests | Yes — commit blocked if any fail |

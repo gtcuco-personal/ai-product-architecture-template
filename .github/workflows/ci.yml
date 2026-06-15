@@ -1,0 +1,92 @@
+# CI — universal quality gate (governance template).
+#
+# Auto-detecta o stack: cada job só age se os ficheiros relevantes existirem,
+# por isso é SEGURO em qualquer repo — num repo só de docs/dados os jobs
+# concluem verdes sem fazer nada; num webapp correm a sério.
+#
+#   build-test : corre se houver package.json. npm ci (se houver lockfile) +
+#                lint/build/test com --if-present (tolera scripts em falta).
+#   deno-check : corre se houver edge functions Deno (supabase/functions/*/index.ts),
+#                que ficam FORA do tsconfig do frontend — build/lint não as veem.
+#                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
+#                não falha; só falha em erro real de código.
+#
+# Editar/adicionar este ficheiro exige o scope 'workflow' no token git.
+# Em repos de org cujo token não o tem → adicionar via editor web do GitHub.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          if [ -f package.json ]; then echo "node=true" >> "$GITHUB_OUTPUT"; else echo "node=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.detect.outputs.node == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install deps
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+      - if: steps.detect.outputs.node == 'true'
+        run: npm run lint --if-present
+      - if: steps.detect.outputs.node == 'true'
+        run: npm run build --if-present
+      - if: steps.detect.outputs.node == 'true'
+        run: npm run test --if-present
+
+  deno-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          if ls supabase/functions/*/index.ts >/dev/null 2>&1; then echo "deno=true" >> "$GITHUB_OUTPUT"; else echo "deno=false" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.detect.outputs.deno == 'true'
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - if: steps.detect.outputs.deno == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/deno
+          key: deno-${{ hashFiles('supabase/functions/**/*.ts') }}
+          restore-keys: deno-
+      - name: Type-check all edge functions
+        if: steps.detect.outputs.deno == 'true'
+        working-directory: supabase/functions
+        run: |
+          real_fail=0
+          for f in */index.ts; do
+            ok=0
+            for attempt in 1 2 3; do
+              out=$(deno check --node-modules-dir=auto --no-lock "$f" 2>&1)
+              if [ $? -eq 0 ]; then ok=1; break; fi
+              if echo "$out" | grep -qiE "failed: 5[0-9][0-9]|unknown status code|timed out|connection (closed|reset|refused)"; then
+                echo "::warning::$f: erro de rede a obter dependencias (tentativa $attempt)"
+                sleep 10
+                continue
+              fi
+              echo "$out"
+              real_fail=1
+              break
+            done
+            if [ $ok -eq 0 ] && [ $real_fail -eq 0 ]; then
+              echo "::warning::$f: ignorado apos falhas de rede (CDN indisponivel, nao e erro de codigo)"
+            fi
+          done
+          exit $real_fail

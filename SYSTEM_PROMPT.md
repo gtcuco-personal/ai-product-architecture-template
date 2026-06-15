@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.18 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.19 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -316,6 +316,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
 | 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
+| 1.19 | 2026-06-15 | Added `.github/workflows/ci.yml` — universal stack-auto-detecting CI (build-test if `package.json`; deno-check if edge functions exist; network-tolerant; PRs + push to main). Documented in `docs/11_TESTING.md` (job matrix + propagation gotchas: workflow OAuth scope, bun↔npm lockfile drift, `/sync-repos` flags missing CI) |
 | 1.18 | 2026-05-17 | Added `docs/12_DEPENDENCY_MANAGEMENT.md` (licence policy, SBOM, SLSA Level 2, upgrade strategy, CVE SLAs, EOL management, CRA linkage) + ODR-006. 4-location sync: §1 source table, §6 trigger matrix, CLAUDE.md, README.md. SECURITY.md Dependencies section updated |
 | 1.17 | 2026-05-17 | Added `docs/11_TESTING.md` (testing pyramid, framework selection, coverage, CI/CD gates, AI-specific evals linked to ISO 42001 A.7.2). Added ODR-005 (testing governance + 4-location doc sync policy). Updated §1 source table, §6 trigger matrix, CLAUDE.md Context Loading Policy (2 new task types), README.md directory listing |
 | 1.16 | 2026-05-17 | Compliance refresh: EU Cyber Resilience Act (CRA, Reg. 2024/2847) + SBOM added to Tier 3; ISO 25010:2023 Safety characteristic + Flexibility rename; ISO 42001 Annex SL note; OWASP ASVS + NIST SSDF in Tier 3; GDPR Art. 25 + RoPA; Privacy by Design checklist; NIS2 scope note; PCI DSS v3.2.1 EOL; NIST CSF 2.0 Govern function note; vulnerability disclosure timeline + ISO 29147/30111 reference; §6 trigger matrix rows for SBOM/testing/dependency |
