@@ -10,6 +10,11 @@
 #                que ficam FORA do tsconfig do frontend — build/lint não as veem.
 #                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
 #                não falha; só falha em erro real de código.
+#   governance-check : só em pull_request. Falha um PR que toca artefactos
+#                rastreados (public/videos, supabase/functions, supabase/migrations,
+#                stakeholders, pitches, research, decisions, meetings) sem
+#                actualizar INDEX.md ou CHANGELOG.md. Universal: se nenhum desses
+#                caminhos existir no repo, o grep não casa e o job conclui verde.
 #
 # Editar/adicionar este ficheiro exige o scope 'workflow' no token git.
 # Em repos de org cujo token não o tem → adicionar via editor web do GitHub.
@@ -90,3 +95,30 @@ jobs:
             fi
           done
           exit $real_fail
+
+  # Gate de governance: um PR que adiciona/altera artefactos rastreados tem de
+  # actualizar tambem INDEX.md ou CHANGELOG.md. Universal e seguro — se nenhum
+  # caminho de artefacto existir no repo, o grep nao casa e o job conclui verde.
+  # So corre em pull_request (push a main nao tem contexto de PR e e ignorado).
+  # Motivacao: um PR pode shippar artefactos (ex. videos, edge fns, decisoes) e
+  # nunca tocar no INDEX -> drift silencioso entre o repo e o seu mapa.
+  governance-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: INDEX/CHANGELOG devem acompanhar mudancas de artefactos
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          CHANGED=$(git diff --name-only "$BASE"...HEAD)
+          ART='^(public/videos/|supabase/functions/|supabase/migrations/|stakeholders/|pitches/|research/|decisions/|meetings/)'
+          if echo "$CHANGED" | grep -qE "$ART"; then
+            if ! echo "$CHANGED" | grep -qE '^(INDEX\.md|CHANGELOG\.md)$'; then
+              echo "::error::PR toca artefactos rastreados sem actualizar INDEX.md nem CHANGELOG.md."
+              echo "Artefactos alterados:"
+              echo "$CHANGED" | grep -E "$ART" | sed 's/^/  - /'
+              exit 1
+            fi
+          fi
