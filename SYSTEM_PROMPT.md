@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.19 — Universal template. All project-specific details live in `/docs/`.
+> Version: 1.20 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
