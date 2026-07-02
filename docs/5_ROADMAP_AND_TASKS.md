@@ -12,6 +12,11 @@
 
 ## Completed
 
+### 2026-07-02 — Lean-by-default restructure + v2.0, PR 2 of 4 (PR #47)
+
+- 2026-07-02 — Merge `docs/4_SEO_AND_AEO.md` into `docs/6_CONTENT_AND_SOCIAL.md`; rename `docs/6_HEALTH_CHECK.md` → `docs/15_HEALTH_CHECK.md`; split `docs/prompts.md` (Lovable vocabulary → `docs/guides/lovable-vocabulary.md`); add Applicability Gate to `docs/13_COMPLIANCE_FRAMEWORKS.md` and tag heavy sections "Enterprise/regulated — opt-in" across docs 11/12/14 + SECURITY.md; drop "stack-agnostic" claim in README.md; bump SYSTEM_PROMPT.md to v2.0; ODR-007 → `docs/6_CONTENT_AND_SOCIAL.md`, `docs/15_HEALTH_CHECK.md`, `docs/prompts.md`, `docs/guides/lovable-vocabulary.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/14_AI_GOVERNANCE.md`, `SECURITY.md`, `README.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `INDEX.md`, `docs/decisions/template/ODR-007-lean-by-default-governance.md`
+- Next in sequence (not yet done): PR 3 CI/gitleaks, PR 4 skills sync
+
 ### 2026-07-02 — Factual fixes + dedup, PR 1 of 4 (PR #46)
 
 - 2026-07-02 — Full-template audit (docs 0-14 + skills + CI + ODRs), then correct stale facts (FID→INP, CRA date confusion, EU AI Act Digital Omnibus deferrals, hardcoded model examples, unsourced AEO stats, stale AI crawler list, ephemeral anchors) and deduplicate content that had drifted across 2-3 files (Trust Hierarchy, routes/structure, CRA/SBOM timeline, Decisions Log format) → `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/3_UI_UX_GUIDELINES.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md`, `docs/6_HEALTH_CHECK.md`, `docs/7_CONTENT_I18N.md`, `docs/8_DATA_AND_ANALYSIS.md`, `docs/9_AGENT_SKILLS.md`, `docs/10_AGENT_SAFETY.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/14_AI_GOVERNANCE.md`

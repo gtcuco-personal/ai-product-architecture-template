@@ -48,6 +48,13 @@ Estrutura de pastas principais com 1 linha de propósito:
 
 Iniciativas completas, pausadas ou abandonadas. Mantêm-se aqui para contexto histórico sem poluir a vista activa.
 
+### Lean-by-default restructure (v2.0) — 2026-07-02
+- PRs #46, #47 (facts/dedup + restructure), pending merge review
+- Full audit (docs 0-14, skills, CI, ODRs) + 12-repo adoption sweep found stale facts, drifted duplication, and enterprise-shaped defaults with near-zero downstream adoption
+- Merged `4_SEO_AND_AEO.md` into `6_CONTENT_AND_SOCIAL.md`; renamed `6_HEALTH_CHECK.md` → `15_HEALTH_CHECK.md`; added Applicability Gate + "Enterprise/regulated — opt-in" tags; ODR-007
+- Still pending: PR 3 (CI/gitleaks), PR 4 (skills sync in `agents-and-skills`), propagation to downstream repos via `/sync-repos`
+- **Status:** In review
+
 ### Compliance & Architecture refresh (v1.16–1.18) — 2026-05-17
 - PRs #39, #40, #41 merged to main
 - Added: EU Cyber Resilience Act, ISO 25010:2023 Safety, GDPR Art. 25, OWASP ASVS, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, ODR-005, ODR-006
