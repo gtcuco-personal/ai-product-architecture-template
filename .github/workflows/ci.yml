@@ -6,10 +6,18 @@
 #
 #   build-test : corre se houver package.json. npm ci (se houver lockfile) +
 #                lint/build/test com --if-present (tolera scripts em falta).
+#                npm audit corre sempre que há package-lock.json — reporta
+#                mas NÃO falha o job (continue-on-error) até calibrarmos o
+#                threshold; ver aviso no job output.
 #   deno-check : corre se houver edge functions Deno (supabase/functions/*/index.ts),
 #                que ficam FORA do tsconfig do frontend — build/lint não as veem.
 #                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
 #                não falha; só falha em erro real de código.
+#   gitleaks   : corre SEMPRE, em todos os repos. Scan da história completa
+#                (não só do diff) — é a rede de segurança do lado do servidor
+#                para repos onde algo (ex: Lovable) comita direto a `main`
+#                sem passar pelo pre-commit hook local (.githooks/pre-commit).
+#                Falha o build se encontrar um segredo real.
 #   governance-check : só em pull_request. Falha um PR que toca artefactos
 #                rastreados (public/videos, supabase/functions, supabase/migrations,
 #                stakeholders, pitches, research, decisions, meetings) sem
@@ -53,6 +61,27 @@ jobs:
         run: npm run build --if-present
       - if: steps.detect.outputs.node == 'true'
         run: npm run test --if-present
+      - name: Dependency audit (report only — not blocking yet)
+        if: steps.detect.outputs.node == 'true'
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks
+        env:
+          GITLEAKS_VERSION: 8.21.2
+        run: |
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o gitleaks.tar.gz
+          tar -xzf gitleaks.tar.gz gitleaks
+          sudo mv gitleaks /usr/local/bin/gitleaks
+          rm gitleaks.tar.gz
+      - name: Scan full history for secrets
+        run: gitleaks detect --no-banner --redact --verbose
 
   deno-check:
     runs-on: ubuntu-latest

@@ -12,6 +12,11 @@
 
 ## Completed
 
+### 2026-07-02 — CI gitleaks job + npm audit, PR 3 of 4 (PR #48)
+
+- 2026-07-02 — Add `gitleaks` job to CI (full-history secret scan, fails build on real finding — closes the gap where Lovable/direct-to-main commits never ran the local pre-commit hook); wire `npm audit --audit-level=high` into `build-test` (report-only); correct `docs/11_TESTING.md` job matrix and `SECURITY.md` to describe the CI that actually runs → `.github/workflows/ci.yml`, `docs/11_TESTING.md`, `SECURITY.md`
+- Next in sequence (not yet done): PR 4 skills sync (`agents-and-skills` repo), then propagate v2.0 to downstream repos via `/sync-repos`
+
 ### 2026-07-02 — Lean-by-default restructure + v2.0, PR 2 of 4 (PR #47)
 
 - 2026-07-02 — Merge `docs/4_SEO_AND_AEO.md` into `docs/6_CONTENT_AND_SOCIAL.md`; rename `docs/6_HEALTH_CHECK.md` → `docs/15_HEALTH_CHECK.md`; split `docs/prompts.md` (Lovable vocabulary → `docs/guides/lovable-vocabulary.md`); add Applicability Gate to `docs/13_COMPLIANCE_FRAMEWORKS.md` and tag heavy sections "Enterprise/regulated — opt-in" across docs 11/12/14 + SECURITY.md; drop "stack-agnostic" claim in README.md; bump SYSTEM_PROMPT.md to v2.0; ODR-007 → `docs/6_CONTENT_AND_SOCIAL.md`, `docs/15_HEALTH_CHECK.md`, `docs/prompts.md`, `docs/guides/lovable-vocabulary.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/14_AI_GOVERNANCE.md`, `SECURITY.md`, `README.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `INDEX.md`, `docs/decisions/template/ODR-007-lean-by-default-governance.md`
