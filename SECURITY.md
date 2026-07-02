@@ -87,22 +87,29 @@ See **`docs/12_DEPENDENCY_MANAGEMENT.md`** for the full dependency governance po
 Quick reference:
 - Dependencies reviewed before addition — licence and maintenance signals checked
 - Lock files committed and protected (never in `.gitignore`)
-- `npm audit` / `pip audit` / `cargo audit` run in CI on every PR
+- `npm audit` runs in CI on every PR (`.github/workflows/ci.yml` `build-test` job) — currently **report-only**, not blocking; `pip audit` / `cargo audit` are not wired into CI yet — add them if the project uses Python/Rust dependencies
 - No dependency with a blocked licence (GPL, AGPL, no-licence) without legal clearance
 
-## Pre-commit Hook — Secrets Scanner (gitleaks)
+## Secrets Scanning — Two Layers
+
+1. **Pre-commit hook** (`.githooks/pre-commit`) — local, scans staged changes, requires `git config core.hooksPath .githooks` to be active (easy to forget per clone).
+2. **CI job** (`.github/workflows/ci.yml` `gitleaks` job) — runs on every PR and every push to `main`, scans the **full git history**, always active regardless of local config. This is the layer that actually matters for repos where an external tool (e.g. Lovable) commits straight to `main` without ever running the local hook — the pre-commit hook alone leaves that path completely unprotected.
+
+**Both use the same detection engine and the same `.gitleaks.toml` config** — a false positive fixed in one is fixed in both once the config change is committed.
+
+### Pre-commit Hook — Secrets Scanner (gitleaks)
 
 A pre-commit hook at `.githooks/pre-commit` runs [gitleaks](https://github.com/gitleaks/gitleaks) against staged changes, blocking commits that contain potential secret values.
 
 Unlike naive name-matching scanners, gitleaks detects by **value shape** (JWT format, API token patterns, private key blocks, etc.) — so documentation referencing env var names like `SUPABASE_SERVICE_ROLE_KEY` is not flagged.
 
-### Coverage
+#### Coverage
 
 - 800+ built-in patterns for major cloud providers and APIs (AWS, GCP, Azure, GitHub, Stripe, OpenAI, Anthropic, Supabase, Slack, etc.)
 - JWT tokens, PEM private keys, SSH keys
 - Repo-specific custom rules via `.gitleaks.toml`
 
-### Setup
+#### Setup
 
 ```bash
 # 1. Install gitleaks (once per machine)
@@ -112,7 +119,7 @@ brew install gitleaks
 git config core.hooksPath .githooks
 ```
 
-### Per-repo allowlist — `.gitleaks.toml`
+#### Per-repo allowlist — `.gitleaks.toml`
 
 Each repo can declare its own allowlist and custom rules in `.gitleaks.toml` at the root. Template file is included — extend as needed. Common customisations:
 
@@ -120,7 +127,7 @@ Each repo can declare its own allowlist and custom rules in `.gitleaks.toml` at 
 - Allow env var names documented without values
 - Add project-specific regex patterns
 
-### Per-line bypass
+#### Per-line bypass
 
 Add a comment to the specific line:
 
@@ -128,7 +135,7 @@ Add a comment to the specific line:
 const key = "abc123"; // gitleaks:allow — test fixture, not a real secret
 ```
 
-### False positives
+#### False positives
 
 If gitleaks flags a legitimate commit:
 
@@ -136,7 +143,7 @@ If gitleaks flags a legitimate commit:
 2. **Per-line:** add `gitleaks:allow` comment to the line
 3. **Last resort:** `git commit --no-verify` (document the reason in commit message)
 
-### Running gitleaks manually
+#### Running gitleaks manually
 
 ```bash
 # Scan the whole repo history
