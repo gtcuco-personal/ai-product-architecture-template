@@ -1,6 +1,6 @@
 # Roadmap & Tasks
 
-> **Last updated:** 2026-05-17
+> **Last updated:** 2026-07-01
 
 ## Task Format
 
@@ -11,6 +11,10 @@
 > **Rule:** Every merged PR must have a completed entry here with its PR number. No exceptions.
 
 ## Completed
+
+### 2026-07-01 — Gate governance-check no ci.yml (#44)
+- [x] Novo job `governance-check` no `ci.yml` universal: barra PRs que tocam artefactos (videos/edge-fns/migrations/stakeholders/pitches/research/decisions/meetings) sem actualizar INDEX/CHANGELOG. Universal (grep não casa → verde em repos sem essas pastas). Auditado por `/sync-repos`. → `.github/workflows/ci.yml`
+
 
 ### 2026-05-17 — Dependency management governance v1.18 (PR #41)
 

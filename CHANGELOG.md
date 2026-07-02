@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.20] — 2026-07-01 — Gate governance-check no ci.yml (drift artefacto↔INDEX)
+
+- Novo job `governance-check` no `.github/workflows/ci.yml`: em `pull_request`, falha um PR que toca artefactos rastreados (`public/videos/`, `supabase/functions/`, `supabase/migrations/`, `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`) sem actualizar `INDEX.md` ou `CHANGELOG.md`. Universal — se nenhum desses caminhos existir no repo, o `grep` não casa e o job conclui verde. Fecha a fenda de enforcement da regra "todo o PR que mexe em artefactos actualiza o INDEX". Auditado por `/sync-repos` e propagado à frota.
+
+
 ## [1.19] — 2026-06-15 — Universal CI workflow (.github/workflows/ci.yml)
 
 ### Added
