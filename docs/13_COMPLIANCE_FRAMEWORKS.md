@@ -1,8 +1,22 @@
 # Compliance Frameworks
 
-> **Stack-agnostic. Domain-agnostic.** This file is a directory — it tells you *which* frameworks apply to your product and *when* to activate them. Actual obligations, checklists, and controls live in the referenced docs.
+> This file is a directory — it tells you *which* frameworks apply to your product and *when* to activate them. Actual obligations, checklists, and controls live in the referenced docs.
 >
 > For AI-specific governance (EU AI Act, ISO 42001, NIST AI RMF), see `docs/14_AI_GOVERNANCE.md`.
+
+---
+
+## Applicability Gate — answer this before reading further
+
+Most of this file, `docs/12_DEPENDENCY_MANAGEMENT.md` §SBOM/SLSA, `docs/14_AI_GOVERNANCE.md` §Monitoring/Incident Response, and `SECURITY.md` §Disclosure Timeline describe obligations sized for a team with dedicated compliance/security/on-call functions. Sections marked **"Enterprise/regulated — opt-in"** below only apply if you can answer **yes** to at least one of:
+
+1. **Do you sell software with digital elements into the EU market** (SaaS counts) to customers other than yourself? → triggers CRA (SBOM, vulnerability reporting SLAs)
+2. **Do you have external users you don't personally know** (public product, paying customers, B2B/B2G contract) rather than internal/personal tooling? → triggers GDPR minimums, disclosure timelines, SLA-style incident response
+3. **Is the AI system high-risk under the EU AI Act** (Annex III/I categories — biometric, credit scoring, medical device, employment decisions, etc.) or does a contract require a specific certification (ISO 27001, SOC 2, ISO 42001)? → triggers the full conformity/certification machinery
+
+**If the answer is no to all three:** this is solo/internal-tooling scope. Read Tier 1 (Universal) for the baseline hygiene, skip the "Enterprise/regulated — opt-in" sections entirely, and don't let an agent apply them uninvited — they are real obligations for a company with customers and staff, not a checklist to perform for its own sake.
+
+**If any answer is yes:** activate the relevant tier/profile below and the opt-in sections become real obligations, not aspiration.
 
 ---
 
@@ -52,7 +66,7 @@ These apply to **every repo** governed by this template, regardless of domain.
 
 ### Software Quality (ISO/IEC 25010:2023)
 
-Nine quality characteristics (ISO/IEC 25010:2023 edition — the 2015 edition had 8; "Portability" was renamed "Flexibility" and "Safety" was added as the 9th). Use as a **rubric for health checks** (`docs/6_HEALTH_CHECK.md`), not as a certification target.
+Nine quality characteristics (ISO/IEC 25010:2023 edition — the 2015 edition had 8; "Portability" was renamed "Flexibility" and "Safety" was added as the 9th). Use as a **rubric for health checks** (`docs/15_HEALTH_CHECK.md`), not as a certification target.
 
 | Characteristic | Definition | Proxy metric |
 |---|---|---|

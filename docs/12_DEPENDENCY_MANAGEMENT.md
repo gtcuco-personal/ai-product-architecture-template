@@ -44,6 +44,8 @@ go-licenses check ./...
 
 ## SBOM (Software Bill of Materials)
 
+> **Enterprise/regulated — opt-in**, gated by `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate question 1 (selling software with digital elements into the EU market). If that doesn't apply to you, skip this section.
+
 Required by the **EU Cyber Resilience Act** for software with digital elements sold in the EU market — full SBOM/conformity obligations apply from **11 Dec 2027** (the earlier 11 Sep 2026 date is only the vulnerability-reporting obligation, not SBOM). See `docs/13_COMPLIANCE_FRAMEWORKS.md` §Tier 3 for the full CRA timeline and applicability gate. Also increasingly required by enterprise and government procurement regardless of CRA status.
 
 See `SECURITY.md` for format, tooling, and storage conventions. Key points:
@@ -56,6 +58,8 @@ See `SECURITY.md` for format, tooling, and storage conventions. Key points:
 ---
 
 ## Supply Chain Security (SLSA)
+
+> **Enterprise/regulated — opt-in.** Only pursue this if `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate says yes (typically: selling to government or a regulated enterprise that contractually requires it). Signed provenance attestations and hardened CI are real engineering effort — don't build this for a solo/internal-tooling project on spec.
 
 [SLSA (Supply chain Levels for Software Artifacts)](https://slsa.dev) is a framework for hardening the software build pipeline against tampering.
 
@@ -147,7 +151,7 @@ pip-audit --vulnerability-service=osv --fail-on CRITICAL,HIGH
 
 ## Health Check Items
 
-Add to `docs/6_HEALTH_CHECK.md` quarterly review:
+Add to `docs/15_HEALTH_CHECK.md` quarterly review:
 
 - [ ] `npm audit` / `pip audit` run — zero High/Critical open
 - [ ] Dependabot PRs reviewed and resolved (no stale open PRs > 30 days)

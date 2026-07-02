@@ -1,6 +1,6 @@
 # SYSTEM OPERATING INSTRUCTIONS
 
-> Version: 1.20 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.0 — Universal template. All project-specific details live in `/docs/`.
 
 ---
 
@@ -14,10 +14,9 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/1_BUSINESS_CONTEXT.md` | Strategy, positioning, tone, target audience |
 | `docs/2_ARCHITECTURE.md` | Routes, components, data model, directory structure |
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
-| `docs/4_SEO_AND_AEO.md` | Meta tags, structured data, semantic HTML |
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
-| `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, SEO/AEO guidelines |
-| `docs/6_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
+| `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, technical + editorial SEO/AEO/GEO guidelines |
+| `docs/15_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
 | `docs/7_CONTENT_I18N.md` | Content architecture doctrine (i18n vs storage vs MD — tech-agnostic) and i18n layer rules (key naming, namespaces, copy, length) |
 | `docs/8_DATA_AND_ANALYSIS.md` | Metric registry, assumptions log, source contracts, pipeline order, data quality checks |
 | `docs/prompts.md` | Reusable prompt templates, Lovable vocabulary reference, and DO NOT list |
@@ -222,7 +221,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | DB schema change (table/column) | `docs/2_ARCHITECTURE.md` (data model) |
 | New dependency or tool | `docs/0_GROUND_RULES.md` (stack table) |
 | Design token or UI rule change | `docs/3_UI_UX_GUIDELINES.md` |
-| New meta tag or structured data | `docs/4_SEO_AND_AEO.md` |
+| New meta tag or structured data | `docs/6_CONTENT_AND_SOCIAL.md` §Technical SEO & AEO |
 | New environment variable | `CLAUDE.md` (env section) |
 | Business model or audience shift | `docs/1_BUSINESS_CONTEXT.md` |
 | Architectural decision (trade-off) | `docs/decisions/` (new local ODR) |
@@ -304,6 +303,9 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.0 | 2026-07-02 | **Breaking restructure**, following a full-template audit that found stale facts, drifted duplication, and enterprise-sized compliance defaults on a template meant to also serve solo/small projects. Merged `docs/4_SEO_AND_AEO.md` into `docs/6_CONTENT_AND_SOCIAL.md` (removed doc 4). Renamed `docs/6_HEALTH_CHECK.md` → `docs/15_HEALTH_CHECK.md` (resolves the duplicate `6_` prefix). Split `docs/prompts.md`'s Lovable-specific vocabulary into `docs/guides/lovable-vocabulary.md`. Added an Applicability Gate to `docs/13_COMPLIANCE_FRAMEWORKS.md` and tagged the heaviest sections (SLSA, SBOM, disclosure SLAs, AI eval suites, incident SLAs) **"Enterprise/regulated — opt-in"** across docs 11/12/14 and `SECURITY.md`, with an honest minimum tier added to `docs/11_TESTING.md`. Dropped the "stack-agnostic" claim in `README.md` in favour of naming the two stacks the template actually assumes. Updated `CLAUDE.md` Context Loading Policy and this file's §1/§6 for all renamed/removed docs. See ODR-007 |
+| 1.20 | 2026-07-01 | Added `governance-check` job to `.github/workflows/ci.yml` — on `pull_request`, fails a PR that touches tracked artefacts (`public/videos/`, `supabase/functions/`, `supabase/migrations/`, `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`) without updating `INDEX.md` or `CHANGELOG.md`. Universal — grep doesn't match in repos without those paths, so the job concludes green. *(Row backfilled — this version bumped the header on origin/main without a corresponding changelog table entry; added here for consistency.)* |
+| 1.19 | 2026-06-15 | Added `.github/workflows/ci.yml` — universal stack-auto-detecting CI (build-test if `package.json`; deno-check if edge functions exist; network-tolerant; PRs + push to main). Documented in `docs/11_TESTING.md` (job matrix + propagation gotchas: workflow OAuth scope, bun↔npm lockfile drift, `/sync-repos` flags missing CI) |
 | 1.0 | 2026-03-11 | Initial template — extracted from production project SYSTEM_PROMPT, made universal |
 | 1.1 | 2026-03-11 | Added Execution Modes (A/B/C), Task Types table, Uncertainty Criteria, Task Completion Checklist, multi-task exceptions, conflict resolution, roadmap format, git workflow |
 | 1.2 | 2026-03-11 | Missing doc → skeleton + flag (not auto-create). Checklist aligned with task types. Mode detection heuristics. Error handling references Ground Rules. Test infra missing → propose follow-up |
@@ -316,7 +318,6 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 | 1.9 | 2026-03-30 | Added Context Loading Policy to `CLAUDE.md` — task-type → docs mapping table. Updated §1 to delegate context-loading to `CLAUDE.md`, eliminating dual-source ambiguity |
 | 1.10 | 2026-03-30 | Removed stack-specific language: RLS → authorisation model; Edge functions → API handlers; `dangerouslySetInnerHTML` rule generalised to cover React, Vue, vanilla JS |
 | 1.11 | 2026-03-31 | Added UI Patterns + States to `docs/3_UI_UX_GUIDELINES.md`; Lovable Vocabulary Reference + DO NOT list to `docs/prompts.md`; new `docs/7_CONTENT_I18N.md`; updated §1 source-of-truth table and §6 trigger matrix |
-| 1.19 | 2026-06-15 | Added `.github/workflows/ci.yml` — universal stack-auto-detecting CI (build-test if `package.json`; deno-check if edge functions exist; network-tolerant; PRs + push to main). Documented in `docs/11_TESTING.md` (job matrix + propagation gotchas: workflow OAuth scope, bun↔npm lockfile drift, `/sync-repos` flags missing CI) |
 | 1.18 | 2026-05-17 | Added `docs/12_DEPENDENCY_MANAGEMENT.md` (licence policy, SBOM, SLSA Level 2, upgrade strategy, CVE SLAs, EOL management, CRA linkage) + ODR-006. 4-location sync: §1 source table, §6 trigger matrix, CLAUDE.md, README.md. SECURITY.md Dependencies section updated |
 | 1.17 | 2026-05-17 | Added `docs/11_TESTING.md` (testing pyramid, framework selection, coverage, CI/CD gates, AI-specific evals linked to ISO 42001 A.7.2). Added ODR-005 (testing governance + 4-location doc sync policy). Updated §1 source table, §6 trigger matrix, CLAUDE.md Context Loading Policy (2 new task types), README.md directory listing |
 | 1.16 | 2026-05-17 | Compliance refresh: EU Cyber Resilience Act (CRA, Reg. 2024/2847) + SBOM added to Tier 3; ISO 25010:2023 Safety characteristic + Flexibility rename; ISO 42001 Annex SL note; OWASP ASVS + NIST SSDF in Tier 3; GDPR Art. 25 + RoPA; Privacy by Design checklist; NIS2 scope note; PCI DSS v3.2.1 EOL; NIST CSF 2.0 Govern function note; vulnerability disclosure timeline + ISO 29147/30111 reference; §6 trigger matrix rows for SBOM/testing/dependency |

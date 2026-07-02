@@ -120,7 +120,7 @@ A feature or fix is **done** when all of the following are true:
 
 ## AI-Specific Testing
 
-> Activate this section when the `ai-governance` compliance profile is set (see `docs/13_COMPLIANCE_FRAMEWORKS.md` Tier 2). Links to ISO/IEC 42001:2023 Annex A controls.
+> **Enterprise/regulated — opt-in**, gated by `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate. Activate the full structure below only when the `ai-governance` compliance profile is set *and* the gate says yes (dedicated eval infra, weekly/monthly cadences, and demographic-disaggregated bias testing assume staff to run them). Otherwise use the honest minimum tier just above §Health Check Items. Links to ISO/IEC 42001:2023 Annex A controls when active.
 
 ### Eval Framework Structure
 
@@ -153,9 +153,20 @@ A regression is triggered when:
 
 ---
 
+## Honest Minimum Tier
+
+For a repo with no test infrastructure and no team to build one (solo project, prototype, low-stakes internal tool): don't try to run the full pyramid or the AI eval suite above. The floor that's actually worth maintaining is:
+
+- [ ] `docs/11_TESTING.md`'s CI job (`build-test` / `deno-check`, shipped with the template) stays green
+- [ ] A `gitleaks` scan runs on every push (see `.github/workflows/ci.yml`) — the one check that's cheap and catches something genuinely costly to get wrong
+- [ ] New business-logic bugs get a regression test when found, not retroactively for everything that already exists
+- [ ] Before shipping something a user depends on, manually exercise the golden path once
+
+This is not "no testing" — it's testing sized to what one person can actually sustain. Scale up toward the full pyramid as the project gains complexity, contributors, or paying users, not because the template says to.
+
 ## Health Check Items
 
-Add to `docs/6_HEALTH_CHECK.md` weekly review:
+Add to `docs/15_HEALTH_CHECK.md` weekly review:
 
 - [ ] CI pipeline green (no skipped or flaky tests accumulating)
 - [ ] Coverage report reviewed — no silent drops

@@ -10,6 +10,8 @@ If you discover a security vulnerability, please report it responsibly. This pro
 
 ### Disclosure Timeline
 
+> **Enterprise/regulated — opt-in**, gated by `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate question 2 (external users you don't personally know). A solo project with no external users can skip formal SLAs — just fix vulnerabilities promptly and keep this section as a placeholder until the product has outside users.
+
 | Stage | Deadline | Action |
 |---|---|---|
 | Acknowledgement | 48 hours | Confirm receipt and assign severity |

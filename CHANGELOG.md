@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased] — 2026-07-02 — Factual fixes + dedup (PR #46, 1 of 4)
+## [2.0] — 2026-07-02 — Lean-by-default restructure (PR #46 + restructure PR, 2 of 4)
 
-First of a 4-PR pass following a full-template audit (docs 0-14, skills, CI, ODRs) that found the template had accumulated stale facts and content that drifted apart after being duplicated in 2-3 places. Full sequence: this PR (facts + dedup) → structural restructure + v2.0 bump → CI/gitleaks → skills sync.
+A 4-PR pass following a full-template audit (docs 0-14, skills, CI, ODRs) that found the template had accumulated stale facts, content that drifted apart after being duplicated in 2-3 places, and enterprise-sized compliance defaults that near-zero downstream repos actually use. Full sequence: PR #46 (facts + dedup) → this restructure + v2.0 bump → CI/gitleaks → skills sync. See ODR-007.
 
 ### Fixed
 
@@ -26,6 +26,21 @@ First of a 4-PR pass following a full-template audit (docs 0-14, skills, CI, ODR
 - Decisions Log format: documented once in `CONTRIBUTING.md`; `docs/7_CONTENT_I18N.md` and `docs/8_DATA_AND_ANALYSIS.md` reference it
 - `docs/10_AGENT_SAFETY.md` — added explicit note that a skill's `permissions` frontmatter is convention, not enforcement (only subagent `tools` lists are actually enforced by Claude Code)
 - Cross-linked (not merged) UI copy rules (`docs/3_UI_UX_GUIDELINES.md` ↔ `docs/7_CONTENT_I18N.md`) and brand voice vs. UI emotional tone (`docs/3_UI_UX_GUIDELINES.md` ↔ `docs/6_CONTENT_AND_SOCIAL.md`), which are distinct concepts that read like duplicates
+
+### Removed
+
+- `docs/4_SEO_AND_AEO.md` — merged into `docs/6_CONTENT_AND_SOCIAL.md` §Technical SEO & AEO (was a strict subset with duplicate robots.txt/llms.txt content)
+
+### Changed (restructure)
+
+- `docs/6_HEALTH_CHECK.md` renamed to `docs/15_HEALTH_CHECK.md` — resolves the duplicate `6_` prefix (content strategy and health check were sharing a number)
+- `docs/prompts.md` split — Lovable-specific vocabulary/DO-NOT list moved to `docs/guides/lovable-vocabulary.md`; `docs/prompts.md` stays generic and stack-agnostic
+- `docs/13_COMPLIANCE_FRAMEWORKS.md` — added an Applicability Gate (3 questions) at the top; obligations sized for a team with dedicated compliance/security staff (SLSA, SBOM-per-release, disclosure SLAs, full AI eval suite, sub-hour incident SLAs) tagged **"Enterprise/regulated — opt-in"** across `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/14_AI_GOVERNANCE.md`, `SECURITY.md` — content kept, no longer presented as unconditional default
+- `docs/11_TESTING.md` — added an Honest Minimum Tier for repos with no test infrastructure and no team to build one
+- `docs/14_AI_GOVERNANCE.md` — added a Short Path at the top for the common case (deployer of a third-party AI API, minimal risk)
+- `README.md` — dropped the "stack-agnostic" claim; named the two stacks the template actually assumes (React/Vite/Tailwind/shadcn/Supabase; Python/pandas)
+- `CLAUDE.md` Context Loading Policy, `SYSTEM_PROMPT.md` §1/§6 — updated for all renamed/removed docs; added rows for debugging (loads `docs/prompts.md`) and sensitive-data-in-repo (loads `docs/guides/git-crypt-setup.md`)
+- `docs/decisions/template/ODR-007-lean-by-default-governance.md` — records the rationale and alternatives considered
 
 ## [1.20] — 2026-07-01 — Gate governance-check no ci.yml (drift artefacto↔INDEX)
 

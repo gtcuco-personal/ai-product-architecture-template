@@ -1,6 +1,6 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-06-15
+> **Last updated:** 2026-07-02
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
 
 ## Purpose
@@ -18,7 +18,7 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 - Links para artifacts principais (proposals, research, decisions, stakeholders)
 - Status actual
 
-_No active initiatives — template is in maintenance mode. Next: propagate v1.16–1.18 to child repos via `/sync-repos`._
+_No active initiatives — template is in maintenance mode. Next: propagate v2.0 to child repos via `/sync-repos` (currently all sampled child repos are on v1.18 — see PR #46 and the v2.0 restructure PR for what's outstanding), then land the CI/gitleaks PR and the skills-sync PR (`agents-and-skills` repo)._
 
 Exemplo:
 
@@ -35,10 +35,10 @@ Exemplo:
 
 Estrutura de pastas principais com 1 linha de propósito:
 
-- `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check, architecture, content, SEO
+- `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check (`15_`), architecture, content/SEO/AEO/GEO (`6_`, merged with the former `4_`)
 - `docs/decisions/` — local ODRs (project-specific decisions)
-- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-006)
-- `docs/guides/` — setup guides (git-crypt, etc.)
+- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-007)
+- `docs/guides/` — setup guides (git-crypt, Lovable vocabulary, etc.)
 - `skills/` — template for creating project-level Agent Skills
 - `tasks/` — `lessons.md` for session corrections
 - `.claude/agents/` — pre-configured subagents (isolated-worker, safe-explorer)
