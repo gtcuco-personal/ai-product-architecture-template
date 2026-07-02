@@ -1,6 +1,6 @@
 # Roadmap & Tasks
 
-> **Last updated:** 2026-07-01
+> **Last updated:** 2026-07-02
 
 ## Task Format
 
@@ -12,9 +12,13 @@
 
 ## Completed
 
+### 2026-07-02 — Factual fixes + dedup, PR 1 of 4 (PR #46)
+
+- 2026-07-02 — Full-template audit (docs 0-14 + skills + CI + ODRs), then correct stale facts (FID→INP, CRA date confusion, EU AI Act Digital Omnibus deferrals, hardcoded model examples, unsourced AEO stats, stale AI crawler list, ephemeral anchors) and deduplicate content that had drifted across 2-3 files (Trust Hierarchy, routes/structure, CRA/SBOM timeline, Decisions Log format) → `CLAUDE.md`, `CONTRIBUTING.md`, `SECURITY.md`, `docs/3_UI_UX_GUIDELINES.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md`, `docs/6_HEALTH_CHECK.md`, `docs/7_CONTENT_I18N.md`, `docs/8_DATA_AND_ANALYSIS.md`, `docs/9_AGENT_SKILLS.md`, `docs/10_AGENT_SAFETY.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/14_AI_GOVERNANCE.md`
+- Next in sequence (not yet done): PR 2 restructure + v2.0 bump, PR 3 CI/gitleaks, PR 4 skills sync
+
 ### 2026-07-01 — Gate governance-check no ci.yml (#44)
 - [x] Novo job `governance-check` no `ci.yml` universal: barra PRs que tocam artefactos (videos/edge-fns/migrations/stakeholders/pitches/research/decisions/meetings) sem actualizar INDEX/CHANGELOG. Universal (grep não casa → verde em repos sem essas pastas). Auditado por `/sync-repos`. → `.github/workflows/ci.yml`
-
 
 ### 2026-05-17 — Dependency management governance v1.18 (PR #41)
 
