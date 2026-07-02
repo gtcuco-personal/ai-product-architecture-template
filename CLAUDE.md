@@ -77,23 +77,25 @@ Before starting any task, load only the files relevant to that task type. Do not
 
 | Task type | Load | Skip |
 |---|---|---|
-| Code — feature or fix | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — UI component | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md`, `docs/prompts.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md` |
-| Code — UI copy / i18n | `docs/0_GROUND_RULES.md`, `docs/7_CONTENT_I18N.md` | `docs/2_ARCHITECTURE.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — feature or fix | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — UI component | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md`, `docs/prompts.md` | `docs/1_BUSINESS_CONTEXT.md` |
+| Code — UI copy / i18n | `docs/0_GROUND_RULES.md`, `docs/7_CONTENT_I18N.md` | `docs/2_ARCHITECTURE.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Code — content layer decision (i18n vs storage vs MD) | `docs/0_GROUND_RULES.md`, `docs/7_CONTENT_I18N.md`, `docs/2_ARCHITECTURE.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — data / analysis | `docs/0_GROUND_RULES.md`, `docs/8_DATA_AND_ANALYSIS.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — DB / schema | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/7_CONTENT_I18N.md` (when content tables) | `docs/3_UI_UX_GUIDELINES.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Security review | `docs/0_GROUND_RULES.md`, `SECURITY.md` | All others |
-| SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |
+| Code — data / analysis | `docs/0_GROUND_RULES.md`, `docs/8_DATA_AND_ANALYSIS.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — DB / schema | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/7_CONTENT_I18N.md` (when content tables) | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — debugging | `docs/0_GROUND_RULES.md`, `docs/prompts.md` (§Debugging templates), `CHANGELOG.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Security review | `docs/0_GROUND_RULES.md`, `SECURITY.md`, `docs/prompts.md` (§Security template) | All others |
+| SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |
 | Roadmap / planning | `docs/5_ROADMAP_AND_TASKS.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
-| Weekly health check | `docs/6_HEALTH_CHECK.md` | All others |
-| Code — test / CI pipeline | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — AI feature with eval | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md`, `docs/14_AI_GOVERNANCE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — dependency change | `docs/0_GROUND_RULES.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `SECURITY.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Weekly health check | `docs/15_HEALTH_CHECK.md` | All others |
+| Code — test / CI pipeline | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — AI feature with eval | `docs/0_GROUND_RULES.md`, `docs/11_TESTING.md`, `docs/14_AI_GOVERNANCE.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — dependency change | `docs/0_GROUND_RULES.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `SECURITY.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Agent skill — create/edit | `docs/9_AGENT_SKILLS.md`, `skills/template/SKILL.md` | All others |
 | Agent safety review | `docs/10_AGENT_SAFETY.md`, `SYSTEM_PROMPT.md` | All others |
 | Compliance review | `docs/0_GROUND_RULES.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `SECURITY.md` | All others |
 | AI governance / EU AI Act / risk classification | `docs/14_AI_GOVERNANCE.md`, `docs/1_BUSINESS_CONTEXT.md` | All others |
+| Sensitive data needing to be version-controlled | `docs/guides/git-crypt-setup.md`, `SECURITY.md` | All others |
 
 > Always load `docs/0_GROUND_RULES.md` for any code task — it is the override document.
 > Always load `tasks/lessons.md` at session start for any task type — it contains repo-specific corrections.

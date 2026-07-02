@@ -4,6 +4,15 @@
 >
 > **Scope:** Any product that uses, exposes, or is built on AI/ML models — including products that call external AI APIs.
 
+## Short Path (read this first)
+
+Most products in this template are **deployers** of a third-party model API (§1 Obligations by Role), not providers, and are **minimal-risk**, not high-risk (§1 Risk Classification Step 3-5). If that's you, the real obligations are just two things:
+
+1. **Tell users they're interacting with AI** (EU AI Act Art. 50 — transparency)
+2. **Don't use the AI for high-stakes decisions without human confirmation** — medical, financial, legal, or anything else consequential to a person
+
+Everything else below this line — ISO 42001 certification, the full AI Risk Register, production bias monitoring, 1-hour incident SLAs — is real, useful process for a team with dedicated AI-safety/compliance staff, and is **Enterprise/regulated — opt-in** per `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate. Don't build it for a solo project until a contract, a regulator, or an actual high-risk classification requires it.
+
 ---
 
 ## 1. EU AI Act (Regulation 2024/1689)
@@ -227,6 +236,8 @@ For each AI system in the inventory, confirm:
 ---
 
 ## 7. Monitoring and Incident Response
+
+> **Enterprise/regulated — opt-in.** Disaggregated bias monitoring and sub-hour incident SLAs assume on-call staff. For a solo/small project, the honest minimum is: watch for obviously wrong outputs, let users flag problems (§6 feedback mechanism), and fix issues when found — don't perform a monitoring programme you can't staff.
 
 ### Production Monitoring
 

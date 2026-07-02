@@ -34,6 +34,103 @@
 
 ---
 
+## Technical SEO & AEO
+
+> Merged from the former `4_SEO_AND_AEO.md` (removed in the v2.0 restructure — this file is now the single home for SEO/AEO/GEO, both technical and editorial). If this project has no public-facing content, remove this whole file per the note at the top.
+
+### Meta Tags
+
+- [e.g. SEOHead component: title <60 chars, description <160 chars, canonical URL]
+- [e.g. Open Graph tags for social sharing]
+
+### Semantic HTML
+
+- One `<h1>` per page
+- Sequential heading hierarchy (h1 → h2 → h3)
+- Use semantic elements (`<nav>`, `<main>`, `<article>`, `<section>`, `<footer>`)
+- ARIA labels where needed
+
+### Structured Data (JSON-LD)
+
+| Schema | Where |
+|--------|-------|
+| [e.g. LocalBusiness] | [page/component] |
+| [e.g. FAQPage] | [page/component] |
+
+> See §GEO Layer → Technical Requirements below for the full list of schema types AI answer engines expect.
+
+### Images
+
+- Descriptive `alt` text on all images
+- Lazy loading for below-the-fold images
+- Optimised formats (WebP for web, JPG for social)
+
+### Sitemap & Robots
+
+- `public/sitemap.xml` — auto-generated or manual
+- `public/robots.txt` — allow all public content, explicitly allow AI crawlers:
+
+```
+# AI crawlers — explicitly allowed for GEO visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+```
+
+> This list rots — AI crawlers are added faster than any static doc can track. Re-verify against a current source (e.g. Cloudflare's or Google's crawler lists) before relying on it.
+
+### llms.txt
+
+Create a `public/llms.txt` file with a structured summary of the project for LLM consumption. This is the AI equivalent of an elevator pitch — read by LLMs before they process your content.
+
+```markdown
+# [Brand Name]
+
+> [One-line description]
+
+[2-3 sentences about what the project/company does]
+
+## [Key sections: Products, Services, Locations, Contact, Key Facts]
+
+[Structured, factual information]
+```
+
+> Without `llms.txt`, AI must infer what your site is from HTML — and may misinterpret it. With it, every AI that visits your site gets a clear, structured briefing.
+
+---
+
 ## Blog / Long-Form Content
 
 ### Article Structure
@@ -98,8 +195,8 @@ Low citability (use for humans, not AI extraction):
 
 #### Technical Requirements
 
-- **robots.txt:** Explicitly allow AI crawlers (GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-User, Claude-SearchBot, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, Amazonbot, Meta-ExternalAgent) — see `docs/4_SEO_AND_AEO.md` for the full robots.txt block
-- **llms.txt:** Create a `/llms.txt` file at the site root with a structured summary of what the site/brand is, what it does, key facts, and contact information. This is the AI equivalent of an elevator pitch — read by LLMs before they process your content
+- **robots.txt:** see §Technical SEO & AEO → Sitemap & Robots above for the full AI-crawler allowlist
+- **llms.txt:** see §Technical SEO & AEO → llms.txt above
 - **JSON-LD completeness:** Ensure all 8 critical schema types are covered where applicable: Organization, Person, LocalBusiness, Product/Service, FAQPage, Article, Review/AggregateRating, BreadcrumbList
 - **Raw HTML:** Content must be in HTML source code, not JavaScript-rendered only. Many AI crawlers cannot execute JavaScript
 

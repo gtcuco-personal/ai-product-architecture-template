@@ -15,12 +15,19 @@ Governance and documentation template for AI product repositories. Provides a st
     ├── 1_BUSINESS_CONTEXT.md    # Vision, mission, business model, markets
     ├── 2_ARCHITECTURE.md        # Routes, components, data model, directory structure
     ├── 3_UI_UX_GUIDELINES.md    # Design tokens, typography, spacing, UI rules
-    ├── 4_SEO_AND_AEO.md         # Meta tags, structured data, sitemap
     ├── 5_ROADMAP_AND_TASKS.md   # Execution log and backlog
+    ├── 6_CONTENT_AND_SOCIAL.md  # Content strategy + technical SEO/AEO/GEO (merged in v2.0)
+    ├── 7_CONTENT_I18N.md        # Content architecture doctrine + i18n layer rules
+    ├── 8_DATA_AND_ANALYSIS.md   # Metric registry, assumptions log, data quality checks
+    ├── 9_AGENT_SKILLS.md        # Agent Skills framework and structure
+    ├── 10_AGENT_SAFETY.md       # Trust hierarchy, prompt injection policy, minimal privilege
     ├── 11_TESTING.md            # Testing strategy, framework selection, coverage, CI/CD gates, AI evals
     ├── 12_DEPENDENCY_MANAGEMENT.md  # Licence policy, SBOM, SLSA, upgrade strategy, CVE SLAs
     ├── 13_COMPLIANCE_FRAMEWORKS.md  # ISO/regulatory compliance directory (Tier 1-4)
     ├── 14_AI_GOVERNANCE.md      # EU AI Act, ISO 42001, NIST AI RMF, AI inventory
+    ├── 15_HEALTH_CHECK.md       # Weekly health check checklist (renamed from 6_ in v2.0)
+    ├── prompts.md                # Reusable generic prompt templates
+    ├── guides/                   # Standalone how-to guides (git-crypt, Lovable vocabulary, ...)
     └── decisions/
         ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
         └── template/            # ODRs inherited from this base template
@@ -30,15 +37,16 @@ Governance and documentation template for AI product repositories. Provides a st
 
 1. Click **"Use this template"** on GitHub (or clone and remove `.git`)
 2. Replace all `[placeholders]` with your project-specific information
-3. Delete files that don't apply (e.g. `4_SEO_AND_AEO.md` for CLI tools)
+3. Delete files that don't apply (e.g. `6_CONTENT_AND_SOCIAL.md` for CLI tools with no public content)
 4. Start building
 
 ## Design Principles
 
-- **Stack-agnostic** — works for React, Python, Node, Go, or any stack
-- **AI-first** — structured for Claude, GPT-4, and other AI coding assistants
+- **Opinionated for two stacks, not agnostic for all.** The governance structure (docs 0-1, 5, 9-14, ODRs) is genuinely stack-independent. But `docs/2_ARCHITECTURE.md`'s DB checklist, `docs/3_UI_UX_GUIDELINES.md`, and `docs/15_HEALTH_CHECK.md` assume **React/Vite + Tailwind + shadcn/ui + Supabase**; `docs/8_DATA_AND_ANALYSIS.md` assumes a **Python/pandas** analytics stack. If your project uses a different stack, treat those specific docs as examples to rewrite, not as agnostic scaffolding — don't assume the whole template is stack-neutral just because some of it is.
+- **AI-first** — structured for Claude and other AI coding assistants
 - **Modular** — use what you need, delete what you don't
 - **Convention over configuration** — consistent across all your repos
+- **Lean by default** — compliance/security machinery sized for a team (SBOM, SLSA, incident SLAs, AI eval suites) is opt-in, gated by `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate, not default weight every repo carries
 
 ## Author
 

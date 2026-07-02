@@ -133,6 +133,7 @@ Any grouping used in analysis must have a precise definition here. Prose is not 
 - Use anonymised or synthetic data in development and testing
 - For production data access rules, see `SECURITY.md`
 - Outputs intended for stakeholders must be reviewed for accidental PII before sharing
+- If a small amount of real sensitive data genuinely needs to be version-controlled (e.g. a reference dataset with real account numbers), encrypt it with git-crypt rather than committing it in the clear — see `docs/guides/git-crypt-setup.md`
 
 ---
 
