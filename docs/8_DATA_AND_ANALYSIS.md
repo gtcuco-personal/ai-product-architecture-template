@@ -138,7 +138,7 @@ Any grouping used in analysis must have a precise definition here. Prose is not 
 
 ## Decisions Log
 
-Append-only. Every change to a metric definition, assumption, source contract, or cohort boundary.
+Append-only. Every change to a metric definition, assumption, source contract, or cohort boundary. Format and rules: see `CONTRIBUTING.md` §Decisions Log Convention.
 
 | Date | Section | What changed | Why |
 |------|---------|--------------|-----|

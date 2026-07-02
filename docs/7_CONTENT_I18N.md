@@ -250,7 +250,7 @@ Long translations break layouts. Define max character counts for key elements:
 
 ## Decisions Log
 
-Append non-obvious content-architecture or i18n decisions here.
+Append non-obvious content-architecture or i18n decisions here. Format and rules: see `CONTRIBUTING.md` §Decisions Log Convention.
 
 <!-- Example:
 ### 2026-03-31 — Common namespace for all action labels

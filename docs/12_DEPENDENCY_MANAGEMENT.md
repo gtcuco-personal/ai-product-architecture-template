@@ -44,7 +44,7 @@ go-licenses check ./...
 
 ## SBOM (Software Bill of Materials)
 
-Required by the **EU Cyber Resilience Act** (from 11 Sep 2026) for software with digital elements sold in the EU. Also increasingly required by enterprise and government procurement.
+Required by the **EU Cyber Resilience Act** for software with digital elements sold in the EU market — full SBOM/conformity obligations apply from **11 Dec 2027** (the earlier 11 Sep 2026 date is only the vulnerability-reporting obligation, not SBOM). See `docs/13_COMPLIANCE_FRAMEWORKS.md` §Tier 3 for the full CRA timeline and applicability gate. Also increasingly required by enterprise and government procurement regardless of CRA status.
 
 See `SECURITY.md` for format, tooling, and storage conventions. Key points:
 
@@ -124,7 +124,7 @@ npm audit --audit-level=high
 pip-audit --vulnerability-service=osv --fail-on CRITICAL,HIGH
 ```
 
-> For exploited CVEs in EU market products: also apply CRA vulnerability disclosure obligations (ENISA 24h + users 72h). See `SECURITY.md`.
+> For exploited CVEs in EU market products: also apply CRA vulnerability disclosure obligations (ENISA 24h + users 72h, in force from 11 Sep 2026). See `SECURITY.md` and `docs/13_COMPLIANCE_FRAMEWORKS.md`.
 
 ---
 

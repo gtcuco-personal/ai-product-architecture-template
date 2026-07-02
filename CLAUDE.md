@@ -33,28 +33,9 @@ npm run test         # Tests
 # [deploy command]   # e.g. vercel deploy, fly deploy, gh workflow run deploy.yml
 ```
 
-## Project Structure
-
-```
-src/
-├── components/      # UI components
-├── pages/           # Route-level pages
-├── hooks/           # Custom hooks
-├── lib/             # Utilities
-└── ...
-```
-
 ## Architecture
 
-### Routes
-
-| Path | Component | Purpose |
-|------|-----------|---------|
-| `/` | Home | [description] |
-
-### Key Patterns
-
-- [Document key architectural decisions here]
+Routes, project/directory structure, key components, data model, and key architectural patterns are documented in `docs/2_ARCHITECTURE.md` — that file is canonical, not this one. Do not duplicate its tables here; keep CLAUDE.md scoped to repo metadata, commands, and quick-reference pointers.
 
 ## Environment Variables
 

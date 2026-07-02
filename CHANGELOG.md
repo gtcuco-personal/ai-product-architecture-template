@@ -4,10 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-07-02 — Factual fixes + dedup (PR #46, 1 of 4)
+
+First of a 4-PR pass following a full-template audit (docs 0-14, skills, CI, ODRs) that found the template had accumulated stale facts and content that drifted apart after being duplicated in 2-3 places. Full sequence: this PR (facts + dedup) → structural restructure + v2.0 bump → CI/gitleaks → skills sync.
+
+### Fixed
+
+- `docs/6_HEALTH_CHECK.md` — Core Web Vitals: FID (retired by Google in 2024) replaced with INP
+- `docs/12_DEPENDENCY_MANAGEMENT.md`, `SECURITY.md` — CRA date conflated vulnerability-reporting obligation (11 Sep 2026) with the separate, later full-SBOM/conformity obligation (11 Dec 2027); both now correctly distinguished and point to `docs/13_COMPLIANCE_FRAMEWORKS.md` as canonical
+- `docs/14_AI_GOVERNANCE.md` — EU AI Act phase table updated for the 2026 Digital Omnibus deferral (high-risk Annex III → 2 Dec 2027, Annex I → 2 Aug 2028); added explicit caveat to re-verify before treating any date as final
+- `docs/14_AI_GOVERNANCE.md` — replaced hardcoded current-model examples (`claude-opus-4-7`, `gpt-4o`) with generic placeholders so the doc doesn't self-date
+- `docs/6_CONTENT_AND_SOCIAL.md` — removed unsourced AEO/GEO citation-rate statistics (2.7x/3.2x/~14 days), reworded as qualitative heuristics
+- `docs/4_SEO_AND_AEO.md`, `docs/6_CONTENT_AND_SOCIAL.md` — refreshed AI crawler allowlist (added ChatGPT-User, OAI-SearchBot, Claude-User, Claude-SearchBot, Perplexity-User, Amazonbot, Meta-ExternalAgent) with a note that the list rots
+- `docs/10_AGENT_SAFETY.md`, `docs/9_AGENT_SKILLS.md`, `docs/11_TESTING.md` — removed ephemeral anchors (specific product-release date, external talk citation, internal memory-system reference) that don't help a future reader
+- `docs/9_AGENT_SKILLS.md` — fixed `agentskills.io` link path
+
+### Changed (deduplication — single source of truth)
+
+- Trust Hierarchy: canonical in `SYSTEM_PROMPT.md` §9; `docs/10_AGENT_SAFETY.md` no longer repeats the diagram
+- Routes/project structure: canonical in `docs/2_ARCHITECTURE.md`; `CLAUDE.md` no longer carries duplicate placeholder tables
+- Decisions Log format: documented once in `CONTRIBUTING.md`; `docs/7_CONTENT_I18N.md` and `docs/8_DATA_AND_ANALYSIS.md` reference it
+- `docs/10_AGENT_SAFETY.md` — added explicit note that a skill's `permissions` frontmatter is convention, not enforcement (only subagent `tools` lists are actually enforced by Claude Code)
+- Cross-linked (not merged) UI copy rules (`docs/3_UI_UX_GUIDELINES.md` ↔ `docs/7_CONTENT_I18N.md`) and brand voice vs. UI emotional tone (`docs/3_UI_UX_GUIDELINES.md` ↔ `docs/6_CONTENT_AND_SOCIAL.md`), which are distinct concepts that read like duplicates
+
 ## [1.20] — 2026-07-01 — Gate governance-check no ci.yml (drift artefacto↔INDEX)
 
 - Novo job `governance-check` no `.github/workflows/ci.yml`: em `pull_request`, falha um PR que toca artefactos rastreados (`public/videos/`, `supabase/functions/`, `supabase/migrations/`, `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`) sem actualizar `INDEX.md` ou `CHANGELOG.md`. Universal — se nenhum desses caminhos existir no repo, o `grep` não casa e o job conclui verde. Fecha a fenda de enforcement da regra "todo o PR que mexe em artefactos actualiza o INDEX". Auditado por `/sync-repos` e propagado à frota.
-
 
 ## [1.19] — 2026-06-15 — Universal CI workflow (.github/workflows/ci.yml)
 
