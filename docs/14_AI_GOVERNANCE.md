@@ -16,8 +16,11 @@ In force since 1 August 2024. Application is phased:
 |---|---|
 | 2 Feb 2025 | Prohibited AI practices banned |
 | 2 Aug 2025 | GPAI model obligations + governance provisions |
-| 2 Aug 2026 | High-risk AI systems (Annex III) |
-| 2 Aug 2027 | High-risk AI embedded in regulated products (Annex I) |
+| 2 Dec 2026 | Transparency obligations for AI-generated/manipulated content — watermarking (Art. 50) |
+| 2 Dec 2027 | High-risk AI systems — stand-alone, use-based (Annex III) |
+| 2 Aug 2028 | High-risk AI embedded in regulated products, e.g. medical devices, lifts (Annex I) |
+
+> **Digital Omnibus (2026):** the Council, Parliament, and Commission reached a provisional agreement on 7 May 2026 to defer high-risk obligations — Annex III from 2 Aug 2026 to 2 Dec 2027, Annex I from 2 Aug 2027 to 2 Aug 2028 — and simplify GPAI/transparency rules. Formally endorsed by Parliament on 16 Jun 2026 and given final Council green light on 29 Jun 2026; enters into force shortly after Official Journal publication. **Verify current status before treating any date above as final** — dates above reflect the Omnibus agreement, not the original Regulation.
 
 ### Risk Classification
 
@@ -184,7 +187,7 @@ Maintain an inventory of all AI systems used by or embedded in the product. Upda
 | Name | Human-readable name |
 | Type | `generative` / `classification` / `recommendation` / `retrieval` / `agent` / `other` |
 | Provider | `in-house` / vendor name |
-| Model | Specific model ID (e.g., `claude-opus-4-7`, `gpt-4o`) |
+| Model | Specific model ID, e.g. `<vendor>-<model>-<version>` (avoid hardcoding a current model name here — it goes stale) |
 | Version | Model version or date pinned |
 | Purpose | What the system does in the product |
 | Data inputs | Types of data the model processes |
@@ -263,8 +266,8 @@ An AI incident is any event where:
 Append AI governance decisions here.
 
 <!-- Example:
-### 2026-05-03 — Claude claude-opus-4-7 classified as minimal risk (EU AI Act)
-**Decision:** Product uses Claude as a content assistant, not for consequential decisions. Minimal risk.
+### 2026-05-03 — Model <model-id> classified as minimal risk (EU AI Act)
+**Decision:** Product uses the model as a content assistant, not for consequential decisions. Minimal risk.
 **Reason:** No Annex III category applies. Users are informed AI is used.
 **Review date:** 2027-05-03
 -->

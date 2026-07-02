@@ -4,6 +4,8 @@
 
 ## Brand Voice
 
+> Distinct from `docs/3_UI_UX_GUIDELINES.md` §Emotional Tone: that one guides *UI design* decisions (spacing, color, motion). This one guides *written content* (blog, social, marketing copy). They should be consistent with each other but are not the same table — don't merge them.
+
 | Attribute | Value |
 |-----------|-------|
 | **Tone** | [e.g. calm, intelligent, premium — or: playful, direct, bold] |
@@ -59,13 +61,13 @@
 
 ### AEO Layer (Blog)
 
-- **Concise answer blocks:** 1-2 declarative sentences per section, under 40 words. Structure: "X is important because Y." AI extracts answers under 40 words at 2.7x the rate of longer passages
+- **Concise answer blocks:** 1-2 declarative sentences per section, under 40 words. Structure: "X is important because Y." Shorter, self-contained passages are easier for answer engines to extract cleanly than long, qualified paragraphs
 - **TL;DR as extractable answer:** Written as a condensed response, not a teaser. Must be citable by answer engines
 - **Key Takeaways as complete statements:** Each bullet implicitly answers "what should I know?"
 - **Explanatory language:** Prioritize "why" and "how" over "what"
 - **Explicit authority:** Brand name referenced naturally in the body. Associate ideas with the brand's way of thinking
 - **Clarity > originality:** Ideas can be sophisticated, but formulation must be simple and extractable by AI
-- **Structured data:** Implement JSON-LD schema (Article, FAQPage, BreadcrumbList). Pages with comprehensive schema markup are 2.7x more likely to be cited in AI answers
+- **Structured data:** Implement JSON-LD schema (Article, FAQPage, BreadcrumbList). Comprehensive schema markup makes content easier for AI crawlers to parse into citable facts
 - **Raw HTML content:** Ensure content appears in HTML source, not generated via JavaScript only
 
 ### GEO Layer (Generative Engine Optimization)
@@ -76,9 +78,9 @@ GEO targets AI-powered search (ChatGPT, Perplexity, Google AI Overviews, Claude)
 
 - **Factual density > keyword density:** Data, numbers, verifiable claims get cited. Narrative and opinion do not
 - **Declarative statements:** At least 1-2 per section in the format "X is Y because Z." AI extracts these as citable facts
-- **Content freshness:** Update key content every 7-14 days. Content without freshness signals loses citation priority after ~14 days
+- **Content freshness:** Update key content on a regular cadence (e.g. every 1-2 weeks for fast-moving topics). Stale content with no visible update signal tends to lose citation priority over time — track your own citation rate before and after refreshes rather than assuming a fixed decay window
 - **Quick answer blocks:** First 40 words of each section should be a complete, standalone answer
-- **Schema stacking:** Multiple JSON-LD types on the same page (e.g. Article + FAQPage + Organization). Pages with comprehensive schema are 3.2x more likely to be cited by AI
+- **Schema stacking:** Multiple JSON-LD types on the same page (e.g. Article + FAQPage + Organization) — gives answer engines more structured surface area to extract from than a single schema type
 
 #### Citability Checklist
 
@@ -96,7 +98,7 @@ Low citability (use for humans, not AI extraction):
 
 #### Technical Requirements
 
-- **robots.txt:** Explicitly allow AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended)
+- **robots.txt:** Explicitly allow AI crawlers (GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot, Claude-User, Claude-SearchBot, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended, Amazonbot, Meta-ExternalAgent) — see `docs/4_SEO_AND_AEO.md` for the full robots.txt block
 - **llms.txt:** Create a `/llms.txt` file at the site root with a structured summary of what the site/brand is, what it does, key facts, and contact information. This is the AI equivalent of an elevator pitch — read by LLMs before they process your content
 - **JSON-LD completeness:** Ensure all 8 critical schema types are covered where applicable: Organization, Person, LocalBusiness, Product/Service, FAQPage, Article, Review/AggregateRating, BreadcrumbList
 - **Raw HTML:** Content must be in HTML source code, not JavaScript-rendered only. Many AI crawlers cannot execute JavaScript

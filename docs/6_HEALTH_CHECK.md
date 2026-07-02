@@ -39,7 +39,7 @@
 - [ ] `npm run lint` passes with zero errors
 - [ ] No new warnings introduced
 - [ ] Bundle size within budget (document current size and threshold)
-- [ ] Core Web Vitals acceptable (LCP, FID, CLS)
+- [ ] Core Web Vitals acceptable (LCP < 2.5s, INP < 200ms, CLS < 0.1)
 
 ## 6. Documentation Alignment
 

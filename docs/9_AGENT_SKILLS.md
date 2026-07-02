@@ -96,5 +96,4 @@ permissions:
 ## Referências
 
 - [Agent Skills docs](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
-- [agentskills.io](https://agentskills.io/what-are-skills)
-- BuildersCamp AI Agents — Rui Vas (Jan 2025)
+- [agentskills.io](https://agentskills.io/home) — open standard spec

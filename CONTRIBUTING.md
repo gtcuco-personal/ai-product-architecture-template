@@ -85,6 +85,18 @@ ODRs are split into two directories to avoid naming conflicts when template upda
 - When updating from the template, only files in `docs/decisions/template/` are replaced. Local ODRs are never touched.
 - `docs/decisions/TEMPLATE.md` is the format template for creating new ODRs. It stays in the root of `decisions/`.
 
+## Decisions Log Convention (in-doc, lightweight)
+
+Some docs (`docs/7_CONTENT_I18N.md`, `docs/8_DATA_AND_ANALYSIS.md`, `docs/13_COMPLIANCE_FRAMEWORKS.md`, `docs/14_AI_GOVERNANCE.md`) end with an append-only **Decisions Log** section. This is distinct from an ODR (see above):
+
+| | Decisions Log | ODR |
+|---|---|---|
+| Where | Append-only section at the bottom of the doc it concerns | Standalone file in `docs/decisions/` |
+| For | Small, doc-scoped decisions (a metric formula changed, an i18n key convention was picked) | Cross-cutting architectural or governance decisions worth their own record |
+| Format | One dated entry (`### YYYY-MM-DD — title` + Decision/Reason/Review date) | `docs/decisions/TEMPLATE.md` structure |
+
+Rule: append, never edit or delete a past entry. If a decision is later reversed, add a new entry that supersedes it and says so.
+
 ## Questions?
 
 Open a GitHub issue or contact the maintainer directly.

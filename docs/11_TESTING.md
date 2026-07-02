@@ -101,7 +101,7 @@ Triggers: PRs + pushes to `main` (push-to-main matters for repos where an extern
 **Database strategy for integration tests:**
 - Preferred: Supabase database branches / Docker container per test run
 - Acceptable: shared test schema with transaction rollback per test
-- Not acceptable: mocked DB client (produces false confidence — see MEMORY: `feedback_test_sql_before_done`)
+- Not acceptable: mocked DB client (produces false confidence — mocked tests can pass while the real schema/migration is broken)
 
 ---
 

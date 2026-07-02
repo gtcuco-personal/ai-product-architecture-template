@@ -183,6 +183,8 @@ Recurring compositions of components that solve common UX problems. Check here b
 
 Every async-loaded or data-dependent UI must handle all five states. This is the most skipped part of UI work.
 
+> Copy wording (casing, tone, exact phrasing of error/empty-state messages) is defined once in `docs/7_CONTENT_I18N.md` Part 2 §Copy Rules — canonical there. This section defines the *visual/behavioural* pattern (icon, layout, which component) for each state, not the wording.
+
 ### Empty State
 - Centered layout
 - Lucide icon (`size-12`, `text-muted-foreground`)

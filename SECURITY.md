@@ -17,7 +17,7 @@ If you discover a security vulnerability, please report it responsibly. This pro
 | Patch target | 7 days (Critical), 30 days (High), 90 days (Medium/Low) | Fix and release |
 | Public disclosure | 90 days after report (coordinated) | Publish CVE / security advisory |
 
-> **EU Cyber Resilience Act (CRA):** From 11 September 2026, actively exploited vulnerabilities in products with digital elements sold in the EU must be reported to **ENISA within 24 hours** and to affected users within **72 hours**. Update this policy before that date if the product is in scope.
+> **EU Cyber Resilience Act (CRA):** From 11 September 2026, actively exploited vulnerabilities in products with digital elements sold in the EU must be reported to **ENISA within 24 hours** and to affected users within **72 hours**. Full CRA conformity (SBOM, secure-by-default, CE marking) is a separate, later obligation — 11 December 2027. See `docs/13_COMPLIANCE_FRAMEWORKS.md` §Tier 3 for the full timeline and the applicability gate (this only applies if you sell software with digital elements in the EU market). Update this policy before the relevant date if the product is in scope.
 
 ## Security Practices
 
@@ -62,7 +62,7 @@ Before any feature goes live, answer these questions:
 
 ### SBOM (Software Bill of Materials)
 
-Required by the **EU Cyber Resilience Act** from 11 September 2026 for software sold in the EU market. Also increasingly required by enterprise and government procurement.
+Required by the **EU Cyber Resilience Act** for software with digital elements sold in the EU market — full obligation from **11 December 2027** (see `docs/13_COMPLIANCE_FRAMEWORKS.md` for the complete timeline and the applicability gate: skip this section entirely if you don't sell software with digital elements into the EU market). Also increasingly required by enterprise and government procurement regardless of CRA status.
 
 - **Format:** SPDX 2.3 or CycloneDX 1.5 (machine-readable)
 - **Generation:** automate in CI on every release (tools: [`syft`](https://github.com/anchore/syft), [`cyclonedx-cli`](https://github.com/CycloneDX/cyclonedx-cli))

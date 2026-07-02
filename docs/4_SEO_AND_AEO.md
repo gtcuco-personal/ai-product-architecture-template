@@ -37,10 +37,25 @@
 User-agent: GPTBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
 User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
 Allow: /
 
 User-agent: Google-Extended
@@ -48,7 +63,15 @@ Allow: /
 
 User-agent: Applebot-Extended
 Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
 ```
+
+> This list rots — AI crawlers are added faster than any static doc can track. Re-verify against a current source (e.g. Cloudflare's or Google's crawler lists) before relying on it.
 
 ## llms.txt
 
