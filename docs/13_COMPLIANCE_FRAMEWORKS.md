@@ -173,6 +173,7 @@ For products handling **sensitive data, enterprise B2B, regulated industries, or
 - [ ] **Data minimisation** — collect only what is strictly necessary; no "nice to have" fields
 - [ ] **Pseudonymisation** — personal identifiers stored separately where feasible (e.g. `user_id` reference vs. full name inline)
 - [ ] **Retention period defined** — each data type has a documented maximum retention; delete or anonymise when expired
+- [ ] **Deletion mechanism named** — a scheduled job, function, or documented operational procedure actually performs the retention rule; a Markdown statement alone is not enforcement
 - [ ] **Default privacy-preserving settings** — the most protective option is the default (e.g. analytics opt-out by default)
 - [ ] **DPIA required?** — triggers: large-scale processing, special categories (health, biometric, political), systematic profiling, public area surveillance
 - [ ] **Lawful basis documented** — one of: consent, contract, legal obligation, vital interest, public task, legitimate interest (with LIA)

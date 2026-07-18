@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.3] — 2026-07-18 — Product, decision & evidence contract
+
+### Added
+
+- Machine-readable contract in `docs/1_BUSINESS_CONTEXT.md` for repository role, product reference, beneficiary, outcome, runtime, data posture, PII, storage, evidence, and retention
+- ODR-010 recording the proportional product/data model and the rule that data needs a named consumer
+- Governance validation and profile fixture coverage for the contract
+
+### Changed
+
+- `react-supabase` now retains `docs/8_DATA_AND_ANALYSIS.md`
+- Data governance now has separate interactive-product and batch/pipeline paths; `minimal` can truthfully omit it
+- Ground Rules now distinguish repository-controlled schema/configuration from authorised operational data flows
+
 ## [2.2] — 2026-07-18 — Executable CI fixtures (PR #50)
 
 ### Added

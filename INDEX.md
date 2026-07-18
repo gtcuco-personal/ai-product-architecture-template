@@ -18,6 +18,12 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 - Links para artifacts principais (proposals, research, decisions, stakeholders)
 - Status actual
 
+### Product, decision & evidence contract v2.3
+
+- Universal frontmatter declares role, product reference, runtime, data posture, PII, storage, evidence, and retention; `none`/`n/a` are valid when truthful.
+- `react-supabase` now retains the proportional data module alongside `python-data` and `regulated-ai`; `minimal` remains lean.
+- **Status:** implementation and validation in progress; downstream pilot follows a separate approval gate.
+
 ### Downstream propagation
 
 - Propagate v2.2 to child repos through `/sync-repos` after PR #50 is merged
@@ -41,7 +47,7 @@ Estrutura de pastas principais com 1 linha de propósito:
 
 - `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check (`15_`), architecture, content/SEO/AEO/GEO (`6_`, merged with the former `4_`)
 - `docs/decisions/` — local ODRs (project-specific decisions)
-- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-009)
+- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-010)
 - `docs/guides/` — setup guides (git-crypt, Lovable vocabulary, etc.)
 - `skills/` — template for creating project-level Agent Skills
 - `tasks/` — `lessons.md` for session corrections

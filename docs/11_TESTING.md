@@ -63,7 +63,7 @@ A **universal, stack-auto-detecting** CI ships with this template. Each job only
 | `gitleaks` | Always | Full-history secret scan (`gitleaks detect`, not just the diff), including Markdown; the downloaded binary is checksum-verified before execution |
 | `deno-check` | `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
 | `governance-check` | Always | Validates required governance files, policy version consistency, local Markdown links, and retired paths; PRs touching tracked artifacts must update both `INDEX.md` and `CHANGELOG.md` |
-| `template-tests` | Template fixtures exist | Instantiates and validates all four scaffold profiles; unit-tests docs-only/npm/Bun/Deno detection; then executes real locked install, lint, build, test, audit, and Deno type-check commands against three static mini-projects |
+| `template-tests` | Template fixtures exist | Instantiates and validates all four scaffold profiles, including the product/evidence contract; unit-tests docs-only/npm/Bun/Deno detection; then executes real locked install, lint, build, test, audit, and Deno type-check commands against three static mini-projects |
 
 Triggers: PRs + pushes to `main` (push-to-main matters for repos where an external tool — e.g. Lovable — commits straight to `main` without local checks).
 
