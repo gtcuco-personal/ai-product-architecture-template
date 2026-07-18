@@ -119,10 +119,11 @@ updates:
 | **Medium** | 4.0–6.9 | Triage 7 days, patch 30 days | Add to backlog, assign owner. |
 | **Low** | 0.1–3.9 | Next quarterly review | Log, monitor, patch when convenient. |
 
-**CI enforcement:**
+**CI enforcement when the relevant lockfile exists:**
 ```bash
 # Block build on critical/high vulnerabilities
 npm audit --audit-level=high
+bun audit --audit-level=high
 
 # Python
 pip-audit --vulnerability-service=osv --fail-on CRITICAL,HIGH

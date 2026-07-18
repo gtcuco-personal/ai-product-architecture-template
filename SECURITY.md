@@ -87,7 +87,7 @@ See **`docs/12_DEPENDENCY_MANAGEMENT.md`** for the full dependency governance po
 Quick reference:
 - Dependencies reviewed before addition — licence and maintenance signals checked
 - Lock files committed and protected (never in `.gitignore`)
-- `npm audit` runs in CI on every PR (`.github/workflows/ci.yml` `build-test` job) — currently **report-only**, not blocking; `pip audit` / `cargo audit` are not wired into CI yet — add them if the project uses Python/Rust dependencies
+- `npm audit` or `bun audit` runs according to the detected lockfile and blocks High/Critical findings; `pip audit` / `cargo audit` are not wired into CI yet — add them if the project uses Python/Rust dependencies
 - No dependency with a blocked licence (GPL, AGPL, no-licence) without legal clearance
 
 ## Secrets Scanning — Two Layers
@@ -121,9 +121,9 @@ git config core.hooksPath .githooks
 
 #### Per-repo allowlist — `.gitleaks.toml`
 
-Each repo can declare its own allowlist and custom rules in `.gitleaks.toml` at the root. Template file is included — extend as needed. Common customisations:
+Each repo can declare its own allowlist and custom rules in `.gitleaks.toml` at the root. Template file is included — extend as needed. Prefer precise exceptions:
 
-- Exclude paths (e.g. `docs/`, `*.md`)
+- Exclude a specific generated fixture path; do not blanket-exclude `docs/` or `*.md`
 - Allow env var names documented without values
 - Add project-specific regex patterns
 
