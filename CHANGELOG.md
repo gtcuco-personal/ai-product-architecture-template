@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `react-supabase` now retains `docs/8_DATA_AND_ANALYSIS.md`
 - Data governance now has separate interactive-product and batch/pipeline paths; `minimal` can truthfully omit it
 - Ground Rules now distinguish repository-controlled schema/configuration from authorised operational data flows
+- A filled contract is enforced by the normal governance check; untouched legacy repos remain compatible until migrated
 
 ## [2.2] — 2026-07-18 — Executable CI fixtures (PR #50)
 

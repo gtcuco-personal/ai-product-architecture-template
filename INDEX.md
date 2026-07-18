@@ -22,6 +22,7 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 
 - Universal frontmatter declares role, product reference, runtime, data posture, PII, storage, evidence, and retention; `none`/`n/a` are valid when truthful.
 - `react-supabase` now retains the proportional data module alongside `python-data` and `regulated-ai`; `minimal` remains lean.
+- Filled contracts are enforced in normal CI; untouched legacy repositories remain compatible until their explicit migration.
 - **Status:** implementation and validation in progress; downstream pilot follows a separate approval gate.
 
 ### Downstream propagation
