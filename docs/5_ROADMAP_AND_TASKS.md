@@ -18,7 +18,7 @@
 
 ## Completed
 
-### 2026-07-18 — Enforce filled product/evidence contracts (PR pending)
+### 2026-07-18 — Enforce filled product/evidence contracts (PR #53)
 
 - [x] Keep untouched legacy repositories compatible, but enforce enums and coherence as soon as a contract is filled.
 - [x] Add a regression test proving normal CI rejects an incoherent filled legacy contract. → `scripts/check-governance.mjs`, `tests/template/scaffold.test.mjs`
