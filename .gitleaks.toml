@@ -14,18 +14,12 @@ useDefault = true
 # Allowlist — paths that should NOT be scanned
 # ============================================================
 [allowlist]
-description = "Allowlist documentation paths and example files"
+description = "Allowlist template environment files only"
 
-# Documentation files rarely contain real secrets — only env var names or examples
+# Do not blanket-allow Markdown: documentation is a common place for pasted
+# credentials, and this template is documentation-heavy. Prefer stopwords,
+# gitleaks:allow on a specific example, or a precise .gitleaksignore entry.
 paths = [
-  '''\.md$''',
-  '''^docs/''',
-  '''^CLAUDE\.md$''',
-  '''^SECURITY\.md$''',
-  '''^README\.md$''',
-  '''^CONTRIBUTING\.md$''',
-  '''^CHANGELOG\.md$''',
-  '''^SYSTEM_PROMPT\.md$''',
   '''\.env\.example$''',
   '''\.env\.template$''',
 ]

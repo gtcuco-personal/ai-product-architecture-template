@@ -6,11 +6,12 @@ Governance and documentation template for AI product repositories. Provides a st
 
 ```
 ├── CLAUDE.md              # AI agent entry point — repo metadata, commands, quick reference
+├── AGENTS.md              # Portable agent entry point — shared rules for Codex and other agents
 ├── CONTRIBUTING.md        # Setup, branch strategy, PR process, code style
 ├── SECURITY.md            # Vulnerability reporting, auth model, data protection
-├── SYSTEM_PROMPT.md       # Universal AI agent operating instructions (v1.6)
+├── SYSTEM_PROMPT.md       # Shared operating policy (v2.1; runtime hierarchy still wins)
 ├── CHANGELOG.md           # Version history and release notes
-└── docs/
+├── docs/
     ├── 0_GROUND_RULES.md        # Stack, inviolable rules, protected files
     ├── 1_BUSINESS_CONTEXT.md    # Vision, mission, business model, markets
     ├── 2_ARCHITECTURE.md        # Routes, components, data model, directory structure
@@ -31,19 +32,38 @@ Governance and documentation template for AI product repositories. Provides a st
     └── decisions/
         ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
         └── template/            # ODRs inherited from this base template
+└── scripts/
+    ├── check-governance.mjs     # Dependency-free governance self-check
+    ├── detect-ci-mode.mjs       # npm/Bun/Deno stack detection used by CI
+    └── scaffold.mjs             # Safe, dry-run-first profile scaffolder
 ```
 
 ## How to Use
 
 1. Click **"Use this template"** on GitHub (or clone and remove `.git`)
-2. Replace all `[placeholders]` with your project-specific information
-3. Delete files that don't apply (e.g. `6_CONTENT_AND_SOCIAL.md` for CLI tools with no public content)
-4. Start building
+2. Run `node scripts/scaffold.mjs --list`, then preview a profile with `node scripts/scaffold.mjs --profile <name>`
+3. Apply the selected profile explicitly with `node scripts/scaffold.mjs --profile <name> --apply`
+4. Replace all remaining `[placeholders]` with your project-specific information
+5. Run `node scripts/check-governance.mjs --project` to catch unfilled required placeholders and broken governance references
+6. Start building
+
+### Scaffold Profiles
+
+| Profile | Use when |
+|---|---|
+| `minimal` | Small internal tool or prototype needing only the governance core |
+| `react-supabase` | React/Supabase product with UI, content, i18n, and AI guidance |
+| `python-data` | Python analytics, data science, or data-heavy AI product |
+| `regulated-ai` | External or regulated AI product that needs the complete template |
+
+The scaffolder is dry-run by default. It records intentional removals in
+`template-profile.json`; switching profiles later requires starting from a fresh
+copy because deleted modules cannot be reconstructed safely.
 
 ## Design Principles
 
 - **Opinionated for two stacks, not agnostic for all.** The governance structure (docs 0-1, 5, 9-14, ODRs) is genuinely stack-independent. But `docs/2_ARCHITECTURE.md`'s DB checklist, `docs/3_UI_UX_GUIDELINES.md`, and `docs/15_HEALTH_CHECK.md` assume **React/Vite + Tailwind + shadcn/ui + Supabase**; `docs/8_DATA_AND_ANALYSIS.md` assumes a **Python/pandas** analytics stack. If your project uses a different stack, treat those specific docs as examples to rewrite, not as agnostic scaffolding — don't assume the whole template is stack-neutral just because some of it is.
-- **AI-first** — structured for Claude and other AI coding assistants
+- **AI-first and multi-agent** — `AGENTS.md` carries portable guidance; runtime-specific adapters add capabilities without redefining the runtime's instruction hierarchy
 - **Modular** — use what you need, delete what you don't
 - **Convention over configuration** — consistent across all your repos
 - **Lean by default** — compliance/security machinery sized for a team (SBOM, SLSA, incident SLAs, AI eval suites) is opt-in, gated by `docs/13_COMPLIANCE_FRAMEWORKS.md` §Applicability Gate, not default weight every repo carries

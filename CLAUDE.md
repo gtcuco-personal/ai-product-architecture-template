@@ -2,6 +2,10 @@
 
 [One-line description of the project.]
 
+> `AGENTS.md` is the portable agent entry point. This file is the Claude Code
+> adapter and also carries repo metadata plus the canonical Context Loading
+> Policy used by all agents.
+
 ## Repository
 
 | Key | Value |
@@ -74,6 +78,8 @@ Per-repo allowlist and custom rules live in `.gitleaks.toml`. See `SECURITY.md` 
 ## Context Loading Policy
 
 Before starting any task, load only the files relevant to that task type. Do not load all `/docs/` files by default.
+If `template-profile.json` exists, skip any files listed in `removed_paths`; those
+modules were intentionally disabled by the scaffolder and must not be recreated.
 
 | Task type | Load | Skip |
 |---|---|---|

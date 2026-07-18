@@ -58,7 +58,7 @@ A dedicated file, not a section in `SECURITY.md`.
 - Dependency decisions are now auditable (licence policy, upgrade decisions, EOL tracking)
 - CRA and SLSA obligations have a home — reduces risk of missing the September 2026 deadline
 - Blocked-licence list is explicit — reduces legal exposure from accidental GPL/AGPL additions
-- `docs/6_HEALTH_CHECK.md` can now reference concrete quarterly checks
+- `docs/15_HEALTH_CHECK.md` can now reference concrete quarterly checks
 
 ### Negative
 

@@ -59,17 +59,19 @@ A **universal, stack-auto-detecting** CI ships with this template. Each job only
 
 | Job | Runs when | What runs |
 |---|---|---|
-| `build-test` | `package.json` exists | `npm ci` (if lockfile) + `lint`/`build`/`test` via `--if-present` (tolerates missing scripts) + `npm audit --audit-level=high` (report-only — `continue-on-error`, doesn't fail the job yet) |
-| `gitleaks` | Always | Full-history secret scan (`gitleaks detect`, not just the diff) — **this is the only job that fails the build.** It's the server-side backstop for repos where something (e.g. Lovable) commits straight to `main` and never runs the local pre-commit hook (`.githooks/pre-commit`) |
+| `build-test` | `package.json` exists | Chooses Bun when `bun.lock`/`bun.lockb` exists, otherwise npm; installs deterministically when locked; runs `lint`/`build`/`test` via `--if-present`; audit blocks High/Critical findings |
+| `gitleaks` | Always | Full-history secret scan (`gitleaks detect`, not just the diff), including Markdown; the downloaded binary is checksum-verified before execution |
 | `deno-check` | `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
+| `governance-check` | Always | Validates required governance files, policy version consistency, local Markdown links, and retired paths; PRs touching tracked artifacts must update both `INDEX.md` and `CHANGELOG.md` |
+| `template-tests` | Template fixtures exist | Instantiates and validates all four scaffold profiles; tests docs-only, npm locked/unlocked, Bun-preferred, and Deno detection fixtures |
 
 Triggers: PRs + pushes to `main` (push-to-main matters for repos where an external tool — e.g. Lovable — commits straight to `main` without local checks).
 
-**Honesty note:** this is genuinely what runs — unlike the "Reference model" and "Coverage enforcement" below, which are aspirational until a repo actually wires them up. If you read only one row from this table, it's `gitleaks` — it's the one that's both real and load-bearing today.
+**Honesty note:** this is genuinely what runs — unlike the "Reference model" and "Coverage enforcement" below, which are aspirational until a repo actually wires them up.
 
 **Propagation gotchas:**
 - Adding/editing a workflow file requires the `workflow` OAuth scope on the git token. Org repos whose bot token lacks it → add `ci.yml` via the GitHub **web editor**.
-- Lovable repos manage deps via **bun** (`bun.lockb`); the npm `package-lock.json` rots and `npm ci` rejects it. Sync with the runner's npm version: `npx npm@10 install --package-lock-only`.
+- Lovable repos manage deps via **Bun** (`bun.lock` or legacy `bun.lockb`). The detector deliberately prefers Bun when both Bun and npm lockfiles exist, so a stale `package-lock.json` cannot select the wrong installer.
 - `/sync-repos` should flag repos missing `.github/workflows/ci.yml`.
 
 ### Reference model (aspirational stages — adapt per repo)

@@ -4,11 +4,9 @@
 # por isso é SEGURO em qualquer repo — num repo só de docs/dados os jobs
 # concluem verdes sem fazer nada; num webapp correm a sério.
 #
-#   build-test : corre se houver package.json. npm ci (se houver lockfile) +
-#                lint/build/test com --if-present (tolera scripts em falta).
-#                npm audit corre sempre que há package-lock.json — reporta
-#                mas NÃO falha o job (continue-on-error) até calibrarmos o
-#                threshold; ver aviso no job output.
+#   build-test : corre se houver package.json. Detecta Bun antes de npm para
+#                evitar package-locks stale em repos Lovable. Instala deps,
+#                corre lint/build/test se existirem e bloqueia audit high/critical.
 #   deno-check : corre se houver edge functions Deno (supabase/functions/*/index.ts),
 #                que ficam FORA do tsconfig do frontend — build/lint não as veem.
 #                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
@@ -18,11 +16,9 @@
 #                para repos onde algo (ex: Lovable) comita direto a `main`
 #                sem passar pelo pre-commit hook local (.githooks/pre-commit).
 #                Falha o build se encontrar um segredo real.
-#   governance-check : só em pull_request. Falha um PR que toca artefactos
-#                rastreados (public/videos, supabase/functions, supabase/migrations,
-#                stakeholders, pitches, research, decisions, meetings) sem
-#                actualizar INDEX.md ou CHANGELOG.md. Universal: se nenhum desses
-#                caminhos existir no repo, o grep não casa e o job conclui verde.
+#   governance-check : valida a estrutura em todos os runs. Em pull requests,
+#                alterações a artefactos rastreados (incluindo docs/decisions)
+#                exigem actualizações tanto no INDEX.md como no CHANGELOG.md.
 #
 # Editar/adicionar este ficheiro exige o scope 'workflow' no token git.
 # Em repos de org cujo token não o tem → adicionar via editor web do GitHub.
@@ -34,6 +30,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -42,60 +41,83 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - id: detect
         run: |
-          if [ -f package.json ]; then echo "node=true" >> "$GITHUB_OUTPUT"; else echo "node=false" >> "$GITHUB_OUTPUT"; fi
-      - if: steps.detect.outputs.node == 'true'
-        uses: actions/setup-node@v4
+          node scripts/detect-ci-mode.mjs --github-output >> "$GITHUB_OUTPUT"
+      - name: Setup Node with npm cache
+        if: steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock == 'true'
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22
           cache: npm
-      - name: Install deps
-        if: steps.detect.outputs.node == 'true'
+      - name: Setup Node without cache
+        if: steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock != 'true'
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+      - name: Setup Bun
+        if: steps.detect.outputs.package_manager == 'bun'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Install npm dependencies
+        if: steps.detect.outputs.package_manager == 'npm'
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "::warning::package.json exists without package-lock.json; install is non-deterministic"
+            npm install --no-audit --no-fund --package-lock=false
+          fi
+      - name: Install Bun dependencies
+        if: steps.detect.outputs.package_manager == 'bun'
+        run: bun install --frozen-lockfile
       - if: steps.detect.outputs.node == 'true'
-        run: npm run lint --if-present
+        run: |
+          if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present lint; else npm run lint --if-present; fi
       - if: steps.detect.outputs.node == 'true'
-        run: npm run build --if-present
+        run: |
+          if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present build; else npm run build --if-present; fi
       - if: steps.detect.outputs.node == 'true'
-        run: npm run test --if-present
-      - name: Dependency audit (report only — not blocking yet)
-        if: steps.detect.outputs.node == 'true'
-        continue-on-error: true
+        run: |
+          if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present test; else npm run test --if-present; fi
+      - name: npm dependency audit (block high/critical)
+        if: steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock == 'true'
         run: npm audit --audit-level=high
+      - name: Bun dependency audit (block high/critical)
+        if: steps.detect.outputs.package_manager == 'bun'
+        run: bun audit --audit-level=high
 
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
-      - name: Install gitleaks
+      - name: Download and verify gitleaks
         env:
-          GITLEAKS_VERSION: 8.21.2
+          GITLEAKS_VERSION: "8.30.1"
         run: |
           curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o gitleaks.tar.gz
-          tar -xzf gitleaks.tar.gz gitleaks
-          sudo mv gitleaks /usr/local/bin/gitleaks
-          rm gitleaks.tar.gz
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt" -o gitleaks_checksums.txt
+          grep "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" gitleaks_checksums.txt | sha256sum -c -
+          tar -xzf gitleaks.tar.gz -C "$RUNNER_TEMP" gitleaks
       - name: Scan full history for secrets
-        run: gitleaks detect --no-banner --redact --verbose
+        run: |
+          "$RUNNER_TEMP/gitleaks" detect --no-banner --redact --verbose
 
   deno-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - id: detect
         run: |
-          if ls supabase/functions/*/index.ts >/dev/null 2>&1; then echo "deno=true" >> "$GITHUB_OUTPUT"; else echo "deno=false" >> "$GITHUB_OUTPUT"; fi
+          node scripts/detect-ci-mode.mjs --github-output >> "$GITHUB_OUTPUT"
       - if: steps.detect.outputs.deno == 'true'
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         with:
           deno-version: v2.x
       - if: steps.detect.outputs.deno == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: ~/.cache/deno
           key: deno-${{ hashFiles('supabase/functions/**/*.ts') }}
@@ -125,29 +147,51 @@ jobs:
           done
           exit $real_fail
 
-  # Gate de governance: um PR que adiciona/altera artefactos rastreados tem de
-  # actualizar tambem INDEX.md ou CHANGELOG.md. Universal e seguro — se nenhum
+  template-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+      - name: Test template scaffolding and CI detection
+        run: |
+          if [ -d tests/template ]; then
+            node --test tests/template/*.test.mjs
+          else
+            echo "Template fixture tests removed by applied project profile; skipping."
+          fi
+
+  # Gate de governance: valida a estrutura em todos os runs. Num PR que
+  # adiciona/altera artefactos rastreados, exige INDEX.md e CHANGELOG.md. Se nenhum
   # caminho de artefacto existir no repo, o grep nao casa e o job conclui verde.
-  # So corre em pull_request (push a main nao tem contexto de PR e e ignorado).
+  # A validacao estrutural corre sempre; a comparacao de ficheiros alterados so
+  # corre em pull_request, porque push a main nao tem contexto de PR.
   # Motivacao: um PR pode shippar artefactos (ex. videos, edge fns, decisoes) e
   # nunca tocar no INDEX -> drift silencioso entre o repo e o seu mapa.
   governance-check:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
-      - name: INDEX/CHANGELOG devem acompanhar mudancas de artefactos
+      - name: Validate governance structure
+        run: node scripts/check-governance.mjs
+      - name: INDEX e CHANGELOG devem acompanhar mudancas de artefactos
+        if: github.event_name == 'pull_request'
         run: |
           BASE="${{ github.event.pull_request.base.sha }}"
           CHANGED=$(git diff --name-only "$BASE"...HEAD)
-          ART='^(public/videos/|supabase/functions/|supabase/migrations/|stakeholders/|pitches/|research/|decisions/|meetings/)'
+          ART='^(public/videos/|supabase/functions/|supabase/migrations/|stakeholders/|pitches/|research/|decisions/|docs/decisions/|meetings/)'
           if echo "$CHANGED" | grep -qE "$ART"; then
-            if ! echo "$CHANGED" | grep -qE '^(INDEX\.md|CHANGELOG\.md)$'; then
-              echo "::error::PR toca artefactos rastreados sem actualizar INDEX.md nem CHANGELOG.md."
-              echo "Artefactos alterados:"
-              echo "$CHANGED" | grep -E "$ART" | sed 's/^/  - /'
-              exit 1
-            fi
+            missing=0
+            for required in INDEX.md CHANGELOG.md; do
+              if ! echo "$CHANGED" | grep -qx "$required"; then
+                echo "::error::PR toca artefactos rastreados sem actualizar $required."
+                missing=1
+              fi
+            done
+            echo "Artefactos alterados:"
+            echo "$CHANGED" | grep -E "$ART" | sed 's/^/  - /'
+            exit "$missing"
           fi

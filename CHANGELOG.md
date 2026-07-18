@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1] — 2026-07-18 — Multi-agent governance hardening (PR pending)
+
+### Added
+
+- `AGENTS.md` as the portable repository entry point for Codex and other compatible coding agents
+- `scripts/check-governance.mjs` for dependency-free validation of required files, version consistency, local Markdown links, retired paths, and required project placeholders
+- `scripts/scaffold.mjs` with dry-run-first `minimal`, `react-supabase`, `python-data`, and `regulated-ai` profiles plus an explicit `template-profile.json` manifest
+- `scripts/detect-ci-mode.mjs` and temporary fixture tests for docs-only, npm locked/unlocked, Bun-preferred, and Deno modes
+- Governance validation on every CI run; artifact changes now cover `docs/decisions/` and require both `INDEX.md` and `CHANGELOG.md`
+- ODR-008 recording the portable-entry-point and runtime-precedence decision
+- ODR-009 recording the dry-run-first profile, manifest, and fixture-testing contract
+
+### Changed
+
+- `SYSTEM_PROMPT.md` is now explicitly a shared project policy rather than a runtime system prompt; instruction precedence is owned by the active runtime
+- GitHub Actions upgraded and pinned to full commit SHAs; workflow token permissions reduced to read-only
+- CI prefers Bun when a Bun lockfile exists, otherwise uses npm; dependency caching only activates for locked npm, and High/Critical audit findings block both package-manager paths
+- Gitleaks upgraded to 8.30.1, checksum-verified before execution, and configured to scan Markdown instead of blanket-allowlisting documentation
+
+### Fixed
+
+- Current status drift in `INDEX.md`, the stale README policy version, and the retired health-check path in ODR-006
+
+> Replace “PR pending” with the real PR number when the pull request is opened.
+
 ## [2.0] — 2026-07-02 — Lean-by-default restructure (PR #46 + restructure PR, 2 of 4)
 
 A 4-PR pass following a full-template audit (docs 0-14, skills, CI, ODRs) that found the template had accumulated stale facts, content that drifted apart after being duplicated in 2-3 places, and enterprise-sized compliance defaults that near-zero downstream repos actually use. Full sequence: PR #46 (facts + dedup) → this restructure + v2.0 bump → CI/gitleaks → skills sync. See ODR-007.
