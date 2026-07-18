@@ -33,8 +33,9 @@ place to declare retention, consumers, or decision links.
    deletion/anonymisation mechanism.
 6. `check-governance.mjs` validates the contract shape and project values; data
    or storage requires the data module. Legacy repositories remain valid until
-   their explicit migration invokes project mode. The check does not pretend to
-   prove that product strategy or retention jobs are true.
+   their explicit migration adds the contract; once it is filled, the normal CI
+   check enforces its coherence. The check does not pretend to prove that
+   product strategy or retention jobs are true.
 
 ## Rationale
 

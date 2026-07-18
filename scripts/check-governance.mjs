@@ -107,14 +107,14 @@ function validateProductEvidenceContract() {
   for (const field of fields) {
     if (!(field in contract)) fail(`${path} product-evidence contract is missing ${field}`);
   }
-  if (!requireProductEvidenceContract) return;
-
   const placeholders = Object.entries(contract)
     .filter(([field]) => fields.includes(field))
     .filter(([, value]) => value === "" || value === "TODO")
     .map(([field]) => field);
   if (placeholders.length > 0) {
-    fail(`${path} product-evidence contract has unfilled fields: ${placeholders.join(", ")}`);
+    if (requireProductEvidenceContract) {
+      fail(`${path} product-evidence contract has unfilled fields: ${placeholders.join(", ")}`);
+    }
     return;
   }
 

@@ -156,3 +156,13 @@ test("legacy repositories are not required to migrate until project mode is requ
   assert.equal(projectValidation.status, 1);
   assert.match(projectValidation.stderr, /has no product-evidence frontmatter/);
 });
+
+test("a filled legacy contract is enforced by the normal governance check", (t) => {
+  const directory = copyTemplate(t);
+  fillRequiredPlaceholders(directory, "minimal");
+  replace(join(directory, "docs/1_BUSINESS_CONTEXT.md"), [["data_posture: none", "data_posture: collects"]]);
+
+  const validation = run(directory, "scripts/check-governance.mjs");
+  assert.equal(validation.status, 1);
+  assert.match(validation.stderr, /runtime none requires data_posture none/);
+});

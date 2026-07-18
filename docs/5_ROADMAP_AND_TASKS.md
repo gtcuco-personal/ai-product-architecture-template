@@ -12,11 +12,16 @@
 
 ## In Progress
 
-### Product, decision & evidence contract (v2.3) — delivery gate
+### Product, decision & evidence contract (v2.3) — downstream pilot gate
 
-- Open the template PR and verify its hosted CI before the downstream pilot.
+- Prepare the explicit per-repository contract list and obtain approval before the downstream pilot.
 
 ## Completed
+
+### 2026-07-18 — Enforce filled product/evidence contracts (PR #53)
+
+- [x] Keep untouched legacy repositories compatible, but enforce enums and coherence as soon as a contract is filled.
+- [x] Add a regression test proving normal CI rejects an incoherent filled legacy contract. → `scripts/check-governance.mjs`, `tests/template/scaffold.test.mjs`
 
 ### 2026-07-18 — Phone number format convention (E.164) v2.4 (PR #51)
 
