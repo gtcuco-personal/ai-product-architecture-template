@@ -12,12 +12,13 @@
 
 ## In Progress
 
-### 2026-07-18 — Executable CI fixtures v2.2 (PR pending)
-
-- Add static npm, Bun, and Deno mini-projects and run their real locked install, lint, build, test, audit, and type-check paths in hosted CI → `.github/workflows/ci.yml`, `tests/template/fixtures/`, `tests/template/run-ci-fixtures.mjs`, `scripts/check-governance.mjs`, `docs/11_TESTING.md`, `README.md`, `SYSTEM_PROMPT.md`, `CHANGELOG.md`, `INDEX.md`
-- Replace “PR pending” after opening the pull request, then move this entry to Completed
+No active template changes.
 
 ## Completed
+
+### 2026-07-18 — Executable CI fixtures v2.2 (PR #50)
+
+- [x] Add static npm, Bun, and Deno mini-projects and prove their real locked install, lint, build, test, audit, and type-check paths in hosted CI → `.github/workflows/ci.yml`, `tests/template/fixtures/`, `tests/template/run-ci-fixtures.mjs`, `scripts/check-governance.mjs`, `docs/11_TESTING.md`, `README.md`, `SYSTEM_PROMPT.md`, `CHANGELOG.md`, `INDEX.md`
 
 ### 2026-07-18 — Multi-agent governance hardening v2.1 (PR #49)
 
