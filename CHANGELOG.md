@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [2.1] — 2026-07-18 — Multi-agent governance hardening (PR pending)
+## [2.1] — 2026-07-18 — Multi-agent governance hardening (PR #49)
 
 ### Added
 
@@ -26,8 +26,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 
 - Current status drift in `INDEX.md`, the stale README policy version, and the retired health-check path in ODR-006
-
-> Replace “PR pending” with the real PR number when the pull request is opened.
 
 ## [2.0] — 2026-07-02 — Lean-by-default restructure (PR #46 + restructure PR, 2 of 4)
 

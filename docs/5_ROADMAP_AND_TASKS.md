@@ -12,12 +12,13 @@
 
 ## In Progress
 
-### 2026-07-18 — Multi-agent governance hardening v2.1 (PR pending)
-
-- Add portable `AGENTS.md`; correct runtime precedence; record ODR-008/009; add four safe scaffold profiles; add npm/Bun/Deno detection fixtures; harden GitHub Actions and Gitleaks; repair current INDEX/README/ODR drift → `AGENTS.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `README.md`, `INDEX.md`, `CHANGELOG.md`, `.github/workflows/ci.yml`, `.gitleaks.toml`, `scripts/`, `tests/template/`, `docs/10_AGENT_SAFETY.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/decisions/template/ODR-008-portable-agent-entry-point.md`, `docs/decisions/template/ODR-009-profile-scaffolding-contract.md`, `SECURITY.md`
-- Replace “PR pending” with the real PR number when the change is opened, then move this entry to Completed
+No active template changes.
 
 ## Completed
+
+### 2026-07-18 — Multi-agent governance hardening v2.1 (PR #49)
+
+- [x] Add portable `AGENTS.md`; correct runtime precedence; record ODR-008/009; add four safe scaffold profiles; add npm/Bun/Deno detection fixtures; harden GitHub Actions and Gitleaks; repair current INDEX/README/ODR drift; confirm all five hosted CI jobs → `AGENTS.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `README.md`, `INDEX.md`, `CHANGELOG.md`, `.github/workflows/ci.yml`, `.gitleaks.toml`, `scripts/`, `tests/template/`, `docs/10_AGENT_SAFETY.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/decisions/template/ODR-008-portable-agent-entry-point.md`, `docs/decisions/template/ODR-009-profile-scaffolding-contract.md`, `SECURITY.md`
 
 ### 2026-07-02 — CI gitleaks job + npm audit, PR 3 of 4 (PR #48)
 
@@ -73,7 +74,7 @@
 
 ### High Priority
 
-- [ ] Confirm the GitHub-hosted `template-tests`, npm, Bun, and Deno jobs on the v2.1 pull request before merge
+No open high-priority items.
 
 ### Medium Priority
 

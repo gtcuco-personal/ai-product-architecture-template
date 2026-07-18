@@ -18,20 +18,11 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 - Links para artifacts principais (proposals, research, decisions, stakeholders)
 - Status actual
 
-### Multi-agent governance hardening — v2.1
-
-- Portable entry point: `AGENTS.md`
-- Shared policy and instruction precedence: `SYSTEM_PROMPT.md`, `docs/10_AGENT_SAFETY.md`
-- Profile scaffolding and validation: `scripts/scaffold.mjs`, `scripts/check-governance.mjs`, `tests/template/`
-- CI mode detection: `scripts/detect-ci-mode.mjs`, `.github/workflows/ci.yml`
-- Security coverage: `.gitleaks.toml`, `SECURITY.md`
-- **Status:** In progress on `chore/multi-agent-governance-hardening-2026-07-18`; PR pending
-
 ### Downstream propagation
 
-- Propagate v2.x to child repos through `/sync-repos` after v2.1 is merged
+- Propagate v2.x to child repos through `/sync-repos` after PR #49 is merged
 - Verify the separate skills sync in the `agents-and-skills` repo before marking complete
-- **Status:** Pending v2.1 merge; external repo status not assumed here
+- **Status:** Pending downstream propagation after PR #49; external repo status not assumed here
 
 Exemplo:
 
@@ -63,6 +54,14 @@ Estrutura de pastas principais com 1 linha de propósito:
 ## 🗄️ Archive
 
 Iniciativas completas, pausadas ou abandonadas. Mantêm-se aqui para contexto histórico sem poluir a vista activa.
+
+### Multi-agent governance hardening (v2.1) — 2026-07-18
+
+- Added portable agent guidance, runtime-safe instruction precedence, four scaffold profiles, CI mode detection, governance validation, and hardened dependency/secret checks
+- Added 10 temporary-fixture tests covering all profiles plus docs-only, npm, Bun, and Deno detection
+- ODR-008 and ODR-009 record the portable entry point and profile contract
+- All five GitHub-hosted CI jobs passed on PR #49
+- **Status:** Complete in this repo via PR #49
 
 ### Lean-by-default restructure (v2.0) — 2026-07-02
 - PRs #46, #47, and #48 merged to main
