@@ -6,6 +6,7 @@ import { dirname, relative, resolve } from "node:path";
 const root = process.cwd();
 const profileManifestPath = resolve(root, "template-profile.json");
 const projectMode = process.argv.includes("--project") || existsSync(profileManifestPath);
+const requireProductEvidenceContract = projectMode || process.argv.includes("--require-product-evidence-contract");
 const failures = [];
 let profileManifest;
 
@@ -68,9 +69,89 @@ function fail(message) {
   failures.push(message);
 }
 
+function parseFrontmatter(path) {
+  const content = read(path);
+  const match = content.match(/^---\n([\s\S]*?)\n---\n/);
+  if (!match) return undefined;
+
+  const values = {};
+  for (const line of match[1].split("\n")) {
+    const entry = line.match(/^([a-z_]+):\s*(.*?)(?:\s+#.*)?$/);
+    if (entry) values[entry[1]] = entry[2].trim();
+  }
+  return values;
+}
+
+function validateProductEvidenceContract() {
+  const path = "docs/1_BUSINESS_CONTEXT.md";
+  if (!existsSync(resolve(root, path))) return;
+
+  const contract = parseFrontmatter(path);
+  const fields = [
+    "contract_version",
+    "repository_role",
+    "product_ref",
+    "beneficiary",
+    "intended_outcome",
+    "runtime",
+    "data_posture",
+    "pii",
+    "storage",
+    "evidence_mode",
+    "retention",
+  ];
+  if (!contract) {
+    if (requireProductEvidenceContract) fail(`${path} has no product-evidence frontmatter`);
+    return;
+  }
+  for (const field of fields) {
+    if (!(field in contract)) fail(`${path} product-evidence contract is missing ${field}`);
+  }
+  if (!requireProductEvidenceContract) return;
+
+  const placeholders = Object.entries(contract)
+    .filter(([field]) => fields.includes(field))
+    .filter(([, value]) => value === "" || value === "TODO")
+    .map(([field]) => field);
+  if (placeholders.length > 0) {
+    fail(`${path} product-evidence contract has unfilled fields: ${placeholders.join(", ")}`);
+    return;
+  }
+
+  const allowed = {
+    repository_role: ["product", "component", "pipeline", "automation", "content", "study", "governance"],
+    runtime: ["none", "batch", "interactive", "hybrid"],
+    data_posture: ["none", "consumes", "produces", "collects"],
+    pii: ["none", "self", "third_party", "special_category"],
+    storage: ["none", "files", "sqlite", "duckdb", "parquet", "postgres", "supabase", "external", "multiple"],
+    evidence_mode: ["none", "manual", "artifact", "telemetry"],
+  };
+  for (const [field, values] of Object.entries(allowed)) {
+    if (!values.includes(contract[field])) {
+      fail(`${path} product-evidence contract has invalid ${field}: ${contract[field]}`);
+    }
+  }
+  if (contract.contract_version !== "1") fail(`${path} product-evidence contract has unsupported contract_version`);
+  if (contract.runtime === "none" && contract.data_posture !== "none") {
+    fail(`${path} runtime none requires data_posture none`);
+  }
+  if (contract.runtime === "none" && contract.storage !== "none") {
+    fail(`${path} runtime none requires storage none`);
+  }
+  if (contract.pii !== "none" && ["n/a", "none"].includes(contract.retention.toLowerCase())) {
+    fail(`${path} PII requires a retention or deletion trigger`);
+  }
+  const dataModuleRequired = contract.data_posture !== "none" || contract.storage !== "none";
+  if (dataModuleRequired && !existsSync(resolve(root, "docs/8_DATA_AND_ANALYSIS.md"))) {
+    fail(`${path} declares data or storage but docs/8_DATA_AND_ANALYSIS.md is absent`);
+  }
+}
+
 for (const path of requiredFiles) {
   if (!existsSync(resolve(root, path))) fail(`missing required file: ${path}`);
 }
+
+validateProductEvidenceContract();
 
 if (profileManifest) {
   const validProfiles = new Set(["minimal", "react-supabase", "python-data", "regulated-ai"]);

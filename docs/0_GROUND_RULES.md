@@ -19,7 +19,7 @@
 7. **Atomic changes** — each PR addresses one concern
 8. **Build and lint** must pass before push
 9. **No raw HTML rendering** — all user/DB content must be rendered via framework elements (components, template engines, etc.). If raw HTML is unavoidable (e.g. `dangerouslySetInnerHTML`, `v-html`, `innerHTML`), sanitise with DOMPurify or equivalent before rendering
-10. **Repo is the single source of truth** — all data that enters the database (schema, seed, content, configuration) must originate from files in this repository. Nothing is inserted directly into the database via UI, admin tools, or any mechanism that bypasses the repo.
+10. **Repo controls structure, not every operational record** — schemas, migrations, seed fixtures, and configuration originate from this repository. User, guest, and external operational data may enter through documented, authorised application/API flows; no untracked manual production changes to schema or configuration.
 
 ## Data Format Conventions
 

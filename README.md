@@ -9,17 +9,17 @@ Governance and documentation template for AI product repositories. Provides a st
 ├── AGENTS.md              # Portable agent entry point — shared rules for Codex and other agents
 ├── CONTRIBUTING.md        # Setup, branch strategy, PR process, code style
 ├── SECURITY.md            # Vulnerability reporting, auth model, data protection
-├── SYSTEM_PROMPT.md       # Shared operating policy (v2.2; runtime hierarchy still wins)
+├── SYSTEM_PROMPT.md       # Shared operating policy (v2.3; runtime hierarchy still wins)
 ├── CHANGELOG.md           # Version history and release notes
 ├── docs/
     ├── 0_GROUND_RULES.md        # Stack, inviolable rules, protected files
-    ├── 1_BUSINESS_CONTEXT.md    # Vision, mission, business model, markets
+    ├── 1_BUSINESS_CONTEXT.md    # Product, decision/evidence contract, vision, mission, markets
     ├── 2_ARCHITECTURE.md        # Routes, components, data model, directory structure
     ├── 3_UI_UX_GUIDELINES.md    # Design tokens, typography, spacing, UI rules
     ├── 5_ROADMAP_AND_TASKS.md   # Execution log and backlog
     ├── 6_CONTENT_AND_SOCIAL.md  # Content strategy + technical SEO/AEO/GEO (merged in v2.0)
     ├── 7_CONTENT_I18N.md        # Content architecture doctrine + i18n layer rules
-    ├── 8_DATA_AND_ANALYSIS.md   # Metric registry, assumptions log, data quality checks
+    ├── 8_DATA_AND_ANALYSIS.md   # Product data, pipeline metrics, retention, data quality
     ├── 9_AGENT_SKILLS.md        # Agent Skills framework and structure
     ├── 10_AGENT_SAFETY.md       # Trust hierarchy, prompt injection policy, minimal privilege
     ├── 11_TESTING.md            # Testing strategy, framework selection, coverage, CI/CD gates, AI evals
@@ -55,7 +55,7 @@ Governance and documentation template for AI product repositories. Provides a st
 | Profile | Use when |
 |---|---|
 | `minimal` | Small internal tool or prototype needing only the governance core |
-| `react-supabase` | React/Supabase product with UI, content, i18n, and AI guidance |
+| `react-supabase` | React/Supabase product with UI, product-data/evidence, content, i18n, and AI guidance |
 | `python-data` | Python analytics, data science, or data-heavy AI product |
 | `regulated-ai` | External or regulated AI product that needs the complete template |
 
@@ -65,7 +65,7 @@ copy because deleted modules cannot be reconstructed safely.
 
 ## Design Principles
 
-- **Opinionated for two stacks, not agnostic for all.** The governance structure (docs 0-1, 5, 9-14, ODRs) is genuinely stack-independent. But `docs/2_ARCHITECTURE.md`'s DB checklist, `docs/3_UI_UX_GUIDELINES.md`, and `docs/15_HEALTH_CHECK.md` assume **React/Vite + Tailwind + shadcn/ui + Supabase**; `docs/8_DATA_AND_ANALYSIS.md` assumes a **Python/pandas** analytics stack. If your project uses a different stack, treat those specific docs as examples to rewrite, not as agnostic scaffolding — don't assume the whole template is stack-neutral just because some of it is.
+- **Opinionated for two stacks, not agnostic for all.** The product/evidence contract in doc 1 is stack-independent. `docs/8_DATA_AND_ANALYSIS.md` has separate interactive-product and batch/pipeline paths; `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md`, and `docs/15_HEALTH_CHECK.md` still contain React/Vite + Tailwind + shadcn/ui + Supabase examples. Adapt examples rather than assuming the whole template is stack-neutral.
 - **AI-first and multi-agent** — `AGENTS.md` carries portable guidance; runtime-specific adapters add capabilities without redefining the runtime's instruction hierarchy
 - **Modular** — use what you need, delete what you don't
 - **Convention over configuration** — consistent across all your repos

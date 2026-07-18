@@ -12,9 +12,17 @@
 
 ## In Progress
 
-No active template changes.
+### Product, decision & evidence contract (v2.3) — delivery gate
+
+- Open the template PR and verify its hosted CI before the downstream pilot.
 
 ## Completed
+
+### 2026-07-18 — Product, decision & evidence contract v2.3 (PR #52)
+
+- [x] Add machine-readable repository role, runtime, data posture, PII, retention, and evidence fields without coupling them to the destructive profile manifest.
+- [x] Retain data governance for React/Supabase; add interactive-product and batch/pipeline paths; enforce a named consumer for material data.
+- [x] Add ODR-010, governance validation, and fixture coverage. → `docs/1_BUSINESS_CONTEXT.md`, `docs/8_DATA_AND_ANALYSIS.md`, `scripts/`, `tests/template/`
 
 ### 2026-07-18 — Executable CI fixtures v2.2 (PR #50)
 
