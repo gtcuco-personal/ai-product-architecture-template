@@ -19,6 +19,9 @@
 #   governance-check : valida a estrutura em todos os runs. Em pull requests,
 #                alterações a artefactos rastreados (incluindo docs/decisions)
 #                exigem actualizações tanto no INDEX.md como no CHANGELOG.md.
+#   template-tests : no template original, valida os quatro perfis e executa
+#                mini-projectos reais npm, Bun e Deno. Após aplicar um perfil,
+#                tests/template é removido e este job termina como skip seguro.
 #
 # Editar/adicionar este ficheiro exige o scope 'workflow' no token git.
 # Em repos de org cujo token não o tem → adicionar via editor web do GitHub.
@@ -155,10 +158,19 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22
+      - name: Setup Bun for executable fixture
+        if: hashFiles('tests/template/fixtures/bun/package.json') != ''
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Setup Deno for executable fixture
+        if: hashFiles('tests/template/fixtures/deno/supabase/functions/*/index.ts') != ''
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: v2.x
       - name: Test template scaffolding and CI detection
         run: |
           if [ -d tests/template ]; then
             node --test tests/template/*.test.mjs
+            node tests/template/run-ci-fixtures.mjs
           else
             echo "Template fixture tests removed by applied project profile; skipping."
           fi

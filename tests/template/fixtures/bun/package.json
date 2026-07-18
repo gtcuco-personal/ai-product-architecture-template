@@ -1,0 +1,14 @@
+{
+  "name": "ai-template-ci-fixture-bun",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "fixture-local": "file:./vendor/fixture-local"
+  },
+  "scripts": {
+    "lint": "bun -e \"import { add } from './src/math.ts'; if (add(2, 3) !== 5) process.exit(1)\"",
+    "build": "bun build ./src/math.ts --target=bun --outdir=./dist",
+    "test": "bun test"
+  }
+}

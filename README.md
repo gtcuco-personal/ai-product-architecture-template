@@ -9,7 +9,7 @@ Governance and documentation template for AI product repositories. Provides a st
 ├── AGENTS.md              # Portable agent entry point — shared rules for Codex and other agents
 ├── CONTRIBUTING.md        # Setup, branch strategy, PR process, code style
 ├── SECURITY.md            # Vulnerability reporting, auth model, data protection
-├── SYSTEM_PROMPT.md       # Shared operating policy (v2.1; runtime hierarchy still wins)
+├── SYSTEM_PROMPT.md       # Shared operating policy (v2.2; runtime hierarchy still wins)
 ├── CHANGELOG.md           # Version history and release notes
 ├── docs/
     ├── 0_GROUND_RULES.md        # Stack, inviolable rules, protected files
@@ -32,10 +32,13 @@ Governance and documentation template for AI product repositories. Provides a st
     └── decisions/
         ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
         └── template/            # ODRs inherited from this base template
-└── scripts/
+├── scripts/
     ├── check-governance.mjs     # Dependency-free governance self-check
     ├── detect-ci-mode.mjs       # npm/Bun/Deno stack detection used by CI
     └── scaffold.mjs             # Safe, dry-run-first profile scaffolder
+└── tests/template/
+    ├── fixtures/                # Executable npm, Bun, and Deno mini-projects
+    └── run-ci-fixtures.mjs      # Runs real install/check/test/audit paths
 ```
 
 ## How to Use

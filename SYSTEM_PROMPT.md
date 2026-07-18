@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.1 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.2 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.2 | 2026-07-18 | Added executable npm, Bun, and Deno fixture projects so hosted template CI proves each detected package/runtime path rather than testing detection alone. |
 | 2.1 | 2026-07-18 | Added portable `AGENTS.md` guidance; clarified that this file is a project policy rather than a runtime system prompt; replaced the false repo-over-user hierarchy with a runtime-owned instruction model; added profile scaffolding, fixture tests, governance self-validation, Bun/npm detection, and CI/security hardening. |
 | 2.0 | 2026-07-02 | **Breaking restructure**, following a full-template audit that found stale facts, drifted duplication, and enterprise-sized compliance defaults on a template meant to also serve solo/small projects. Merged `docs/4_SEO_AND_AEO.md` into `docs/6_CONTENT_AND_SOCIAL.md` (removed doc 4). Renamed `docs/6_HEALTH_CHECK.md` → `docs/15_HEALTH_CHECK.md` (resolves the duplicate `6_` prefix). Split `docs/prompts.md`'s Lovable-specific vocabulary into `docs/guides/lovable-vocabulary.md`. Added an Applicability Gate to `docs/13_COMPLIANCE_FRAMEWORKS.md` and tagged the heaviest sections (SLSA, SBOM, disclosure SLAs, AI eval suites, incident SLAs) **"Enterprise/regulated — opt-in"** across docs 11/12/14 and `SECURITY.md`, with an honest minimum tier added to `docs/11_TESTING.md`. Dropped the "stack-agnostic" claim in `README.md` in favour of naming the two stacks the template actually assumes. Updated `CLAUDE.md` Context Loading Policy and this file's §1/§6 for all renamed/removed docs. See ODR-007 |
 | 1.20 | 2026-07-01 | Added `governance-check` job to `.github/workflows/ci.yml` — on `pull_request`, fails a PR that touches tracked artefacts (`public/videos/`, `supabase/functions/`, `supabase/migrations/`, `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`) without updating `INDEX.md` or `CHANGELOG.md`. Universal — grep doesn't match in repos without those paths, so the job concludes green. *(Row backfilled — this version bumped the header on origin/main without a corresponding changelog table entry; added here for consistency.)* |

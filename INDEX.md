@@ -20,9 +20,9 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 
 ### Downstream propagation
 
-- Propagate v2.x to child repos through `/sync-repos` after PR #49 is merged
+- Propagate v2.2 to child repos through `/sync-repos` after PR #50 is merged
 - Verify the separate skills sync in the `agents-and-skills` repo before marking complete
-- **Status:** Pending downstream propagation after PR #49; external repo status not assumed here
+- **Status:** Pending downstream propagation after PR #50; external repo status not assumed here
 
 Exemplo:
 
@@ -49,11 +49,17 @@ Estrutura de pastas principais com 1 linha de propósito:
 - `.githooks/` — pre-commit secrets scanner (gitleaks)
 - `.github/workflows/` — CI for build/test, secret scanning, Deno checks, and governance validation
 - `scripts/` — dependency-free repository validation utilities
-- `tests/template/` — temporary fixture tests for scaffold profiles and CI mode detection; removed when a profile is applied
+- `tests/template/` — temporary profile/unit tests plus executable npm/Bun/Deno fixture projects; removed when a profile is applied
 
 ## 🗄️ Archive
 
 Iniciativas completas, pausadas ou abandonadas. Mantêm-se aqui para contexto histórico sem poluir a vista activa.
+
+### Executable CI fixtures (v2.2) — 2026-07-18
+
+- Added dependency-free npm, Bun, and Deno mini-projects under `tests/template/fixtures/`
+- Hosted CI executed locked installs, lint/build/test scripts, dependency audits, and Deno type-checks successfully
+- **Status:** Complete in this repo via PR #50
 
 ### Multi-agent governance hardening (v2.1) — 2026-07-18
 

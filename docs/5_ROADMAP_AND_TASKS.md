@@ -16,6 +16,10 @@ No active template changes.
 
 ## Completed
 
+### 2026-07-18 — Executable CI fixtures v2.2 (PR #50)
+
+- [x] Add static npm, Bun, and Deno mini-projects and prove their real locked install, lint, build, test, audit, and type-check paths in hosted CI → `.github/workflows/ci.yml`, `tests/template/fixtures/`, `tests/template/run-ci-fixtures.mjs`, `scripts/check-governance.mjs`, `docs/11_TESTING.md`, `README.md`, `SYSTEM_PROMPT.md`, `CHANGELOG.md`, `INDEX.md`
+
 ### 2026-07-18 — Multi-agent governance hardening v2.1 (PR #49)
 
 - [x] Add portable `AGENTS.md`; correct runtime precedence; record ODR-008/009; add four safe scaffold profiles; add npm/Bun/Deno detection fixtures; harden GitHub Actions and Gitleaks; repair current INDEX/README/ODR drift; confirm all five hosted CI jobs → `AGENTS.md`, `CLAUDE.md`, `SYSTEM_PROMPT.md`, `README.md`, `INDEX.md`, `CHANGELOG.md`, `.github/workflows/ci.yml`, `.gitleaks.toml`, `scripts/`, `tests/template/`, `docs/10_AGENT_SAFETY.md`, `docs/11_TESTING.md`, `docs/12_DEPENDENCY_MANAGEMENT.md`, `docs/decisions/template/ODR-008-portable-agent-entry-point.md`, `docs/decisions/template/ODR-009-profile-scaffolding-contract.md`, `SECURITY.md`

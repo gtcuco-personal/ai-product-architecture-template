@@ -1,0 +1,11 @@
+{
+  "name": "ai-template-ci-fixture-npm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "node --check src/math.mjs",
+    "build": "node -e \"import('./src/math.mjs').then(({ add }) => { if (add(2, 3) !== 5) process.exit(1) })\"",
+    "test": "node --test"
+  }
+}
