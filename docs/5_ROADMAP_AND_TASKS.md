@@ -18,7 +18,7 @@
 
 ## Completed
 
-### 2026-07-18 — Product, decision & evidence contract v2.3 (PR pending)
+### 2026-07-18 — Product, decision & evidence contract v2.3 (PR #52)
 
 - [x] Add machine-readable repository role, runtime, data posture, PII, retention, and evidence fields without coupling them to the destructive profile manifest.
 - [x] Retain data governance for React/Supabase; add interactive-product and batch/pipeline paths; enforce a named consumer for material data.
