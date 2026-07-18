@@ -21,6 +21,10 @@
 9. **No raw HTML rendering** — all user/DB content must be rendered via framework elements (components, template engines, etc.). If raw HTML is unavoidable (e.g. `dangerouslySetInnerHTML`, `v-html`, `innerHTML`), sanitise with DOMPurify or equivalent before rendering
 10. **Repo controls structure, not every operational record** — schemas, migrations, seed fixtures, and configuration originate from this repository. User, guest, and external operational data may enter through documented, authorised application/API flows; no untracked manual production changes to schema or configuration.
 
+## Data Format Conventions
+
+- **Phone numbers:** [E.164](https://www.itu.int/rec/T-REC-E.164) — `+<country code><digits>`, no spaces, dashes, or parentheses (e.g. `+351912345678`). This is the actual international telecom standard (ITU-T, not ISO — there is no ISO phone number standard), and it is what `wa.me`/WhatsApp links, SMS gateways, and most telecom APIs expect anyway. Enforce with a DB `CHECK` constraint (e.g. `phone ~ '^\+[1-9][0-9]{5,14}$'`), not just a naming convention — free-text entry drifts within weeks otherwise.
+
 ## Lint Warnings Policy
 
 - **Errors:** must be zero before any task is complete

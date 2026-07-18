@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.4] — 2026-07-18 — Phone number format convention (PR #51)
+
+### Added
+
+- Data Format Conventions section in `docs/0_GROUND_RULES.md` specifying E.164 for phone numbers, with a DB `CHECK` constraint recommended over relying on convention alone
+
 ## [2.3] — 2026-07-18 — Product, decision & evidence contract
 
 ### Added

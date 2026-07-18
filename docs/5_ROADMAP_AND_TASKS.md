@@ -18,6 +18,11 @@
 
 ## Completed
 
+### 2026-07-18 — Phone number format convention (E.164) v2.4 (PR #51)
+
+- [x] Add a Data Format Conventions section to `docs/0_GROUND_RULES.md` specifying E.164 for phone numbers, with the DB `CHECK` constraint pattern recommended over convention alone.
+- [x] Surfaced by normalizing scattered phone formats (spaces, missing country code) in a downstream repo's `service_providers` table. → `docs/0_GROUND_RULES.md`
+
 ### 2026-07-18 — Product, decision & evidence contract v2.3 (PR #52)
 
 - [x] Add machine-readable repository role, runtime, data posture, PII, retention, and evidence fields without coupling them to the destructive profile manifest.
