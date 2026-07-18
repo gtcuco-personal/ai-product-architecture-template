@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.2] — 2026-07-18 — Executable CI fixtures (PR pending)
+
+### Added
+
+- Static dependency-free npm, Bun, and Deno mini-projects under `tests/template/fixtures/`
+- `tests/template/run-ci-fixtures.mjs`, which asserts the detected mode and executes the real install, lint, build, test, dependency-audit, and Deno type-check paths
+
+### Changed
+
+- The hosted `template-tests` job now installs Bun and Deno only while template fixtures exist, then runs the executable integration suite in addition to the existing 10 unit/profile fixtures
+
 ## [2.1] — 2026-07-18 — Multi-agent governance hardening (PR #49)
 
 ### Added

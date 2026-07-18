@@ -18,6 +18,13 @@ Lista de workstreams, deals ou projectos activos. Cada entrada:
 - Links para artifacts principais (proposals, research, decisions, stakeholders)
 - Status actual
 
+### Executable CI fixtures — v2.2
+
+- Static npm, Bun, and Deno mini-projects: `tests/template/fixtures/`
+- Integration runner: `tests/template/run-ci-fixtures.mjs`
+- Hosted execution: `.github/workflows/ci.yml` → `template-tests`
+- **Status:** In progress on `test/ci-fixture-integration-2026-07-18`; PR pending
+
 ### Downstream propagation
 
 - Propagate v2.x to child repos through `/sync-repos` after PR #49 is merged
@@ -49,7 +56,7 @@ Estrutura de pastas principais com 1 linha de propósito:
 - `.githooks/` — pre-commit secrets scanner (gitleaks)
 - `.github/workflows/` — CI for build/test, secret scanning, Deno checks, and governance validation
 - `scripts/` — dependency-free repository validation utilities
-- `tests/template/` — temporary fixture tests for scaffold profiles and CI mode detection; removed when a profile is applied
+- `tests/template/` — temporary profile/unit tests plus executable npm/Bun/Deno fixture projects; removed when a profile is applied
 
 ## 🗄️ Archive
 

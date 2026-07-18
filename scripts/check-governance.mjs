@@ -44,7 +44,19 @@ if (!projectMode) {
     "docs/14_AI_GOVERNANCE.md",
     "docs/15_HEALTH_CHECK.md",
     "tests/template/ci-detection.test.mjs",
+    "tests/template/run-ci-fixtures.mjs",
     "tests/template/scaffold.test.mjs",
+    "tests/template/fixtures/npm/package.json",
+    "tests/template/fixtures/npm/package-lock.json",
+    "tests/template/fixtures/npm/src/math.mjs",
+    "tests/template/fixtures/npm/math.test.mjs",
+    "tests/template/fixtures/bun/package.json",
+    "tests/template/fixtures/bun/bun.lock",
+    "tests/template/fixtures/bun/src/math.ts",
+    "tests/template/fixtures/bun/math.test.ts",
+    "tests/template/fixtures/bun/vendor/fixture-local/package.json",
+    "tests/template/fixtures/deno/supabase/functions/example/index.ts",
+    "tests/template/fixtures/deno/supabase/functions/example/math.ts",
   );
 }
 

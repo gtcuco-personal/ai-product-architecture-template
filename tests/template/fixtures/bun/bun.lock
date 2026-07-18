@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "ai-template-ci-fixture-bun",
+      "dependencies": {
+        "fixture-local": "file:./vendor/fixture-local",
+      },
+    },
+  },
+  "packages": {
+    "fixture-local": ["fixture-local@file:vendor/fixture-local", {}],
+  }
+}
