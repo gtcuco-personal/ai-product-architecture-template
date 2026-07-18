@@ -88,7 +88,7 @@ modules were intentionally disabled by the scaffolder and must not be recreated.
 | Code — UI copy / i18n | `docs/0_GROUND_RULES.md`, `docs/7_CONTENT_I18N.md` | `docs/2_ARCHITECTURE.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Code — content layer decision (i18n vs storage vs MD) | `docs/0_GROUND_RULES.md`, `docs/7_CONTENT_I18N.md`, `docs/2_ARCHITECTURE.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Code — data / analysis | `docs/0_GROUND_RULES.md`, `docs/8_DATA_AND_ANALYSIS.md` | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
-| Code — DB / schema | `docs/0_GROUND_RULES.md`, `docs/2_ARCHITECTURE.md`, `docs/7_CONTENT_I18N.md` (when content tables) | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
+| Code — DB / schema | `docs/0_GROUND_RULES.md`, `docs/1_BUSINESS_CONTEXT.md`, `docs/2_ARCHITECTURE.md`, `docs/8_DATA_AND_ANALYSIS.md`, `docs/7_CONTENT_I18N.md` (when content tables) | `docs/3_UI_UX_GUIDELINES.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Code — debugging | `docs/0_GROUND_RULES.md`, `docs/prompts.md` (§Debugging templates), `CHANGELOG.md` | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` |
 | Security review | `docs/0_GROUND_RULES.md`, `SECURITY.md`, `docs/prompts.md` (§Security template) | All others |
 | SEO / copy / content | `docs/1_BUSINESS_CONTEXT.md`, `docs/6_CONTENT_AND_SOCIAL.md` | `docs/2_ARCHITECTURE.md`, `docs/3_UI_UX_GUIDELINES.md` |

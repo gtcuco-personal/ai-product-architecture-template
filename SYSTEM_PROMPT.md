@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.2 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.3 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -15,14 +15,14 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | File | Purpose |
 |---|---|
 | `docs/0_GROUND_RULES.md` | Stack, inviolable rules, protected files, i18n config |
-| `docs/1_BUSINESS_CONTEXT.md` | Strategy, positioning, tone, target audience |
+| `docs/1_BUSINESS_CONTEXT.md` | Product, decision & evidence contract; strategy, positioning, tone, target audience |
 | `docs/2_ARCHITECTURE.md` | Routes, components, data model, directory structure |
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
 | `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
 | `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, technical + editorial SEO/AEO/GEO guidelines |
 | `docs/15_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
 | `docs/7_CONTENT_I18N.md` | Content architecture doctrine (i18n vs storage vs MD — tech-agnostic) and i18n layer rules (key naming, namespaces, copy, length) |
-| `docs/8_DATA_AND_ANALYSIS.md` | Metric registry, assumptions log, source contracts, pipeline order, data quality checks |
+| `docs/8_DATA_AND_ANALYSIS.md` | Data consumers, entity/event retention, metric registry, source contracts, pipeline quality |
 | `docs/prompts.md` | Reusable generic prompt templates for debugging, features, documentation, security, and agent autonomy |
 | `docs/10_AGENT_SAFETY.md` | Trust hierarchy, minimal privilege, irreversible action gates, prompt injection policy, red flags |
 | `docs/11_TESTING.md` | Testing strategy, framework selection, coverage requirements, CI/CD gates, AI-specific test patterns and eval framework |
@@ -230,7 +230,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | Design token or UI rule change | `docs/3_UI_UX_GUIDELINES.md` |
 | New meta tag or structured data | `docs/6_CONTENT_AND_SOCIAL.md` §Technical SEO & AEO |
 | New environment variable | `CLAUDE.md` (env section) |
-| Business model or audience shift | `docs/1_BUSINESS_CONTEXT.md` |
+| Business model, audience, runtime, data posture, or evidence shift | `docs/1_BUSINESS_CONTEXT.md` |
 | Architectural decision (trade-off) | `docs/decisions/` (new local ODR) |
 | Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
 | Security model change | `SECURITY.md` |
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.3 | 2026-07-18 | Added a machine-readable product, decision, and evidence contract to `docs/1_BUSINESS_CONTEXT.md`; made data governance proportional to runtime; retained the data module for React/Supabase; added contract validation and profile fixtures. See ODR-010. |
 | 2.2 | 2026-07-18 | Added executable npm, Bun, and Deno fixture projects so hosted template CI proves each detected package/runtime path rather than testing detection alone. |
 | 2.1 | 2026-07-18 | Added portable `AGENTS.md` guidance; clarified that this file is a project policy rather than a runtime system prompt; replaced the false repo-over-user hierarchy with a runtime-owned instruction model; added profile scaffolding, fixture tests, governance self-validation, Bun/npm detection, and CI/security hardening. |
 | 2.0 | 2026-07-02 | **Breaking restructure**, following a full-template audit that found stale facts, drifted duplication, and enterprise-sized compliance defaults on a template meant to also serve solo/small projects. Merged `docs/4_SEO_AND_AEO.md` into `docs/6_CONTENT_AND_SOCIAL.md` (removed doc 4). Renamed `docs/6_HEALTH_CHECK.md` → `docs/15_HEALTH_CHECK.md` (resolves the duplicate `6_` prefix). Split `docs/prompts.md`'s Lovable-specific vocabulary into `docs/guides/lovable-vocabulary.md`. Added an Applicability Gate to `docs/13_COMPLIANCE_FRAMEWORKS.md` and tagged the heaviest sections (SLSA, SBOM, disclosure SLAs, AI eval suites, incident SLAs) **"Enterprise/regulated — opt-in"** across docs 11/12/14 and `SECURITY.md`, with an honest minimum tier added to `docs/11_TESTING.md`. Dropped the "stack-agnostic" claim in `README.md` in favour of naming the two stacks the template actually assumes. Updated `CLAUDE.md` Context Loading Policy and this file's §1/§6 for all renamed/removed docs. See ODR-007 |

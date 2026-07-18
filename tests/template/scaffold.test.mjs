@@ -44,7 +44,7 @@ function replace(path, replacements) {
   writeFileSync(path, content);
 }
 
-function fillRequiredPlaceholders(directory) {
+function fillRequiredPlaceholders(directory, profile = "react-supabase") {
   replace(join(directory, "CLAUDE.md"), [
     ["# [Project Name]", "# Fixture Project"],
     ["[repo-name]", "fixture-project"],
@@ -55,6 +55,30 @@ function fillRequiredPlaceholders(directory) {
   replace(join(directory, "docs/0_GROUND_RULES.md"), [
     ["| [Layer] | [Technology] | [Version] |", "| Runtime | Node.js | 22 |"],
   ]);
+  const contract = profile === "minimal"
+    ? [
+      ["repository_role: TODO", "repository_role: automation"],
+      ["beneficiary: TODO", "beneficiary: operator"],
+      ["intended_outcome: TODO", "intended_outcome: complete a fixture task"],
+      ["runtime: TODO", "runtime: none"],
+      ["data_posture: TODO", "data_posture: none"],
+      ["pii: TODO", "pii: none"],
+      ["storage: TODO", "storage: none"],
+      ["evidence_mode: TODO", "evidence_mode: manual"],
+      ["retention: TODO", "retention: n/a"],
+    ]
+    : [
+    ["repository_role: TODO", "repository_role: product"],
+    ["beneficiary: TODO", "beneficiary: operator"],
+    ["intended_outcome: TODO", "intended_outcome: complete a fixture task"],
+    ["runtime: TODO", "runtime: interactive"],
+    ["data_posture: TODO", "data_posture: collects"],
+    ["pii: TODO", "pii: none"],
+    ["storage: TODO", "storage: supabase"],
+    ["evidence_mode: TODO", "evidence_mode: telemetry"],
+    ["retention: TODO", "retention: n/a"],
+    ];
+  replace(join(directory, "docs/1_BUSINESS_CONTEXT.md"), contract);
 }
 
 for (const profile of profileNames) {
@@ -67,7 +91,7 @@ for (const profile of profileNames) {
 
     const applied = run(directory, "scripts/scaffold.mjs", ["--profile", profile, "--apply"]);
     assert.equal(applied.status, 0, applied.stderr);
-    fillRequiredPlaceholders(directory);
+    fillRequiredPlaceholders(directory, profile);
 
     const manifest = JSON.parse(readFileSync(join(directory, "template-profile.json"), "utf8"));
     assert.equal(manifest.profile, profile);
@@ -99,10 +123,36 @@ test("governance validation detects drift in a retained profile module", (t) => 
   const directory = copyTemplate(t);
   const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "regulated-ai", "--apply"]);
   assert.equal(applied.status, 0, applied.stderr);
-  fillRequiredPlaceholders(directory);
+  fillRequiredPlaceholders(directory, "regulated-ai");
 
   rmSync(join(directory, "docs/8_DATA_AND_ANALYSIS.md"));
   const validation = run(directory, "scripts/check-governance.mjs");
   assert.equal(validation.status, 1);
   assert.match(validation.stderr, /declares retained path that is missing: docs\/8_DATA_AND_ANALYSIS\.md/);
+});
+
+test("governance validation rejects an unfilled or incoherent product-evidence contract", (t) => {
+  const directory = copyTemplate(t);
+  const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
+  assert.equal(applied.status, 0, applied.stderr);
+  fillRequiredPlaceholders(directory, "minimal");
+
+  replace(join(directory, "docs/1_BUSINESS_CONTEXT.md"), [["data_posture: none", "data_posture: collects"]]);
+  const validation = run(directory, "scripts/check-governance.mjs");
+  assert.equal(validation.status, 1);
+  assert.match(validation.stderr, /runtime none requires data_posture none/);
+  assert.match(validation.stderr, /declares data or storage but docs\/8_DATA_AND_ANALYSIS\.md is absent/);
+});
+
+test("legacy repositories are not required to migrate until project mode is requested", (t) => {
+  const directory = copyTemplate(t);
+  const path = join(directory, "docs/1_BUSINESS_CONTEXT.md");
+  writeFileSync(path, readFileSync(path, "utf8").replace(/^---\n[\s\S]*?\n---\n\n/, ""));
+
+  const templateValidation = run(directory, "scripts/check-governance.mjs");
+  assert.equal(templateValidation.status, 0, templateValidation.stderr);
+
+  const projectValidation = run(directory, "scripts/check-governance.mjs", ["--project"]);
+  assert.equal(projectValidation.status, 1);
+  assert.match(projectValidation.stderr, /has no product-evidence frontmatter/);
 });

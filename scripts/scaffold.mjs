@@ -26,11 +26,12 @@ const profiles = {
     keep: [],
   },
   "react-supabase": {
-    description: "React/Supabase product with UI, content, i18n, AI, compliance, and dependency guidance.",
+    description: "React/Supabase product with UI, data/evidence, content, i18n, AI, compliance, and dependency guidance.",
     keep: [
       "docs/3_UI_UX_GUIDELINES.md",
       "docs/6_CONTENT_AND_SOCIAL.md",
       "docs/7_CONTENT_I18N.md",
+      "docs/8_DATA_AND_ANALYSIS.md",
       "docs/9_AGENT_SKILLS.md",
       "docs/12_DEPENDENCY_MANAGEMENT.md",
       "docs/13_COMPLIANCE_FRAMEWORKS.md",

@@ -1,158 +1,111 @@
 # Data & Analysis Governance
 
-> Remove this file if the project has no data analysis, reporting, or metrics work.
+> **Applicability:** retain this module for a repository that persists data,
+> runs a pipeline, reports metrics, or collects product events. Remove it for a
+> truthful `runtime: none` / `data_posture: none` repository. The universal
+> declaration lives in `docs/1_BUSINESS_CONTEXT.md`.
 
-**Core rule:** One metric, one definition, one source of truth. If it is not in this file, it is not governed — it is a guess.
+**Core rule:** collect or retain data only when it has a named consumer: a
+decision, a quality control, an operational workflow, or a legal obligation.
+"It may be useful later" needs an owner and review date; it is not a retention
+policy.
 
 ---
 
-## Metric Registry
+## Data posture & decision links
 
-Every metric that appears in a report, dashboard, or stakeholder conversation must have a canonical definition here. If two outputs disagree, this table is the tiebreaker. Changing a formula requires a Decisions Log entry.
+For every metric, event, or durable dataset that matters, record its consumer.
+The definition of a metric without a decision it can change is observability,
+not a product metric.
 
-| Metric | Formula | Grain | Source | Owner |
-|--------|---------|-------|--------|-------|
-| [metric name] | [exact formula] | [lowest valid aggregation level] | [table or file] | [owner] |
+| Record / metric | Consumer decision or control | Definition / grain | Source | Review by |
+|-----------------|------------------------------|--------------------|--------|-----------|
+| [name] | [pricing / quality check / legal report] | [formula or schema version] | [table/file/API] | [date/trigger] |
+
+## Interactive products — entities, events & retention
+
+Use this section for web/apps/services with persistent product data. Do not
+create an event taxonomy for a static site or a batch-only tool.
+
+### Entity & access registry
+
+| Entity | Purpose | Personal data | Authorisation / access | Deletion or anonymisation mechanism |
+|--------|---------|---------------|------------------------|-------------------------------------|
+| [table/entity] | [why it exists] | [none/self/third-party/special-category] | [RLS/role/service] | [job/function/manual procedure] |
+
+### Event registry
+
+| Event | Trigger | Properties (classified) | Consumer | Retention | Schema version |
+|-------|---------|-------------------------|----------|-----------|----------------|
+| [event_name] | [when] | [no PII / pseudonymous / PII] | [metric/control] | [duration/trigger] | [v1] |
 
 **Rules:**
-- Grain = the lowest level at which the metric is valid. Aggregate UP, never down without re-deriving.
-- If a metric has changed definition, log the old version in the Decisions Log with an effective date.
+- No event without a named consumer.
+- Version event schemas; document deduplication/idempotency when retries exist.
+- Cross-repository analysis is aggregate by default. A joinable person-level
+  identifier requires an explicit local decision and access justification.
+- A retention entry must name the mechanism that performs deletion or
+  anonymisation; a Markdown promise alone is not enforcement.
 
 ---
 
-## Assumptions Log
+## Batch & analysis pipelines
 
-An assumption is any value that is chosen, not observed. Every assumption that drives an analysis must be registered here.
+Use this section for Python, SQL, notebooks, ETL, scheduled automation, or
+financial analysis. Interactive products may also use it for their reporting
+pipeline.
 
-| Assumption | Value | Set Date | Review By | Justification |
-|------------|-------|----------|-----------|---------------|
-| [name] | [value] | [YYYY-MM-DD] | [YYYY-MM-DD] | [reason + source] |
-
-**Rules:**
-- Every assumption has a Review By date — no assumption is permanent.
-- When updating a value: move the old row to the Decisions Log with its retirement date, add the new row here.
-- If an assumption is "industry standard," cite the specific standard and date.
-
----
-
-## Source Contracts
-
-A source contract defines what you expect from an upstream data source. When reality violates the contract, the pipeline should fail loudly — not silently produce wrong outputs.
+### Source contracts
 
 For each source, document:
 
 ```
-Source:           [name — e.g. "Monthly export from X"]
+Source:           [name]
 Location:         [path, table, or URL pattern]
-Expected fields:  [list of required columns/keys with types]
-Refresh cadence:  [e.g. monthly, on-demand, real-time]
-Failure signal:   [how to detect a broken import — e.g. "row count drops > 20% vs prior run"]
+Expected fields:  [required columns/keys with types]
+Refresh cadence:  [on-demand, scheduled, real-time]
+Failure signal:   [how a broken import is detected]
 Last verified:    [YYYY-MM-DD]
-
-Known breaking changes (append only):
-- [YYYY-MM-DD]: [what changed and what was fixed]
 ```
 
----
+### Pipeline & execution order
 
-## Pipeline & Execution Order
+| Step | Script / job | Input | Output | Quality or idempotency check |
+|------|--------------|-------|--------|------------------------------|
+| 1 | [filename] | [source] | [output] | [check] |
+| 2 | [filename] | [step 1 output] | [output] | [check] |
 
-The canonical sequence from raw data to outputs. Run steps in order. Do not skip.
+### Metric registry & assumptions
 
-| Step | Script / Notebook | Input | Output | Notes |
-|------|-------------------|-------|--------|-------|
-| 1 | [filename] | [source] | [output] | [e.g. run after new export lands] |
-| 2 | [filename] | [step 1 output] | [output] | |
-
-### Notebook / Script Registry
-
-| File | Status | Purpose |
-|------|--------|---------|
-| [filename] | active | [what it does] |
-| [filename] | archived | [why retired — date] |
+| Metric / assumption | Formula or value | Grain | Source | Consumer | Review by |
+|---------------------|------------------|-------|--------|----------|-----------|
+| [name] | [exact formula/value] | [lowest valid level] | [table/file] | [decision/control] | [date] |
 
 **Rules:**
-- Name files with a numeric prefix: `01_`, `02_`, `03_`
-- Archived files move to `archive/` — never delete, you may need to reproduce old outputs
-- Only `active` files are part of the pipeline
-
-### Directory Structure
-
-```
-data/
-├── raw/         # Immutable — never overwrite source files
-└── processed/   # Outputs of cleaning/transformation steps
-notebooks/
-├── [active notebooks]
-└── archive/     # Retired experiments
-src/             # Reusable functions (metrics, parsers, validation)
-reports/         # Final outputs — the source of truth for stakeholders
-```
+- Aggregate up; never infer a lower grain without re-deriving it.
+- Every changed formula, source schema, or assumption goes in the Decisions Log.
+- Fail loudly on critical quality failures: duplicate keys, missing required
+  fields, impossible dates, or an explicit row-count threshold.
+- Archived scripts may be retained for reproducibility, but raw personal data,
+  exports, embeddings, and backups still follow the retention/deletion rule.
 
 ---
 
-## Data Quality Checks
+## Data privacy
 
-Pre-flight assertions that must pass before any analysis output is trusted. If a check fails, the pipeline stops.
+- Never commit real third-party PII (names, emails, IDs, financial data) to
+  notebooks, reports, seeds, or fixtures. Use synthetic data in development.
+- Store only the minimum data needed for the declared consumer.
+- Review stakeholder outputs for accidental PII before sharing.
+- For production access controls, see `SECURITY.md`; for applicable legal
+  obligations, see `docs/13_COMPLIANCE_FRAMEWORKS.md`.
 
-```python
-# checks.py — adapt per repo
-CHECKS = {
-    "no_future_dates":   lambda df: df["date"].max() <= pd.Timestamp.today(),
-    "no_duplicate_keys": lambda df: df.duplicated(subset=["[key_columns]"]).sum() == 0,
-    "row_count_minimum": lambda df: len(df) >= [minimum],
-    # add domain-specific checks below
-}
-```
+## Decisions log
 
-**Rules:**
-- Fail loudly — raise an exception, do not silently skip rows
-- Log which check failed and the actual vs expected value
-- Add a new check every time a silent failure is discovered
-
----
-
-## Cohort & Segment Definitions
-
-Any grouping used in analysis must have a precise definition here. Prose is not a definition — the boundary logic (SQL, code, or date range) is the definition.
-
-| Name | Definition | Boundary logic | Notes |
-|------|------------|----------------|-------|
-| [cohort name] | [plain language] | [SQL snippet or code] | [edge cases] |
-
-**Rules:**
-- If two queries define the same cohort differently, this table wins
-- Date boundaries must specify inclusion/exclusion explicitly (`>` vs `>=`)
-- When a cohort definition changes, log the old version in Decisions Log with effective date
-
----
-
-## Data Privacy
-
-- Never commit real PII (names, emails, IDs, financial data) to notebooks or reports
-- Use anonymised or synthetic data in development and testing
-- For production data access rules, see `SECURITY.md`
-- Outputs intended for stakeholders must be reviewed for accidental PII before sharing
-- If a small amount of real sensitive data genuinely needs to be version-controlled (e.g. a reference dataset with real account numbers), encrypt it with git-crypt rather than committing it in the clear — see `docs/guides/git-crypt-setup.md`
-
----
-
-## Decisions Log
-
-Append-only. Every change to a metric definition, assumption, source contract, or cohort boundary. Format and rules: see `CONTRIBUTING.md` §Decisions Log Convention.
+Append-only. Record changes to a metric, source contract, event schema,
+retention/deletion mechanism, or cohort boundary. Format and rules are in
+`CONTRIBUTING.md` §Decisions Log Convention.
 
 | Date | Section | What changed | Why |
 |------|---------|--------------|-----|
 | [YYYY-MM-DD] | [section] | [what changed — include old value] | [reason] |
-
----
-
-## Maintenance Rule
-
-Update this file when any of the following change:
-- A metric formula or grain
-- A cohort or segment boundary
-- A core assumption value
-- A source schema or field name
-- The active pipeline order
-- An official output path
