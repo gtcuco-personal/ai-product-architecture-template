@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.3 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.5 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,8 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.5 | 2026-07-20 | Added `.playwright-mcp/` to `.gitignore` — Playwright MCP was writing screenshots/console logs into the repo root instead of the session scratchpad; prevents accidental commits of debug artefacts. |
+| 2.4 | 2026-07-18 | Added a Data Format Conventions section to `docs/0_GROUND_RULES.md` specifying E.164 for phone numbers, with the DB `CHECK` constraint pattern recommended over convention alone. *(Row backfilled — this version bumped `CHANGELOG.md` without a corresponding header/changelog-table update here; added for consistency.)* |
 | 2.3 | 2026-07-18 | Added a machine-readable product, decision, and evidence contract to `docs/1_BUSINESS_CONTEXT.md`; made data governance proportional to runtime; retained the data module for React/Supabase; added contract validation and profile fixtures. See ODR-010. |
 | 2.2 | 2026-07-18 | Added executable npm, Bun, and Deno fixture projects so hosted template CI proves each detected package/runtime path rather than testing detection alone. |
 | 2.1 | 2026-07-18 | Added portable `AGENTS.md` guidance; clarified that this file is a project policy rather than a runtime system prompt; replaced the false repo-over-user hierarchy with a runtime-owned instruction model; added profile scaffolding, fixture tests, governance self-validation, Bun/npm detection, and CI/security hardening. |
