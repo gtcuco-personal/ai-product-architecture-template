@@ -22,3 +22,6 @@ build/
 
 # Claude Code — commit shared config (agents, settings.json), ignore per-user overrides
 .claude/settings.local.json
+
+# Playwright MCP debug artifacts (screenshots/console logs written outside scratchpad)
+.playwright-mcp/
