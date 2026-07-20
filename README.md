@@ -9,7 +9,7 @@ Governance and documentation template for AI product repositories. Provides a st
 ├── AGENTS.md              # Portable agent entry point — shared rules for Codex and other agents
 ├── CONTRIBUTING.md        # Setup, branch strategy, PR process, code style
 ├── SECURITY.md            # Vulnerability reporting, auth model, data protection
-├── SYSTEM_PROMPT.md       # Shared operating policy (v2.3; runtime hierarchy still wins)
+├── SYSTEM_PROMPT.md       # Shared operating policy (v2.6; runtime hierarchy still wins)
 ├── CHANGELOG.md           # Version history and release notes
 ├── docs/
     ├── 0_GROUND_RULES.md        # Stack, inviolable rules, protected files

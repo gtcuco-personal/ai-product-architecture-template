@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.6] — 2026-07-20 — Fix deno-check swallowing real type errors under bash -e (PR #56)
+
+### Fixed
+
+- `deno-check`'s `out=$(deno check ...)` was a plain assignment; under GitHub Actions' default `bash -e`, a failing assignment aborted the script before the following `if [ $? -eq 0 ]` line could run, silently swallowing real Deno type errors. Wrapped the call in an `if` so the retry/error-reporting logic actually executes.
+
 ## [2.5] — 2026-07-20 — Ignore .playwright-mcp debug artifacts (PR #54)
 
 ### Fixed

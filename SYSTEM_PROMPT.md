@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.5 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.6 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.6 | 2026-07-20 | Fixed `deno-check`'s type-check step swallowing real Deno errors under GitHub Actions' default `bash -e` — a failing `out=$(deno check ...)` assignment aborted the script before the error could be printed or the network-retry logic could run. |
 | 2.5 | 2026-07-20 | Added `.playwright-mcp/` to `.gitignore` — Playwright MCP was writing screenshots/console logs into the repo root instead of the session scratchpad; prevents accidental commits of debug artefacts. |
 | 2.4 | 2026-07-18 | Added a Data Format Conventions section to `docs/0_GROUND_RULES.md` specifying E.164 for phone numbers, with the DB `CHECK` constraint pattern recommended over convention alone. *(Row backfilled — this version bumped `CHANGELOG.md` without a corresponding header/changelog-table update here; added for consistency.)* |
 | 2.3 | 2026-07-18 | Added a machine-readable product, decision, and evidence contract to `docs/1_BUSINESS_CONTEXT.md`; made data governance proportional to runtime; retained the data module for React/Supabase; added contract validation and profile fixtures. See ODR-010. |

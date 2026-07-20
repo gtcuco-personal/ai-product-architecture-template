@@ -18,6 +18,10 @@
 
 ## Completed
 
+### 2026-07-20 — Fix deno-check swallowing real type errors under bash -e (PR #56)
+
+- [x] Wrap the `deno check` call in an `if` so a real failure doesn't trigger errexit before the script can print the error or run its network-retry logic. → `.github/workflows/ci.yml`
+
 ### 2026-07-20 — Ignore .playwright-mcp debug artifacts (PR #54)
 
 - [x] Add `.playwright-mcp/` to `.gitignore` — Playwright MCP was writing screenshots/console logs into the repo root instead of the session scratchpad; prevents future accidental commits of debug artefacts. → `.gitignore`

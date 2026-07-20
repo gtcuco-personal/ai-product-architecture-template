@@ -134,8 +134,7 @@ jobs:
           for f in */index.ts; do
             ok=0
             for attempt in 1 2 3; do
-              out=$(deno check --node-modules-dir=auto --no-lock "$f" 2>&1)
-              if [ $? -eq 0 ]; then ok=1; break; fi
+              if out=$(deno check --node-modules-dir=auto --no-lock "$f" 2>&1); then ok=1; break; fi
               if echo "$out" | grep -qiE "failed: 5[0-9][0-9]|unknown status code|timed out|connection (closed|reset|refused)"; then
                 echo "::warning::$f: erro de rede a obter dependencias (tentativa $attempt)"
                 sleep 10
