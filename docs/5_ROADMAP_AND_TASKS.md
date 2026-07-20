@@ -1,6 +1,6 @@
 # Roadmap & Tasks
 
-> **Last updated:** 2026-07-18
+> **Last updated:** 2026-07-20
 
 ## Task Format
 
@@ -17,6 +17,10 @@
 - Prepare the explicit per-repository contract list and obtain approval before the downstream pilot.
 
 ## Completed
+
+### 2026-07-20 — Ignore .playwright-mcp debug artifacts (PR #54)
+
+- [x] Add `.playwright-mcp/` to `.gitignore` — Playwright MCP was writing screenshots/console logs into the repo root instead of the session scratchpad; prevents future accidental commits of debug artefacts. → `.gitignore`
 
 ### 2026-07-18 — Enforce filled product/evidence contracts (PR #53)
 
