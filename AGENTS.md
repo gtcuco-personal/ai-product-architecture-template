@@ -19,6 +19,10 @@ instruction hierarchy.
 ## Working Rules
 
 - Preserve user changes and avoid unrelated edits.
+- Query the live source before writing to it or asserting its state; match on
+  natural keys (phone, email, tax ID), never on names. If the source is
+  unreachable, stop and say so rather than shipping unverified work.
+  Full rule: `docs/0_GROUND_RULES.md` #11.
 - Never push directly to `main`; create a focused branch and open a PR.
 - Do not introduce dependencies without explicit approval.
 - Validate changes with the repository's actual lint, build, and test commands.

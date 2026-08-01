@@ -51,6 +51,14 @@ VITE_EXAMPLE_KEY=
 SERVICE_KEY=
 ```
 
+## Live Source Discipline
+
+> **Query the live source before writing to it or asserting its state.**
+
+Before inserting a row, or claiming something is done, pending, or missing, read the actual source. A seed, a doc, an export, or an agent's memory proves a record **exists** — never that it **does not**, nor that its state is current. Match on natural keys (phone, email, tax ID), not names. If the source is unreachable, stop and say so instead of shipping unverified work.
+
+Stated inline here, not only referenced, because a rule that lives in a file someone must first decide to open is a rule that does not fire. Full text: `docs/0_GROUND_RULES.md` #11.
+
 ## Git Workflow
 
 > **NEVER push directly to `main`.**
