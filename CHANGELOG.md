@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.7] — 2026-08-01 — Ground rule #11: query the live source before writing or asserting
+
+- **New ground rule #11** in `docs/0_GROUND_RULES.md`: query the live source before inserting a row or claiming something is done, pending, or missing. A seed, doc, export, or agent memory proves a record **exists** — never that it **does not**, nor that its state is current. Rule #10 governs where data *originates*; #11 governs what is already there.
+- Two corollaries, both from real failures: **match on natural keys** (phone, email, tax ID) rather than names, because the same entity carries different names across systems and name matching creates silent duplicates; and **no source access means no delivery** — an unreachable database is a reason to halt, not a caveat to append.
+- **Stated inline in `CLAUDE.md` and `AGENTS.md`, not only referenced.** Both files load automatically; `docs/0_GROUND_RULES.md` only loads if an agent decides to open it. A rule that requires that decision is a rule that does not fire — which is precisely how the failures below happened.
+- **Origin:** a supplier was written into a seed without querying the table and nearly reached production as a duplicate (already present, same phone, different name); and three maintenance items were reported as pending while the database had them `resolved` for two weeks. The governing rule existed in agent memory both times, and was not read.
+
 ## [2.6] — 2026-07-20 — Fix deno-check swallowing real type errors under bash -e (PR #56)
 
 ### Fixed
