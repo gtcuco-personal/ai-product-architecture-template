@@ -53,6 +53,8 @@ SERVICE_KEY=
 
 ## Live Source Discipline
 
+<!-- live-source-rule v1 — keep this marker; /sync-repos uses it to detect drift across repos -->
+
 > **Query the live source before writing to it or asserting its state.**
 
 Before inserting a row, or claiming something is done, pending, or missing, read the actual source. A seed, a doc, an export, or an agent's memory proves a record **exists** — never that it **does not**, nor that its state is current. Match on natural keys (phone, email, tax ID), not names. If the source is unreachable, stop and say so instead of shipping unverified work.

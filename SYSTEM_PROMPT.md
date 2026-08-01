@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.7 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.8 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.8 | 2026-08-01 | Governance check now compares `SYSTEM_PROMPT.md` against the newest `CHANGELOG.md` entry rather than merely finding the version somewhere in the file — the loophole that let 2.4 and 2.7 ship with a stale header. `AGENTS.md` steps made conditional on the referenced file existing, so one canonical text serves repos at older template versions instead of needing hand-adapted forks. Version markers added to the live-source rule in all three carriers. |
 | 2.7 | 2026-08-01 | Added ground rule #11 to `docs/0_GROUND_RULES.md` — query the live source before writing to it or asserting its state, matching on natural keys rather than names, and halting rather than shipping when the source is unreachable. Stated inline in `CLAUDE.md` and `AGENTS.md` as well, since a rule that lives only in a file an agent must decide to open does not fire. |
 | 2.6 | 2026-07-20 | Fixed `deno-check`'s type-check step swallowing real Deno errors under GitHub Actions' default `bash -e` — a failing `out=$(deno check ...)` assignment aborted the script before the error could be printed or the network-retry logic could run. |
 | 2.5 | 2026-07-20 | Added `.playwright-mcp/` to `.gitignore` — Playwright MCP was writing screenshots/console logs into the repo root instead of the session scratchpad; prevents accidental commits of debug artefacts. |

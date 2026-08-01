@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.8] — 2026-08-01 — Version coherence check, conditional AGENTS.md, rule version markers
+
+- **`check-governance.mjs` now compares `SYSTEM_PROMPT.md` against the TOP entry of `CHANGELOG.md`.** The existing check only proved the version existed *somewhere* in the changelog, so bumping CHANGELOG while leaving the header stale passed green — the older section was still there. That exact failure shipped twice (2.4, backfilled with a note; and 2.7, caught by hand hours after merge). Verified both ways: passes on a coherent tree, fails with `version drift: CHANGELOG.md latest=2.8, SYSTEM_PROMPT.md=2.7` when simulated.
+- **`AGENTS.md` steps are now conditional on the referenced file existing.** This file is copied verbatim into repos sitting at older template versions, several of which have no `template-profile.json`, no `scripts/`, and no `tasks/lessons.md`. Pointing an agent at absent files in the very first document it reads produces dead instructions — and forced a hand-adapted fork during the 2026-08-01 propagation. One canonical text now serves every repo.
+- **Version markers on the live-source rule** (`<!-- live-source-rule v1 -->`) in all three carriers. The rule is deliberately duplicated across `CLAUDE.md`, `AGENTS.md` and `docs/0_GROUND_RULES.md` in every governed repo; without a marker, detecting drift means diffing prose across ~40 locations. Bump the marker when the wording changes materially so `/sync-repos` can find stale copies mechanically.
+
 ## [2.7] — 2026-08-01 — Ground rule #11: query the live source before writing or asserting
 
 - **New ground rule #11** in `docs/0_GROUND_RULES.md`: query the live source before inserting a row or claiming something is done, pending, or missing. A seed, doc, export, or agent memory proves a record **exists** — never that it **does not**, nor that its state is current. Rule #10 governs where data *originates*; #11 governs what is already there.

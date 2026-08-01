@@ -197,6 +197,17 @@ if (failures.length === 0) {
   if (systemVersion && !changelog.includes(`## [${systemVersion}]`)) {
     fail(`CHANGELOG.md has no release section for version ${systemVersion}`);
   }
+  // The check above only proves the version EXISTS somewhere in the changelog.
+  // It stays green when CHANGELOG is bumped and SYSTEM_PROMPT is not, because
+  // the older section is still present — which is how 2.4 and 2.7 both shipped
+  // with a stale header. Compare against the TOP entry instead.
+  const latestChangelogVersion = changelog.match(/^## \[([0-9]+(?:\.[0-9]+)*)\]/m)?.[1];
+  if (systemVersion && latestChangelogVersion && systemVersion !== latestChangelogVersion) {
+    fail(
+      `version drift: CHANGELOG.md latest=${latestChangelogVersion}, ` +
+        `SYSTEM_PROMPT.md=${systemVersion} — bump the header and its changelog table too`
+    );
+  }
 }
 
 function walk(directory) {
