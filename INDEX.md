@@ -1,6 +1,7 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-08-01 (v2.7 — ground rule #11: consultar a fonte viva antes de escrever ou de afirmar estado; declarada inline no `CLAUDE.md` e no `AGENTS.md`, não só referenciada, porque uma regra que exige abrir um ficheiro não dispara.)
+> **Last updated:** 2026-08-01 (v2.8 — check de coerência de versão CHANGELOG↔SYSTEM_PROMPT, `AGENTS.md` condicional para servir repos em versões antigas sem fork, e marcadores de versão na regra live-source.)
+> **Anterior:** 2026-08-01 (v2.7 — ground rule #11: consultar a fonte viva antes de escrever ou de afirmar estado; declarada inline no `CLAUDE.md` e no `AGENTS.md`, não só referenciada, porque uma regra que exige abrir um ficheiro não dispara.)
 > **Anterior:** 2026-07-20
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
 
