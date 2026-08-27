@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 2.8 — Universal template. All project-specific details live in `/docs/`.
+> Version: 2.9 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 2.9 | 2026-08-27 | Added **Persistent Mutation Proof** to `docs/11_TESTING.md`: a success toast, a resolved HTTP request, or optimistic UI state is not evidence that a write survived. Critical mutation journeys must be read back in a fresh browser session by a stable natural key, with a direct live-source assertion where a false positive is expensive. Enforcement is set by delivery topology — pre-merge for PR-based repos, mandatory post-deploy verification where an agent commits straight to `main`. |
 | 2.8 | 2026-08-01 | Governance check now compares `SYSTEM_PROMPT.md` against the newest `CHANGELOG.md` entry rather than merely finding the version somewhere in the file — the loophole that let 2.4 and 2.7 ship with a stale header. `AGENTS.md` steps made conditional on the referenced file existing, so one canonical text serves repos at older template versions instead of needing hand-adapted forks. Version markers added to the live-source rule in all three carriers. |
 | 2.7 | 2026-08-01 | Added ground rule #11 to `docs/0_GROUND_RULES.md` — query the live source before writing to it or asserting its state, matching on natural keys rather than names, and halting rather than shipping when the source is unreachable. Stated inline in `CLAUDE.md` and `AGENTS.md` as well, since a rule that lives only in a file an agent must decide to open does not fire. |
 | 2.6 | 2026-07-20 | Fixed `deno-check`'s type-check step swallowing real Deno errors under GitHub Actions' default `bash -e` — a failing `out=$(deno check ...)` assignment aborted the script before the error could be printed or the network-retry logic could run. |

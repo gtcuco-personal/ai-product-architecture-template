@@ -111,6 +111,36 @@ Triggers: PRs + pushes to `main` (push-to-main matters for repos where an extern
 
 ---
 
+## Persistent Mutation Proof
+
+A **persistent user-facing mutation** creates, updates, or deletes durable state through the product UI. A success toast, a resolved HTTP request, or optimistic UI state is not proof that the effect survived.
+
+For every critical mutation journey:
+
+1. Exercise the write through the real UI in an isolated Playwright session.
+2. Confirm the expected API outcome; do not treat the visible success state as sufficient evidence.
+3. Open a fresh browser context/session and read the record back through the product by a stable natural or external key. A same-session render can be optimistic or cached.
+4. Query the live source directly when the UI does not round-trip the complete effect, when the write also changes side tables/background jobs, when service-role logic bypasses the user read path, or when the consequence of a false positive is high.
+
+The direct-source assertion is risk-based, not universal. It must use a real test database or designated test tenant, never a mocked DB client. Match by a unique natural/external key, not a display name.
+
+### Test-data and production boundary
+
+- Pre-merge mutation tests use a database branch, local instance, or dedicated test tenant. They never use production data.
+- A post-deploy production check is read-only by default. A synthetic production write is allowed only with a designated test entity, known and disabled side effects, an explicit cleanup plan, and user approval for the exact write and cleanup.
+- Before any live mutation, inventory secondary effects such as email, WhatsApp, calendar events, payments, webhooks, or guest automations. If they cannot be suppressed safely, stop and report that persistence could not be verified; do not manufacture a green result.
+
+### Enforcement by delivery topology
+
+| Delivery path | Enforcement |
+|---|---|
+| PR-based repository | Run the mutation proof against test/staging before merge; make it a required check when branch protection supports it. |
+| Direct-to-main agent (for example Lovable) | Run mandatory post-deploy verification in the shipping workflow. CI on `push` is an alarm, not a preventive gate. |
+
+If post-deploy verification fails, the code may already be live. Report the evidence, do not mark the work complete, assess migration compatibility, and prepare a revert/remediation for explicit approval. Never auto-revert.
+
+---
+
 ## Done Definition
 
 A feature or fix is **done** when all of the following are true:
@@ -120,6 +150,7 @@ A feature or fix is **done** when all of the following are true:
 - [ ] All existing tests still pass (`vitest run` / `pytest` / equivalent)
 - [ ] Coverage did not decrease
 - [ ] Manual smoke test run on the staging URL (for UI features)
+- [ ] Persistent user-facing mutations pass the Playwright fresh-session read-back; direct-source proof added where the escalation criteria above apply
 - [ ] `docs/5_ROADMAP_AND_TASKS.md` updated
 
 ---
