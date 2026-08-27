@@ -1,25 +1,23 @@
+<!-- GERADO POR db/render_repo_roadmaps.py — NÃO EDITAR À MÃO. A fonte é o roadmap (db/roadmap.db) -->
+
 # Roadmap & Tasks
 
-> **Last updated:** 2026-07-20
+> **Last updated:** 2026-08-27
+> Gerado a partir do roadmap central, filtrado por `src_repo = ai-product-architecture-template`.
+> Escrever aqui não guarda — usar `python3 db/roadmap_cli.py` no repo `roadmap`.
+> A narrativa do que foi feito vive no `CHANGELOG.md` ([ODR-011](https://github.com/gtcuco-personal/ai-product-architecture-template/blob/main/docs/decisions/template/ODR-011-generated-roadmap-and-single-narrative.md)).
 
-## Task Format
+---
 
-```
-- YYYY-MM-DD — Brief description of what was done (PR #N) → `file1`, `file2`
-```
+## Tech
 
-> **Rule:** Every merged PR must have a `CHANGELOG.md` entry. No exceptions.
->
-> The `Completed` section below is **retired** ([ODR-011](decisions/template/ODR-011-generated-roadmap-and-single-narrative.md)).
-> Existing entries stay — they record what was true when written — but nothing new is added here.
-> From phase 2 onward this file is **generated** per repository from the roadmap database and carries
-> a generation header; until a repository is migrated, it remains hand-written and authoritative for that repository.
+### Este mês
 
-## In Progress
+- [ ] [task description] <!-- added: 2026-06-27 -->
 
-### Product, decision & evidence contract (v2.3) — downstream pilot gate
+---
 
-- Prepare the explicit per-repository contract list and obtain approval before the downstream pilot.
+> As entradas abaixo são registo histórico, preservadas verbatim. A secção está **retirada de serviço** (ODR-011): nada de novo é acrescentado aqui.
 
 ## Completed
 
@@ -118,3 +116,4 @@ No open high-priority items.
 ### Low Priority
 
 - [ ] [task description]
+
