@@ -1,6 +1,6 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-08-27 (v3.0 — ODR-011: `docs/5_ROADMAP_AND_TASKS.md` passa a ficheiro gerado por repositório, o `Completed` é retirado e a narrativa vive só no `CHANGELOG.md`.)
+> **Last updated:** 2026-08-27 (v3.1 — `check-governance.mjs` valida ficheiros gerados pelo cabeçalho; sem comparação de conteúdo com o template.)
 > **Anterior:** 2026-08-01 (v2.7 — ground rule #11: consultar a fonte viva antes de escrever ou de afirmar estado; declarada inline no `CLAUDE.md` e no `AGENTS.md`, não só referenciada, porque uma regra que exige abrir um ficheiro não dispara.)
 > **Anterior:** 2026-07-20
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.

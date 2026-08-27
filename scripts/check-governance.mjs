@@ -283,6 +283,35 @@ if (projectMode) {
   }
 }
 
+// ODR-011 — ficheiros gerados validam-se pelo CABEÇALHO, nunca por comparação
+// byte a byte com o template. Comparar marcaria como drift todos os repositórios
+// correctamente migrados: o ficheiro deles difere do template por desenho.
+//
+// O que se valida aqui é o contrato do cabeçalho: se um ficheiro se declara
+// gerado, tem de nomear o script que o produz e avisar quem o abrir de que
+// editá-lo não guarda. Um cabeçalho a meio do ficheiro não conta — só a
+// primeira linha, que é a que alguém lê antes de escrever.
+const GENERATED_FILES = ["docs/5_ROADMAP_AND_TASKS.md"];
+const GENERATED_HEADER = /^<!--\s*GERADO POR\s+(\S+)\s+—\s*(.*?)\s*-->\s*$/;
+
+for (const path of GENERATED_FILES) {
+  const content = read(path);
+  if (!content) continue;
+  const first = content.split("\n", 1)[0] ?? "";
+  if (!/GERADO POR/.test(content)) continue;          // escrito à mão: nada a validar
+  const match = first.match(GENERATED_HEADER);
+  if (!match) {
+    fail(`${path} mentions GERADO POR but the first line is not a well-formed generation header`);
+    continue;
+  }
+  if (!/\.(py|mjs|js|sh)$/.test(match[1])) {
+    fail(`${path} generation header does not name a script: ${match[1]}`);
+  }
+  if (!/NÃO EDITAR À MÃO/i.test(match[2])) {
+    fail(`${path} generation header must warn that hand edits are not saved`);
+  }
+}
+
 if (failures.length > 0) {
   console.error(`Governance check failed (${failures.length}):`);
   for (const failure of failures) console.error(`- ${failure}`);
