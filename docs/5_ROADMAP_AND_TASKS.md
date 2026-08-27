@@ -8,7 +8,12 @@
 - YYYY-MM-DD — Brief description of what was done (PR #N) → `file1`, `file2`
 ```
 
-> **Rule:** Every merged PR must have a completed entry here with its PR number. No exceptions.
+> **Rule:** Every merged PR must have a `CHANGELOG.md` entry. No exceptions.
+>
+> The `Completed` section below is **retired** ([ODR-011](decisions/template/ODR-011-generated-roadmap-and-single-narrative.md)).
+> Existing entries stay — they record what was true when written — but nothing new is added here.
+> From phase 2 onward this file is **generated** per repository from the roadmap database and carries
+> a generation header; until a repository is migrated, it remains hand-written and authoritative for that repository.
 
 ## In Progress
 
