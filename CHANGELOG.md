@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.0] — 2026-08-27 — ODR-011: generated roadmap and a single narrative
+
+- **A merged PR was being narrated five times**: `CHANGELOG.md`, the `Completed` section of `docs/5_ROADMAP_AND_TASKS.md`, the `INDEX.md` header, an ODR, and the PR body. Only the first two are load-bearing. Restatement is not free — each copy is hand-written, each can drift, and a missing `Completed` entry breaks no build: it just makes the file quietly wrong until somebody trusts it.
+- **`docs/5_ROADMAP_AND_TASKS.md` becomes a generated file**, rendered per repository from the roadmap database and carrying a generation header. This is the change of nature in a mandatory governance file that makes this `3.0` rather than a point release: it stops being a place where anything is authored.
+- **The `Completed` section is retired.** The rule becomes *every merged PR must have a `CHANGELOG.md` entry*. Historical entries stay — rewriting them would destroy the record of how each repository got here — but nothing new is added.
+- **Roadmap state is written only through the roadmap CLI.** No hand-composed SQL, no editing a rendered Markdown file to record state.
+- **Generated files are validated by header, not by comparison.** Byte-comparing a generated file against the template would mark every correctly migrated repository as drifted — the trap that would have surfaced on the first propagation pass.
+- **Migration is phased**: this ODR (doctrine) → per-repository renderer and backfill (machinery) → propagation in layers. Until a repository is migrated its file stays hand-written and authoritative, which the generation header makes visible at a glance.
+- **Known trap, recorded because it was observed:** regenerating the roadmap seed from a database that is behind its remote silently discards items added by work in flight. Rebuild from the committed seed first, and keep at most one roadmap change in flight.
+
 ## [2.9] — 2026-08-27 — Persistent Mutation Proof: a success toast is not evidence
 
 - **New `Persistent Mutation Proof` section in `docs/11_TESTING.md`.** A persistent user-facing mutation creates, updates, or deletes durable state through the product UI. A success toast, a resolved HTTP request, or optimistic UI state proves the *visible* behaviour and nothing about what survived. Critical mutation journeys must be exercised through the real UI in an isolated Playwright session, then read back **in a fresh browser context** by a stable natural or external key — a same-session render can be optimistic or cached.

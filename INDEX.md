@@ -1,6 +1,6 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-08-27 (v2.9 — Persistent Mutation Proof em `docs/11_TESTING.md`: prova de que a escrita sobreviveu, lida em sessão nova por chave natural, com enforcement conforme a topologia de entrega.)
+> **Last updated:** 2026-08-27 (v3.0 — ODR-011: `docs/5_ROADMAP_AND_TASKS.md` passa a ficheiro gerado por repositório, o `Completed` é retirado e a narrativa vive só no `CHANGELOG.md`.)
 > **Anterior:** 2026-08-01 (v2.7 — ground rule #11: consultar a fonte viva antes de escrever ou de afirmar estado; declarada inline no `CLAUDE.md` e no `AGENTS.md`, não só referenciada, porque uma regra que exige abrir um ficheiro não dispara.)
 > **Anterior:** 2026-07-20
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
@@ -50,7 +50,7 @@ Estrutura de pastas principais com 1 linha de propósito:
 
 - `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check (`15_`), architecture, content/SEO/AEO/GEO (`6_`, merged with the former `4_`)
 - `docs/decisions/` — local ODRs (project-specific decisions)
-- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-010)
+- `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-011)
 - `docs/guides/` — setup guides (git-crypt, Lovable vocabulary, etc.)
 - `skills/` — template for creating project-level Agent Skills
 - `tasks/` — `lessons.md` for session corrections
