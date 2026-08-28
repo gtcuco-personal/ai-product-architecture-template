@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 3.0 — Universal template. All project-specific details live in `/docs/`.
+> Version: 3.1 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
@@ -315,6 +315,7 @@ See `docs/10_AGENT_SAFETY.md` for the full policy: irreversible action gates, ru
 
 | Version | Date | Changes |
 |---|---|---|
+| 3.1 | 2026-08-27 | `check-governance.mjs` passa a validar ficheiros gerados pelo **cabeçalho**, cumprindo o ponto 5 da ODR-011: um ficheiro que se declara gerado tem de nomear o script que o produz e avisar que editá-lo não guarda. Não há comparação de conteúdo com o template — comparar marcaria como drift todos os repositórios correctamente migrados. |
 | 3.0 | 2026-08-27 | ODR-011: a single merged PR was being narrated in five places; only `CHANGELOG.md` and `docs/decisions/` were load-bearing. The `Completed` section of `docs/5_ROADMAP_AND_TASKS.md` is retired and the rule now points at the CHANGELOG. Roadmap state is written only through the roadmap CLI, and `docs/5_ROADMAP_AND_TASKS.md` becomes a **generated** per-repository view — the change of nature in a mandatory file that makes this a major version. Checks must validate generated files by their generation header, never by byte-comparison against the template. |
 | 2.9 | 2026-08-27 | Added **Persistent Mutation Proof** to `docs/11_TESTING.md`: a success toast, a resolved HTTP request, or optimistic UI state is not evidence that a write survived. Critical mutation journeys must be read back in a fresh browser session by a stable natural key, with a direct live-source assertion where a false positive is expensive. Enforcement is set by delivery topology — pre-merge for PR-based repos, mandatory post-deploy verification where an agent commits straight to `main`. |
 | 2.8 | 2026-08-01 | Governance check now compares `SYSTEM_PROMPT.md` against the newest `CHANGELOG.md` entry rather than merely finding the version somewhere in the file — the loophole that let 2.4 and 2.7 ship with a stale header. `AGENTS.md` steps made conditional on the referenced file existing, so one canonical text serves repos at older template versions instead of needing hand-adapted forks. Version markers added to the live-source rule in all three carriers. |

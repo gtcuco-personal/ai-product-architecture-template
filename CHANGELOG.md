@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.1] — 2026-08-27 — Validar ficheiros gerados pelo cabeçalho
+
+- **`check-governance.mjs` valida o contrato do cabeçalho de geração**, cumprindo o ponto 5 da ODR-011. Um ficheiro que se declara gerado tem de o dizer na **primeira linha** — que é a que alguém lê antes de escrever —, nomear o script que o produz, e avisar que editar não guarda. Verificado nos dois sentidos: um cabeçalho mal formado falha com a mensagem certa, um cabeçalho correcto passa.
+- **Não há comparação de conteúdo com o template, e é deliberado.** O `check-governance.mjs` nunca comparou docs byte a byte — essa instrução vivia só no `/sync-repos`. Comparar marcaria como drift todos os repositórios já migrados, cujo ficheiro difere do template por desenho.
+- **Contexto:** 11 repositórios passaram hoje a ter o `docs/5_ROADMAP_AND_TASKS.md` gerado a partir do roadmap central. Sem esta distinção, a primeira passagem de propagação acusaria os onze de terem divergido.
+
 ## [3.0] — 2026-08-27 — ODR-011: generated roadmap and a single narrative
 
 - **A merged PR was being narrated five times**: `CHANGELOG.md`, the `Completed` section of `docs/5_ROADMAP_AND_TASKS.md`, the `INDEX.md` header, an ODR, and the PR body. Only the first two are load-bearing. Restatement is not free — each copy is hand-written, each can drift, and a missing `Completed` entry breaks no build: it just makes the file quietly wrong until somebody trusts it.
