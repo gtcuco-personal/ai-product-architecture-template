@@ -41,7 +41,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Corre primeiro e sozinho, só para responder "o que existe neste repo?".
+  # Sem ele, cada verificação pesada ligava a sua própria máquina, descarregava
+  # tudo, e só então descobria que não tinha nada para fazer — o arranque
+  # paga-se na mesma. Um arranque em vez de três.
+  detect:
+    # Só em pull request: as verificações que dependem dele também só
+    # correm aí. Em push a main, nada disto arranca — fica só o gitleaks.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      node: ${{ steps.d.outputs.node }}
+      deno: ${{ steps.d.outputs.deno }}
+      template: ${{ steps.d.outputs.template }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - id: d
+        run: node scripts/detect-ci-mode.mjs --github-output >> "$GITHUB_OUTPUT"
+
   build-test:
+    needs: detect
+    if: github.event_name == 'pull_request' && needs.detect.outputs.node != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -90,6 +110,10 @@ jobs:
         if: steps.detect.outputs.package_manager == 'bun'
         run: bun audit --audit-level=high
 
+  # NÃO ganha portão de evento: corre em pull request E em push a main.
+  # É a rede de segurança do lado do servidor para os repos onde o Lovable
+  # comita directamente a main, sem passar pelo hook local. Restringi-lo a
+  # pull request deixaria esses commits sem qualquer varrimento de segredos.
   gitleaks:
     runs-on: ubuntu-latest
     steps:
@@ -110,6 +134,8 @@ jobs:
           "$RUNNER_TEMP/gitleaks" detect --no-banner --redact --verbose
 
   deno-check:
+    needs: detect
+    if: github.event_name == 'pull_request' && needs.detect.outputs.deno != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -151,6 +177,8 @@ jobs:
           exit $real_fail
 
   template-tests:
+    needs: detect
+    if: github.event_name == 'pull_request' && needs.detect.outputs.template != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -182,6 +210,7 @@ jobs:
   # Motivacao: um PR pode shippar artefactos (ex. videos, edge fns, decisoes) e
   # nunca tocar no INDEX -> drift silencioso entre o repo e o seu mapa.
   governance-check:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7

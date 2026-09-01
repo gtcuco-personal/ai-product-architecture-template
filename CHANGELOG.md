@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-28 — CI: menos arranques, mesma cobertura
+
+- **Job `detect` novo.** Corre uma vez e responde "o que existe neste repo?". Antes, `build-test` e `deno-check` ligavam cada um a sua máquina, faziam checkout e só então descobriam que não havia `package.json` nem edge functions — o arranque paga-se na mesma. Passa de três arranques para um.
+- **Gatilho de evento.** `build-test`, `deno-check`, `template-tests`, `governance-check` e `detect` passam a correr **apenas em pull request**. Num fluxo branch → PR → merge, o push a `main` reverifica o código que a PR já aprovou.
+- **`gitleaks` fica intocado** — corre em pull request **e** em push a `main`. É a rede de segurança do lado do servidor para repos onde o Lovable comita directamente, sem passar pelo hook local; restringi-lo a PR deixaria esses commits sem varrimento de segredos.
+- **Condições por excesso, não por defeito.** Os portões usam `!= 'false'` em vez de `== 'true'`: se a detecção falhar ou vier vazia, a verificação **corre**. Errar por excesso custa minutos; errar por defeito dá verde sem verificar nada, que é pior.
+- **Portão dos testes do template corrigido.** `hashFiles()` não está disponível no `if` ao nível do job; a existência de `tests/template/` passa a ser um output do job `detect`, com a mesma semântica fail-open.
+- Efeito num repo só de texto: de 10 arranques por alteração para 4 — menos 60%.
+
+- `.github/workflows/ci.yml`
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
