@@ -18,6 +18,7 @@ test("detects a docs-only repository", (t) => {
     package_manager: "none",
     npm_lock: false,
     deno: false,
+    template: false,
   });
 });
 
@@ -29,6 +30,7 @@ test("detects Node with and without an npm lockfile", (t) => {
     package_manager: "npm",
     npm_lock: false,
     deno: false,
+    template: false,
   });
 
   writeFileSync(join(directory, "package-lock.json"), "{}\n");
@@ -37,6 +39,7 @@ test("detects Node with and without an npm lockfile", (t) => {
     package_manager: "npm",
     npm_lock: true,
     deno: false,
+    template: false,
   });
 });
 
@@ -51,6 +54,7 @@ test("prefers Bun when a Bun lockfile is present", (t) => {
     package_manager: "bun",
     npm_lock: false,
     deno: false,
+    template: false,
   });
 });
 
@@ -65,5 +69,19 @@ test("detects Deno edge functions", (t) => {
     package_manager: "none",
     npm_lock: false,
     deno: true,
+    template: false,
+  });
+});
+
+test("detects template self-tests", (t) => {
+  const directory = fixture(t);
+  mkdirSync(join(directory, "tests/template"), { recursive: true });
+
+  assert.deepEqual(detectCiMode(directory), {
+    node: false,
+    package_manager: "none",
+    npm_lock: false,
+    deno: false,
+    template: true,
   });
 });

@@ -23,6 +23,7 @@ export function detectCiMode(root = process.cwd()) {
     package_manager: packageManager,
     npm_lock: packageManager === "npm" && npmLock,
     deno,
+    template: existsSync(resolve(root, "tests/template")),
   };
 }
 

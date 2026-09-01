@@ -53,6 +53,7 @@ jobs:
     outputs:
       node: ${{ steps.d.outputs.node }}
       deno: ${{ steps.d.outputs.deno }}
+      template: ${{ steps.d.outputs.template }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - id: d
@@ -176,7 +177,8 @@ jobs:
           exit $real_fail
 
   template-tests:
-    if: github.event_name == 'pull_request' && hashFiles('tests/template/**') != ''
+    needs: detect
+    if: github.event_name == 'pull_request' && needs.detect.outputs.template != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7

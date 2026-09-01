@@ -40,6 +40,7 @@ if (selected("npm")) {
     package_manager: "npm",
     npm_lock: true,
     deno: false,
+    template: false,
   });
   run("npm", ["ci"], root);
   for (const script of ["lint", "build", "test"]) run("npm", ["run", script, "--if-present"], root);
@@ -53,6 +54,7 @@ if (selected("bun")) {
     package_manager: "bun",
     npm_lock: false,
     deno: false,
+    template: false,
   });
   try {
     run("bun", ["install", "--frozen-lockfile"], root);
@@ -71,6 +73,7 @@ if (selected("deno")) {
     package_manager: "none",
     npm_lock: false,
     deno: true,
+    template: false,
   });
   run(
     "deno",
