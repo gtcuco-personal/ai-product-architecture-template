@@ -2,7 +2,7 @@
 
 # Roadmap & Tasks
 
-> **Last updated:** 2026-08-27
+> **Last updated:** 2026-09-04
 > Gerado a partir do roadmap central, filtrado por `src_repo = ai-product-architecture-template`.
 > Escrever aqui não guarda — usar `python3 db/roadmap_cli.py` no repo `roadmap`.
 > A narrativa do que foi feito vive no `CHANGELOG.md` ([ODR-011](https://github.com/gtcuco-personal/ai-product-architecture-template/blob/main/docs/decisions/template/ODR-011-generated-roadmap-and-single-narrative.md)).
@@ -11,6 +11,9 @@
 
 ## Tech
 
+### Esta semana
+
+- [ ] CI: a partir de 1 de Setembro, quando a quota de Actions repuser — ver a PR #64 do ai-product-architecture-template correr verde, confirmar num repo COM código que o build-test ainda arranca (o risco real é um portão fechar de mais), e só então propagar à frota via /sync-repos. A PR está em rascunho e reduz de 10 para 4 arranques por alteração; o gitleaks fica deliberadamente a correr em push por causa dos repos onde o Lovable comita directo a main. <!-- added: 2026-08-28 -->
 ### Este mês
 
 - [ ] [task description] <!-- added: 2026-06-27 -->
