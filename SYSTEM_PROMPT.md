@@ -107,11 +107,19 @@ Not all tasks require the same rigour. Apply checks proportionally:
 1. **Atomic changes** — one concern per task. Do not bundle unrelated changes.
 2. **List changed files** — explicitly state every file created, modified, or deleted.
 3. **Run checks** — execute `build`, `lint`, and `test` as defined in the task type table above.
-4. **Update the roadmap** — add an entry to `docs/5_ROADMAP_AND_TASKS.md` in this format:
-   ```
-   - YYYY-MM-DD — Brief description of what was done (PR #X) → `file1.ts`, `file2.ts`
-   ```
-   Always include the PR number for traceability (deploy ↔ PR ↔ roadmap). Do not ask for permission. Do not use other formats.
+4. **Update the roadmap — but check first whether the file is generated.**
+
+   Open `docs/5_ROADMAP_AND_TASKS.md` and read its first line.
+
+   - **If it names `db/render_repo_roadmaps.py`** (or any other generator), the file is **output, not source**. Writing to it is drafting, not saving: the next render overwrites it and your entry disappears with no error. Write to the source instead — for the central roadmap that means `python3 db/roadmap_cli.py add "<entry>" --domain <D> --horizon <H> --src <repo-name>` in the `roadmap` repo, then regenerate with `python3 db/render_repo_roadmaps.py --repo <repo-name> --write` and commit the regenerated file.
+   - **If it has no generator header**, the file is hand-maintained: add the entry directly, in this format:
+     ```
+     - YYYY-MM-DD — Brief description of what was done (PR #X) → `file1.ts`, `file2.ts`
+     ```
+
+   Always include the PR number for traceability (deploy ↔ PR ↔ roadmap). Do not ask for permission.
+
+   > **Why this rule is conditional.** It used to say "add an entry to `docs/5_ROADMAP_AND_TASKS.md`… Do not use other formats", unconditionally. In repos whose roadmap is generated, that instruction ordered the agent to write into an output file. It was followed, repeatedly: on 2026-09-06 an audit of one repo found five items that existed only in the generated file and had never reached the source DB — two of them created that same day. They would have vanished at the next render, silently. The generator does **not** protect against this: it reports the divergence but still writes, and exits `0` either way.
 
 ### Debugging Escalation (4-Step Framework)
 

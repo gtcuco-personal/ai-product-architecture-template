@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-06 — a instrução do roadmap mandava escrever no ficheiro gerado
+
+O passo 4 de *After Every Code Task* dizia, sem condição: *"add an entry to `docs/5_ROADMAP_AND_TASKS.md`… Do not ask for permission. Do not use other formats."*
+
+Nos repos cujo roadmap é **gerado** por `db/render_repo_roadmaps.py`, isso ordena ao agente que escreva num ficheiro de output. O cabeçalho do próprio ficheiro diz "NÃO EDITAR À MÃO", pelo que o agente recebia duas ordens opostas — e seguia a que estava no system prompt.
+
+Foi seguida, repetidamente. Uma auditoria a um repo consumidor a 2026-09-06 encontrou **cinco itens que só existiam no ficheiro gerado** e nunca chegaram à base — dois deles criados nesse mesmo dia. Desapareceriam no render seguinte, sem erro nenhum: o gerador reporta a divergência mas **escreve na mesma**, e sai sempre com `0`.
+
+O passo passa a ser condicional: ler a primeira linha do ficheiro, e se nomear um gerador, escrever na fonte (`roadmap_cli.py`) e regenerar. Sem gerador declarado, editar directamente como antes. Fica também registado o porquê, para a regra não voltar a ser simplificada.
+
+Nota de âmbito: a instrução antiga está em ~33 `SYSTEM_PROMPT.md` gerados deste template. Corrigir aqui evita que novos repos nasçam com ela; os existentes precisam de propagação.
+
+→ `SYSTEM_PROMPT.md`
+
 ## 2026-08-28 — CI: menos arranques, mesma cobertura
 
 - **Job `detect` novo.** Corre uma vez e responde "o que existe neste repo?". Antes, `build-test` e `deno-check` ligavam cada um a sua máquina, faziam checkout e só então descobriam que não havia `package.json` nem edge functions — o arranque paga-se na mesma. Passa de três arranques para um.
