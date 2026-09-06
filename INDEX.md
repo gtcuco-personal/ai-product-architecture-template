@@ -1,6 +1,7 @@
 # [Repo Name] — Index
 
-> **Last updated:** 2026-08-27 (v3.1 — `check-governance.mjs` valida ficheiros gerados pelo cabeçalho; sem comparação de conteúdo com o template.)
+> **Last updated:** 2026-09-06 (o passo 4 de *After Every Code Task* mandava escrever no `docs/5_ROADMAP_AND_TASKS.md` sem condição — ordem directa para editar um ficheiro **gerado**, contra o cabeçalho do próprio ficheiro. Auditoria a um repo consumidor achou 5 itens que só existiam no ficheiro e nunca chegaram à fonte. O passo passa a ler o cabeçalho: gerado → escrever na fonte e regenerar; à mão → editar directamente.)
+> **Anterior:** 2026-08-27 (v3.1 — `check-governance.mjs` valida ficheiros gerados pelo cabeçalho; sem comparação de conteúdo com o template.)
 > **Anterior:** 2026-08-01 (v2.7 — ground rule #11: consultar a fonte viva antes de escrever ou de afirmar estado; declarada inline no `CLAUDE.md` e no `AGENTS.md`, não só referenciada, porque uma regra que exige abrir um ficheiro não dispara.)
 > **Anterior:** 2026-07-20
 > **Mandatory governance file.** Must be updated in every PR that adds, moves, or removes content in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/`, or equivalent artifact folders. Refreshed automatically by `/sync-docs` and created by `/sync-repos` where missing.
