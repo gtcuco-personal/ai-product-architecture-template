@@ -11,6 +11,9 @@
 #                que ficam FORA do tsconfig do frontend — build/lint não as veem.
 #                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
 #                não falha; só falha em erro real de código.
+#   python-test: corre em projectos Python explícitos. O contrato suportado é
+#                requirements.txt com pytest declarado; compila toda a sintaxe
+#                Python e executa a suite existente em tests/ sem aceitar zero testes.
 #   gitleaks   : corre SEMPRE, em todos os repos. Scan da história completa
 #                (não só do diff) — é a rede de segurança do lado do servidor
 #                para repos onde algo (ex: Lovable) comita direto a `main`
@@ -53,6 +56,8 @@ jobs:
     outputs:
       node: ${{ steps.d.outputs.node }}
       deno: ${{ steps.d.outputs.deno }}
+      python: ${{ steps.d.outputs.python }}
+      python_supported: ${{ steps.d.outputs.python_supported }}
       template: ${{ steps.d.outputs.template }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -109,6 +114,30 @@ jobs:
       - name: Bun dependency audit (block high/critical)
         if: steps.detect.outputs.package_manager == 'bun'
         run: bun audit --audit-level=high
+
+  python-test:
+    needs: detect
+    if: github.event_name == 'pull_request' && needs.detect.outputs.python != 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - name: Reject unsupported Python setup
+        if: needs.detect.outputs.python_supported != 'true'
+        run: |
+          echo "::error::Unsupported Python CI setup. Add a root requirements.txt with an active pytest requirement, or adapt ci.yml explicitly for this project's runner."
+          exit 1
+      - name: Setup Python
+        if: needs.detect.outputs.python_supported == 'true'
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Python dependencies
+        if: needs.detect.outputs.python_supported == 'true'
+        run: python -m pip install -r requirements.txt
+      - name: Check Python syntax and run existing pytest suite
+        if: needs.detect.outputs.python_supported == 'true'
+        run: python scripts/run-python-ci.py
 
   # NÃO ganha portão de evento: corre em pull request E em push a main.
   # É a rede de segurança do lado do servidor para os repos onde o Lovable
@@ -185,6 +214,10 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22
+      - name: Setup Python for offline executable fixture
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
       - name: Setup Bun for executable fixture
         if: hashFiles('tests/template/fixtures/bun/package.json') != ''
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
@@ -196,7 +229,9 @@ jobs:
       - name: Test template scaffolding and CI detection
         run: |
           if [ -d tests/template ]; then
+            node scripts/check-governance.mjs --template
             node --test tests/template/*.test.mjs
+            python -m unittest tests/template/python_ci_helper_test.py
             node tests/template/run-ci-fixtures.mjs
           else
             echo "Template fixture tests removed by applied project profile; skipping."

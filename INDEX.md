@@ -49,6 +49,8 @@ Exemplo:
 
 Estrutura de pastas principais com 1 linha de propósito:
 
+- `README.md` — template/project ownership map, initialization flow and validation modes
+- `docs/decisions/template/ODR-009-profile-scaffolding-contract.md` — profile contract and independent-consumer initialization amendment
 - `docs/` — governance: roadmap, compliance frameworks, AI governance, testing, dependency management, health check (`15_`), architecture, content/SEO/AEO/GEO (`6_`, merged with the former `4_`)
 - `docs/decisions/` — local ODRs (project-specific decisions)
 - `docs/decisions/template/` — template ODRs inherited by all repos (ODR-001 to ODR-011)

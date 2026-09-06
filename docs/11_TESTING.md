@@ -55,24 +55,61 @@ Adjust to the project's approved stack (defined in `docs/0_GROUND_RULES.md`). Co
 
 ### Shipped with the template — `.github/workflows/ci.yml`
 
-A **universal, stack-auto-detecting** CI ships with this template. Each job only acts if the relevant files exist, so the same file is safe in any repo — a docs/data repo concludes green doing nothing; a webapp runs the full checks.
+A stack-detecting CI ships with this template. Code checks run for the supported
+stacks on pull requests; documentation-only repositories still receive
+governance and secret checks. A skipped code job is not evidence that application
+tests ran.
 
 | Job | Runs when | What runs |
 |---|---|---|
-| `build-test` | `package.json` exists | Chooses Bun when `bun.lock`/`bun.lockb` exists, otherwise npm; installs deterministically when locked; runs `lint`/`build`/`test` via `--if-present`; audit blocks High/Critical findings |
+| `detect` | Pull request | Determines which code and template checks apply before their runners start |
+| `build-test` | Pull request and `package.json` exists | Chooses Bun when `bun.lock`/`bun.lockb` exists, otherwise npm; installs deterministically when locked; runs `lint`/`build`/`test` via `--if-present`; audit blocks High/Critical findings |
+| `python-test` | Pull request and root `requirements.txt` or a Python `[project]`/`[build-system]` in `pyproject.toml` exists | Supports root requirements with a direct pytest declaration; installs them on Python 3.12, checks syntax and runs `python -m pytest tests`; unsupported setup and missing/empty tests fail explicitly |
 | `gitleaks` | Always | Full-history secret scan (`gitleaks detect`, not just the diff), including Markdown; the downloaded binary is checksum-verified before execution |
-| `deno-check` | `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
-| `governance-check` | Always | Validates required governance files, policy version consistency, local Markdown links, and retired paths; PRs touching tracked artifacts must update both `INDEX.md` and `CHANGELOG.md` |
-| `template-tests` | Template fixtures exist | Instantiates and validates all four scaffold profiles, including the product/evidence contract; unit-tests docs-only/npm/Bun/Deno detection; then executes real locked install, lint, build, test, audit, and Deno type-check commands against three static mini-projects |
+| `deno-check` | Pull request and `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
+| `governance-check` | Pull request | Validates consumer/legacy governance, local Markdown links and retired paths; PRs touching tracked artifacts must update both `INDEX.md` and `CHANGELOG.md` |
+| `template-tests` | Pull request and template fixtures exist | Explicitly validates `--template`, exercises profile initialization and independent consumer documents, then runs the executable CI fixtures |
 
-Triggers: PRs + pushes to `main` (push-to-main matters for repos where an external tool — e.g. Lovable — commits straight to `main` without local checks).
+Workflow triggers: PRs + pushes to `main`. On a push, only Gitleaks runs. Build,
+tests and governance are PR checks; this avoids repeating them after a normal
+PR merge. Gitleaks scans full history, including earlier reachable commits when
+a newer run supersedes an older one.
 
-**Honesty note:** this is genuinely what runs — unlike the "Reference model" and "Coverage enforcement" below, which are aspirational until a repo actually wires them up.
+### Delivery policy
+
+Declare the delivery path in the project's architecture or contribution guide.
+For PR delivery, configure the relevant required checks and branch protection on
+GitHub; a workflow file alone does not prevent direct pushes. For direct-to-main
+delivery, arrange the post-deploy verification in the shipping workflow described
+under **Enforcement by delivery topology** below. Adding checks on `push` can
+provide an additional alarm, but cannot prevent a deployment that already ran.
+
+Keep that choice local to the consumer. This template does not change branch
+protection or assume that a connected deployment service waits for its CI.
+
+### Python scope and executable evidence
+
+The initial Python consumer contract is `requirements.txt` with an active direct
+`pytest` requirement and a `tests/` suite. `scripts/run-python-ci.py` checks Python
+syntax while excluding environments, dependencies and caches, then propagates
+the pytest result, including exit 5 for zero collected tests. It does not add
+Ruff or infer another test framework. Adapt the workflow explicitly for other
+package managers, runners or Python versions before adoption.
+
+The offline Python fixture selects the helper's `--runner=unittest` path and
+executes real passing, failing, invalid-syntax and zero-test cases with the
+standard library. A separate unit test verifies pytest invocation and exit-code
+propagation. This fixture does not prove installation of a consumer's Python
+dependencies; that requires a real run of its `python-test` job.
 
 **Propagation gotchas:**
 - Adding/editing a workflow file requires the `workflow` OAuth scope on the git token. Org repos whose bot token lacks it → add `ci.yml` via the GitHub **web editor**.
 - Lovable repos manage deps via **Bun** (`bun.lock` or legacy `bun.lockb`). The detector deliberately prefers Bun when both Bun and npm lockfiles exist, so a stale `package-lock.json` cannot select the wrong installer.
 - The executable fixtures live under `tests/template/fixtures/` and contain no remote runtime dependencies. They are removed with `tests/template/` when a project profile is applied, so downstream repos do not carry template self-tests.
+- Consumers may rewrite README and CHANGELOG. Only explicit `--template`
+  validation compares the template's release to its policy header. Test consumer
+  initialization with independent documents and test legacy repos without a
+  profile manifest or template fixtures.
 - `/sync-repos` should flag repos missing `.github/workflows/ci.yml`.
 
 ### Reference model (aspirational stages — adapt per repo)
@@ -151,7 +188,7 @@ A feature or fix is **done** when all of the following are true:
 - [ ] Coverage did not decrease
 - [ ] Manual smoke test run on the staging URL (for UI features)
 - [ ] Persistent user-facing mutations pass the Playwright fresh-session read-back; direct-source proof added where the escalation criteria above apply
-- [ ] `docs/5_ROADMAP_AND_TASKS.md` updated
+- [ ] Authoritative task source updated as directed by `docs/5_ROADMAP_AND_TASKS.md`
 
 ---
 
