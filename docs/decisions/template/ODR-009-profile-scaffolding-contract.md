@@ -72,5 +72,36 @@ polluting the real repository or requiring network access.
 
 ## Review
 
+### Consumer initialization and validation amendment — 2026-09-06
+
+The original fixtures filled metadata but retained this template's README,
+release history and roadmap. This let template-specific checks reject a
+consumer's own README or release, while profile application retained unrelated
+initiatives and the template's central-roadmap source key.
+
+- Template self-validation is explicit (`--template`). A repository without a
+  profile manifest is a legacy consumer by default, not proof of template origin.
+  `--project` remains the strict contract for consumer metadata and evidence.
+- Consumers own README, CHANGELOG, INDEX and the choice of authoritative task
+  source. Their release version is independent of the shared policy header; no
+  second policy-version field is introduced in the profile manifest.
+- A fresh profile application preflights the initialization targets before
+  removal, initializes a stable INDEX map and creates a marked task-source
+  pointer with fields for source, key/filter, and exact read/write access. It
+  must refuse to replace customized consumer documents and preserve edits on
+  repeated application.
+- The pointer carries no task list. Its source must be chosen explicitly before
+  an agent records state; an unconfigured pointer never implies a local backlog.
+  A project may deliberately choose a local file, or integrate SQLite, another
+  database, or a tracker without duplicating that source in Markdown.
+- Existing generated consumer roadmaps must not be reset by the scaffolder.
+  ODR-011 continues to govern their source and generated view.
+- Tests must exercise independent consumer README/release/roadmap, legacy
+  compatibility and refusal before mutations. Existing consumers upgrade the
+  validation scripts without re-running destructive profile initialization.
+
+The amendment changes responsibilities within the existing scripts. It does not
+introduce a separate template tree, task database, or generation engine.
+
 **Next review:** After the profiles have initialized three downstream repos, or
 when a fifth stack/profile is proposed.

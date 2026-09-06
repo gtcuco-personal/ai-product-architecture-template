@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const manifestPath = resolve(root, "template-profile.json");
+const indexPath = "INDEX.md";
+const roadmapPath = "docs/5_ROADMAP_AND_TASKS.md";
+const pristineSourceDigests = {
+  [indexPath]: "a6b804e6f72079d4b5aad3719209386d3974f555485b489fb005d8fb37a9fb72",
+  [roadmapPath]: "0a0ca4ddcb32ee4e1feea9ae6cbefb01814a864dbb1e0b6315b9dc8355e40468",
+};
 
 const optionalPaths = [
   "docs/3_UI_UX_GUIDELINES.md",
@@ -57,11 +64,62 @@ const profiles = {
   },
 };
 
+function cleanIndex() {
+  return `# [Repo Name] — Index
+
+> Stable pointer map. Keep operational state in its declared source of truth.
+
+## Folder map
+
+- \`README.md\` — project purpose, setup and ownership
+- \`CLAUDE.md\` / \`AGENTS.md\` — agent instructions and repository entry points
+- \`docs/\` — project governance and operating documentation
+- \`docs/decisions/\` — project-specific decision records
+- \`scripts/\` — repository automation and validation utilities
+
+Add project-specific folders as they are created.
+`;
+}
+
+function cleanRoadmap() {
+  return `<!-- TASK SOURCE POINTER -->
+# Roadmap & Tasks
+
+> Pointer only. Choose one authoritative task source and do not copy its state here.
+
+## Source and access
+
+| Field | Value |
+|-------|-------|
+| Source of truth | [database, issue tracker, project file, or URL; use this file only by deliberate choice] |
+| Repository key / filter | [key or filter, or n/a] |
+| Read | \`[exact read command]\` or [link] |
+| Write | \`[exact write command or path]\` or [link] |
+
+Replace every placeholder before relying on this pointer. If the source already
+exists in SQLite, code, or another tracker, reference it instead of creating a
+second backlog.
+`;
+}
+
+function assertPristineSourceArtifacts() {
+  // These are scaffold safety snapshots, not downstream drift checks. Any
+  // source edit must deliberately refresh its digest; any consumer edit makes
+  // first-time replacement fail closed before optional modules are removed.
+  for (const [path, expectedDigest] of Object.entries(pristineSourceDigests)) {
+    const content = readFileSync(resolve(root, path));
+    const actualDigest = createHash("sha256").update(content).digest("hex");
+    if (actualDigest !== expectedDigest) {
+      throw new Error(`${path} is not the pristine template artifact; refusing to replace existing work`);
+    }
+  }
+}
+
 function usage() {
   console.log("Usage: node scripts/scaffold.mjs --profile <name> [--apply]");
   console.log("       node scripts/scaffold.mjs --list");
   console.log("");
-  console.log("Dry-run is the default. Files are removed only with --apply.");
+  console.log("Dry-run is the default. Files are removed and project pointers are initialized only with --apply.");
 }
 
 function listProfiles() {
@@ -117,9 +175,17 @@ export function applyPlan(plan) {
     );
   }
 
+  // Both replacements are destructive in a consumer repository. Establish
+  // that this is still a fresh copy of the source template before removing a
+  // single optional module.
+  assertPristineSourceArtifacts();
+
   for (const path of plan.remove) {
     rmSync(resolve(root, path), { recursive: true, force: true });
   }
+
+  writeFileSync(resolve(root, indexPath), cleanIndex());
+  writeFileSync(resolve(root, roadmapPath), cleanRoadmap());
 
   const manifest = {
     schema_version: 1,
@@ -142,6 +208,10 @@ function printPlan(plan) {
   console.log("Retain optional modules:");
   if (plan.keep.length === 0) console.log("- none");
   else for (const path of plan.keep) console.log(`- ${path}`);
+  console.log("");
+  console.log("Initialize project pointers:");
+  console.log(`- ${indexPath}`);
+  console.log(`- ${roadmapPath}`);
 }
 
 async function main() {
@@ -170,7 +240,7 @@ async function main() {
     const plan = buildPlan(args.profile);
     printPlan(plan);
     if (!args.apply) {
-      console.log("\nDry-run only. Re-run with --apply to remove the listed paths.");
+      console.log("\nDry-run only. Re-run with --apply to make the listed changes.");
       return;
     }
 

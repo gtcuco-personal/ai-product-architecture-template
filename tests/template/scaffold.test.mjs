@@ -102,6 +102,27 @@ for (const profile of profileNames) {
     const validation = run(directory, "scripts/check-governance.mjs");
     assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
     assert.match(validation.stdout, /Governance check passed \(project mode\)/);
+
+    const index = readFileSync(join(directory, "INDEX.md"), "utf8");
+    const roadmap = readFileSync(join(directory, "docs/5_ROADMAP_AND_TASKS.md"), "utf8");
+    assert.doesNotMatch(index, /Product, decision & evidence contract v2\.3|Downstream propagation/);
+    assert.doesNotMatch(index, /PR #(?:49|50)|ai-product-architecture-template/);
+    assert.doesNotMatch(index, /^## (?:Active initiatives|Archive)$/m);
+    assert.match(index, /^# Fixture Project — Index/m);
+    assert.doesNotMatch(roadmap, /GERADO POR|ai-product-architecture-template|PR #(?:49|50|56)/);
+    assert.match(roadmap, /^<!-- TASK SOURCE POINTER -->\n/);
+    assert.match(roadmap, /^# Roadmap & Tasks/m);
+    assert.match(roadmap, /\| Source of truth \|/);
+    assert.match(roadmap, /\| Repository key \/ filter \|/);
+    assert.match(roadmap, /\| Read \|/);
+    assert.match(roadmap, /\| Write \|/);
+    assert.doesNotMatch(roadmap, /^- \[[ xX]\]/m);
+    assert.doesNotMatch(roadmap, /^## (?:This week|This month|Backlog)$/m);
+    assert.doesNotMatch(roadmap, /Last updated/);
+    const policy = readFileSync(join(directory, "SYSTEM_PROMPT.md"), "utf8");
+    assert.match(policy, /If it is `<!-- TASK SOURCE POINTER -->`/);
+    assert.match(policy, /do not copy task state into the pointer file/);
+    assert.match(policy, /Do not create a local backlog implicitly/);
   });
 }
 
@@ -110,9 +131,17 @@ test("profile application is idempotent and refuses in-place switching", (t) => 
   const first = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
   assert.equal(first.status, 0, first.stderr);
 
+  writeFileSync(join(directory, "INDEX.md"), "# Consumer Index\n\nKeep this edit.\n");
+  writeFileSync(join(directory, "docs/5_ROADMAP_AND_TASKS.md"), "# Consumer Roadmap\n\nKeep this too.\n");
+
   const repeated = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
   assert.equal(repeated.status, 0, repeated.stderr);
   assert.match(repeated.stdout, /already applied/);
+  assert.equal(readFileSync(join(directory, "INDEX.md"), "utf8"), "# Consumer Index\n\nKeep this edit.\n");
+  assert.equal(
+    readFileSync(join(directory, "docs/5_ROADMAP_AND_TASKS.md"), "utf8"),
+    "# Consumer Roadmap\n\nKeep this too.\n",
+  );
 
   const switched = run(directory, "scripts/scaffold.mjs", ["--profile", "regulated-ai", "--apply"]);
   assert.equal(switched.status, 1);
@@ -144,13 +173,16 @@ test("governance validation rejects an unfilled or incoherent product-evidence c
   assert.match(validation.stderr, /declares data or storage but docs\/8_DATA_AND_ANALYSIS\.md is absent/);
 });
 
-test("legacy repositories are not required to migrate until project mode is requested", (t) => {
+test("legacy repositories without a manifest or template fixtures validate normally", (t) => {
   const directory = copyTemplate(t);
   const path = join(directory, "docs/1_BUSINESS_CONTEXT.md");
   writeFileSync(path, readFileSync(path, "utf8").replace(/^---\n[\s\S]*?\n---\n\n/, ""));
+  rmSync(join(directory, "tests/template"), { recursive: true, force: true });
+  rmSync(join(directory, "scripts/run-python-ci.py"), { force: true });
 
-  const templateValidation = run(directory, "scripts/check-governance.mjs");
-  assert.equal(templateValidation.status, 0, templateValidation.stderr);
+  const legacyValidation = run(directory, "scripts/check-governance.mjs");
+  assert.equal(legacyValidation.status, 0, legacyValidation.stderr);
+  assert.match(legacyValidation.stdout, /Governance check passed \(legacy mode\)/);
 
   const projectValidation = run(directory, "scripts/check-governance.mjs", ["--project"]);
   assert.equal(projectValidation.status, 1);
@@ -159,10 +191,89 @@ test("legacy repositories are not required to migrate until project mode is requ
 
 test("a filled legacy contract is enforced by the normal governance check", (t) => {
   const directory = copyTemplate(t);
+  rmSync(join(directory, "tests/template"), { recursive: true, force: true });
   fillRequiredPlaceholders(directory, "minimal");
   replace(join(directory, "docs/1_BUSINESS_CONTEXT.md"), [["data_posture: none", "data_posture: collects"]]);
 
   const validation = run(directory, "scripts/check-governance.mjs");
   assert.equal(validation.status, 1);
   assert.match(validation.stderr, /runtime none requires data_posture none/);
+});
+
+test("consumer releases and hand-maintained roadmaps are independent from the template", (t) => {
+  const directory = copyTemplate(t);
+  const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
+  assert.equal(applied.status, 0, applied.stderr);
+  fillRequiredPlaceholders(directory, "minimal");
+
+  writeFileSync(join(directory, "README.md"), "# Consumer Product\n\nIts own release history.\n");
+  writeFileSync(join(directory, "CHANGELOG.md"), "# Changelog\n\n## [0.1.0] - Initial consumer release\n");
+  writeFileSync(
+    join(directory, "docs/5_ROADMAP_AND_TASKS.md"),
+    "# Roadmap & Tasks\n\n## This week\n\n- [ ] Ship the consumer product\n",
+  );
+
+  const validation = run(directory, "scripts/check-governance.mjs");
+  assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
+  assert.match(validation.stdout, /Governance check passed \(project mode\)/);
+
+  replace(join(directory, "SYSTEM_PROMPT.md"), [["> Version: 3.1", "> Consumer policy"]]);
+  const invalidPolicy = run(directory, "scripts/check-governance.mjs");
+  assert.equal(invalidPolicy.status, 1);
+  assert.match(invalidPolicy.stderr, /SYSTEM_PROMPT\.md has no parseable Version header/);
+});
+
+test("explicit template mode enforces template fixtures and release coherence", (t) => {
+  const directory = copyTemplate(t);
+
+  const baseline = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(baseline.status, 0, `${baseline.stdout}\n${baseline.stderr}`);
+  assert.match(baseline.stdout, /Governance check passed \(template mode\)/);
+
+  replace(join(directory, "README.md"), [["Shared operating policy (v3.1", "Shared operating policy (v9.9"]]);
+  rmSync(join(directory, "tests/template/fixtures/npm"), { recursive: true, force: true });
+
+  const validation = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(validation.status, 1);
+  assert.match(validation.stderr, /version drift: SYSTEM_PROMPT\.md=3\.1, README\.md=9\.9/);
+  assert.match(validation.stderr, /missing required file: tests\/template\/fixtures\/npm\/package\.json/);
+});
+
+test("scaffold refuses a customized INDEX before removing optional modules", (t) => {
+  const directory = copyTemplate(t);
+  replace(join(directory, "INDEX.md"), [
+    ["## 📁 Folder map", "Custom consumer note.\n\n## 📁 Folder map"],
+  ]);
+
+  const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
+  assert.equal(applied.status, 1);
+  assert.match(applied.stderr, /INDEX\.md.*not the pristine template artifact/);
+  assert.equal(existsSync(join(directory, "template-profile.json")), false);
+  assert.equal(existsSync(join(directory, "docs/3_UI_UX_GUIDELINES.md")), true);
+});
+
+test("scaffold refuses a roadmap customized between source markers before removals", (t) => {
+  const directory = copyTemplate(t);
+  replace(join(directory, "docs/5_ROADMAP_AND_TASKS.md"), [
+    ["## Completed", "User-owned roadmap item.\n\n## Completed"],
+  ]);
+
+  const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
+  assert.equal(applied.status, 1);
+  assert.match(applied.stderr, /docs\/5_ROADMAP_AND_TASKS\.md.*not the pristine template artifact/);
+  assert.equal(existsSync(join(directory, "template-profile.json")), false);
+  assert.equal(existsSync(join(directory, "docs/3_UI_UX_GUIDELINES.md")), true);
+});
+
+test("scaffold refuses a generated consumer roadmap before removing optional modules", (t) => {
+  const directory = copyTemplate(t);
+  replace(join(directory, "docs/5_ROADMAP_AND_TASKS.md"), [
+    ["src_repo = ai-product-architecture-template", "src_repo = consumer-product"],
+  ]);
+
+  const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
+  assert.equal(applied.status, 1);
+  assert.match(applied.stderr, /docs\/5_ROADMAP_AND_TASKS\.md.*not the pristine template artifact/);
+  assert.equal(existsSync(join(directory, "template-profile.json")), false);
+  assert.equal(existsSync(join(directory, "docs/3_UI_UX_GUIDELINES.md")), true);
 });

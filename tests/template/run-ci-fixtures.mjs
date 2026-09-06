@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
-import { rmSync } from "node:fs";
+import { cpSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -11,7 +12,7 @@ import { detectCiMode } from "../../scripts/detect-ci-mode.mjs";
 const templateTestsRoot = dirname(fileURLToPath(import.meta.url));
 const fixturesRoot = join(templateTestsRoot, "fixtures");
 const requestedMode = process.argv.find((argument) => argument.startsWith("--mode="))?.slice(7) ?? "all";
-const supportedModes = new Set(["all", "npm", "bun", "deno"]);
+const supportedModes = new Set(["all", "npm", "bun", "deno", "python"]);
 
 if (!supportedModes.has(requestedMode)) {
   console.error(`Unsupported mode: ${requestedMode}`);
@@ -29,6 +30,10 @@ function run(command, args, cwd) {
   if (result.status !== 0) throw new Error(`${command} ${args.join(" ")} failed with exit ${result.status}`);
 }
 
+function runResult(command, args, cwd, env = process.env) {
+  return spawnSync(executable(command), args, { cwd, encoding: "utf8", env });
+}
+
 function selected(mode) {
   return requestedMode === "all" || requestedMode === mode;
 }
@@ -40,6 +45,9 @@ if (selected("npm")) {
     package_manager: "npm",
     npm_lock: true,
     deno: false,
+    python: false,
+    python_supported: false,
+    python_reason: "not-detected",
     template: false,
   });
   run("npm", ["ci"], root);
@@ -54,6 +62,9 @@ if (selected("bun")) {
     package_manager: "bun",
     npm_lock: false,
     deno: false,
+    python: false,
+    python_supported: false,
+    python_reason: "not-detected",
     template: false,
   });
   try {
@@ -73,6 +84,9 @@ if (selected("deno")) {
     package_manager: "none",
     npm_lock: false,
     deno: true,
+    python: false,
+    python_supported: false,
+    python_reason: "not-detected",
     template: false,
   });
   run(
@@ -80,6 +94,27 @@ if (selected("deno")) {
     ["check", "--node-modules-dir=auto", "--no-lock", "example/index.ts"],
     join(root, "supabase/functions"),
   );
+}
+
+if (selected("python")) {
+  const source = join(fixturesRoot, "python");
+  const root = mkdtempSync(join(tmpdir(), "ai-template-python-ci-"));
+  const helper = join(templateTestsRoot, "../../scripts/run-python-ci.py");
+  try {
+    cpSync(source, root, { recursive: true });
+    assert.equal(runResult("python3", [helper, "--runner=unittest"], root).status, 0, "passing Python test must pass");
+
+    writeFileSync(join(root, "tests/test_example.py"), "import unittest\nclass FailureTest(unittest.TestCase):\n    def test_failure(self):\n        self.fail('expected')\n");
+    assert.equal(runResult("python3", [helper, "--runner=unittest"], root).status, 1, "failing Python test must fail");
+
+    writeFileSync(join(root, "tests/test_example.py"), "def broken(:\n    pass\n");
+    assert.equal(runResult("python3", [helper, "--runner=unittest"], root).status, 1, "invalid Python syntax must fail");
+
+    rmSync(join(root, "tests/test_example.py"));
+    assert.equal(runResult("python3", [helper, "--runner=unittest"], root).status, 5, "zero Python tests must fail");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 }
 
 console.log(`\nCI fixture integration passed (${requestedMode}).`);

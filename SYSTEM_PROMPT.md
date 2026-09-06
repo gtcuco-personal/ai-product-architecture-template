@@ -18,7 +18,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 | `docs/1_BUSINESS_CONTEXT.md` | Product, decision & evidence contract; strategy, positioning, tone, target audience |
 | `docs/2_ARCHITECTURE.md` | Routes, components, data model, directory structure |
 | `docs/3_UI_UX_GUIDELINES.md` | Design system, tokens, accessibility, performance budgets |
-| `docs/5_ROADMAP_AND_TASKS.md` | Execution state, backlog, completed tasks |
+| `docs/5_ROADMAP_AND_TASKS.md` | Pointer to the authoritative task source, generated view, or deliberately local backlog |
 | `docs/6_CONTENT_AND_SOCIAL.md` | Content strategy, social media, technical + editorial SEO/AEO/GEO guidelines |
 | `docs/15_HEALTH_CHECK.md` | Weekly health check checklist (routes, schema, auth, security, build, docs, integrations, i18n) |
 | `docs/7_CONTENT_I18N.md` | Content architecture doctrine (i18n vs storage vs MD — tech-agnostic) and i18n layer rules (key naming, namespaces, copy, length) |
@@ -93,7 +93,7 @@ This project uses modular documentation in `/docs/`. Consult the relevant files 
 
 Not all tasks require the same rigour. Apply checks proportionally:
 
-| Task type | Build | Lint | Test | Roadmap update | PR |
+| Task type | Build | Lint | Test | Task-source update | PR |
 |---|---|---|---|---|---|
 | **Code** (features, fixes, refactors) | Required | Required | Required (if test infra exists) | Required | Required |
 | **Documentation** (docs, comments, README) | Skip | Skip | Skip | If roadmap-relevant | Required |
@@ -107,17 +107,21 @@ Not all tasks require the same rigour. Apply checks proportionally:
 1. **Atomic changes** — one concern per task. Do not bundle unrelated changes.
 2. **List changed files** — explicitly state every file created, modified, or deleted.
 3. **Run checks** — execute `build`, `lint`, and `test` as defined in the task type table above.
-4. **Update the roadmap — but check first whether the file is generated.**
+4. **Record the result in the authoritative task source — inspect the roadmap file first.**
 
    Open `docs/5_ROADMAP_AND_TASKS.md` and read its first line.
 
    - **If it names `db/render_repo_roadmaps.py`** (or any other generator), the file is **output, not source**. Writing to it is drafting, not saving: the next render overwrites it and your entry disappears with no error. Write to the source instead — for the central roadmap that means `python3 db/roadmap_cli.py add "<entry>" --domain <D> --horizon <H> --src <repo-name>` in the `roadmap` repo, then regenerate with `python3 db/render_repo_roadmaps.py --repo <repo-name> --write` and commit the regenerated file.
-   - **If it has no generator header**, the file is hand-maintained: add the entry directly, in this format:
+   - **If it is `<!-- TASK SOURCE POINTER -->`**, read its source, repository key/filter, and read/write fields. Use the declared write command, path, or link; do not copy task state into the pointer file. If any field is still a placeholder, ask the user to choose the authoritative source before recording state. Do not create a local backlog implicitly.
+   - **Otherwise**, the file is deliberately hand-maintained: add the entry directly, in this format:
      ```
      - YYYY-MM-DD — Brief description of what was done (PR #X) → `file1.ts`, `file2.ts`
      ```
 
-   Always include the PR number for traceability (deploy ↔ PR ↔ roadmap). Do not ask for permission.
+   When the source is configured, generated, or deliberately local, include the
+   PR number for traceability and make the routine in-scope update without asking
+   permission. Choosing a source for an unconfigured pointer still requires user
+   direction.
 
    > **Why this rule is conditional.** It used to say "add an entry to `docs/5_ROADMAP_AND_TASKS.md`… Do not use other formats", unconditionally. In repos whose roadmap is generated, that instruction ordered the agent to write into an output file. It was followed, repeatedly: on 2026-09-06 an audit of one repo found five items that existed only in the generated file and had never reached the source DB — two of them created that same day. They would have vanished at the next render, silently. The generator does **not** protect against this: it reports the divergence but still writes, and exits `0` either way.
 
@@ -130,7 +134,7 @@ When something breaks, follow this ladder in order — do not skip steps:
 3. **Third-Party Perspective** — If stuck, analyse with a different tool or agent. The goal is a better diagnosis, not a replacement. Bring the hypothesis back and act on it.
 4. **Revert** — If fixes are making things worse, revert to the last known good version. Then ask: what change caused this? What assumption changed? How could the instruction have been clearer?
 
-> After every fix, extract the lesson: document the fix in the roadmap, then ask "what should the original instruction have been to avoid this?" and record the pattern.
+> After every fix, extract the lesson: record the fix in the authoritative task source, then ask "what should the original instruction have been to avoid this?" and record the pattern.
 
 ### Build Health Checker
 
@@ -240,7 +244,7 @@ Documentation is a living asset, not a one-time deliverable. When a code task ch
 | New environment variable | `CLAUDE.md` (env section) |
 | Business model, audience, runtime, data posture, or evidence shift | `docs/1_BUSINESS_CONTEXT.md` |
 | Architectural decision (trade-off) | `docs/decisions/` (new local ODR) |
-| Feature shipped or descoped | `docs/5_ROADMAP_AND_TASKS.md` |
+| Feature shipped or descoped | Authoritative task source named by `docs/5_ROADMAP_AND_TASKS.md` |
 | Security model change | `SECURITY.md` |
 | Content strategy or social media change | `docs/6_CONTENT_AND_SOCIAL.md` |
 | UI copy, i18n keys, or locale rules change | `docs/7_CONTENT_I18N.md` |
@@ -281,7 +285,7 @@ A task is only **done** when all applicable items are confirmed:
 - [ ] `build` passes (code/config tasks)
 - [ ] `lint` passes with zero errors, no new warnings (code tasks)
 - [ ] `test` passes (code tasks, if test infra exists)
-- [ ] `docs/5_ROADMAP_AND_TASKS.md` updated (code tasks; doc/config tasks if roadmap-relevant)
+- [ ] Authoritative task source updated as directed by `docs/5_ROADMAP_AND_TASKS.md` (code tasks; doc/config tasks if roadmap-relevant)
 - [ ] Documentation trigger table checked — affected docs updated (§6)
 - [ ] No secrets, keys, or PII exposed
 - [ ] No protected files modified

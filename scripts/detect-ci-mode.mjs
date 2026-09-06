@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 
@@ -11,6 +11,17 @@ export function detectCiMode(root = process.cwd()) {
   const packageManager = packageJson ? (bunLock ? "bun" : "npm") : "none";
   const functionsRoot = resolve(root, "supabase/functions");
   let deno = false;
+
+  const requirementsPath = resolve(root, "requirements.txt");
+  const pyprojectPath = resolve(root, "pyproject.toml");
+  const pythonPyproject = existsSync(pyprojectPath) && /^\s*\[(?:project|build-system)\]\s*(?:#.*)?$/m.test(
+    readFileSync(pyprojectPath, "utf8"),
+  );
+  const python = existsSync(requirementsPath) || pythonPyproject;
+  const pytestDeclared = existsSync(requirementsPath) && readFileSync(requirementsPath, "utf8")
+    .split(/\r?\n/)
+    .map((line) => line.split("#", 1)[0].trim())
+    .some((line) => /^pytest(?:\[[^\]]+\])?(?:\s*(?:===|==|~=|!=|<=|>=|<|>).*)?$/i.test(line));
 
   if (existsSync(functionsRoot)) {
     deno = readdirSync(functionsRoot, { withFileTypes: true }).some(
@@ -23,6 +34,9 @@ export function detectCiMode(root = process.cwd()) {
     package_manager: packageManager,
     npm_lock: packageManager === "npm" && npmLock,
     deno,
+    python,
+    python_supported: python && pytestDeclared,
+    python_reason: !python ? "not-detected" : pytestDeclared ? "requirements-pytest" : "unsupported-setup",
     template: existsSync(resolve(root, "tests/template")),
   };
 }

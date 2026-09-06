@@ -5,10 +5,19 @@ import { dirname, relative, resolve } from "node:path";
 
 const root = process.cwd();
 const profileManifestPath = resolve(root, "template-profile.json");
-const projectMode = process.argv.includes("--project") || existsSync(profileManifestPath);
+const explicitProjectMode = process.argv.includes("--project");
+const templateMode = process.argv.includes("--template");
+// Absence of a profile manifest also describes legacy consumers, so original
+// template identity must never be inferred from it.
+const projectMode = !templateMode && (explicitProjectMode || existsSync(profileManifestPath));
+const validationMode = templateMode ? "template" : projectMode ? "project" : "legacy";
 const requireProductEvidenceContract = projectMode || process.argv.includes("--require-product-evidence-contract");
 const failures = [];
 let profileManifest;
+
+if (templateMode && explicitProjectMode) {
+  failures.push("--template and --project are mutually exclusive");
+}
 
 if (existsSync(profileManifestPath)) {
   try {
@@ -36,7 +45,7 @@ const requiredFiles = [
   "scripts/scaffold.mjs",
 ];
 
-if (!projectMode) {
+if (templateMode) {
   requiredFiles.push(
     "docs/10_AGENT_SAFETY.md",
     "docs/11_TESTING.md",
@@ -58,6 +67,9 @@ if (!projectMode) {
     "tests/template/fixtures/bun/vendor/fixture-local/package.json",
     "tests/template/fixtures/deno/supabase/functions/example/index.ts",
     "tests/template/fixtures/deno/supabase/functions/example/math.ts",
+    "scripts/run-python-ci.py",
+    "tests/template/python_ci_helper_test.py",
+    "tests/template/fixtures/python/tests/test_example.py",
   );
 }
 
@@ -182,31 +194,34 @@ if (profileManifest) {
   }
 }
 
-if (failures.length === 0) {
+if (existsSync(resolve(root, "SYSTEM_PROMPT.md"))) {
   const systemPrompt = read("SYSTEM_PROMPT.md");
-  const readme = read("README.md");
-  const changelog = read("CHANGELOG.md");
   const systemVersion = systemPrompt.match(/> Version:\s*([0-9]+(?:\.[0-9]+)*)/)?.[1];
-  const readmeVersion = readme.match(/Shared operating policy \(v([0-9]+(?:\.[0-9]+)*)/)?.[1];
-
   if (!systemVersion) fail("SYSTEM_PROMPT.md has no parseable Version header");
-  if (!readmeVersion) fail("README.md has no parseable SYSTEM_PROMPT version");
-  if (systemVersion && readmeVersion && systemVersion !== readmeVersion) {
-    fail(`version drift: SYSTEM_PROMPT.md=${systemVersion}, README.md=${readmeVersion}`);
-  }
-  if (systemVersion && !changelog.includes(`## [${systemVersion}]`)) {
-    fail(`CHANGELOG.md has no release section for version ${systemVersion}`);
-  }
-  // The check above only proves the version EXISTS somewhere in the changelog.
-  // It stays green when CHANGELOG is bumped and SYSTEM_PROMPT is not, because
-  // the older section is still present — which is how 2.4 and 2.7 both shipped
-  // with a stale header. Compare against the TOP entry instead.
-  const latestChangelogVersion = changelog.match(/^## \[([0-9]+(?:\.[0-9]+)*)\]/m)?.[1];
-  if (systemVersion && latestChangelogVersion && systemVersion !== latestChangelogVersion) {
-    fail(
-      `version drift: CHANGELOG.md latest=${latestChangelogVersion}, ` +
-        `SYSTEM_PROMPT.md=${systemVersion} — bump the header and its changelog table too`
-    );
+
+  if (templateMode && existsSync(resolve(root, "README.md")) && existsSync(resolve(root, "CHANGELOG.md"))) {
+    const readme = read("README.md");
+    const changelog = read("CHANGELOG.md");
+    const readmeVersion = readme.match(/Shared operating policy \(v([0-9]+(?:\.[0-9]+)*)/)?.[1];
+
+    if (!readmeVersion) fail("README.md has no parseable SYSTEM_PROMPT version");
+    if (systemVersion && readmeVersion && systemVersion !== readmeVersion) {
+      fail(`version drift: SYSTEM_PROMPT.md=${systemVersion}, README.md=${readmeVersion}`);
+    }
+    if (systemVersion && !changelog.includes(`## [${systemVersion}]`)) {
+      fail(`CHANGELOG.md has no release section for version ${systemVersion}`);
+    }
+    // The check above only proves the version EXISTS somewhere in the changelog.
+    // It stays green when CHANGELOG is bumped and SYSTEM_PROMPT is not, because
+    // the older section is still present — which is how 2.4 and 2.7 both shipped
+    // with a stale header. Compare against the TOP entry instead.
+    const latestChangelogVersion = changelog.match(/^## \[([0-9]+(?:\.[0-9]+)*)\]/m)?.[1];
+    if (systemVersion && latestChangelogVersion && systemVersion !== latestChangelogVersion) {
+      fail(
+        `version drift: CHANGELOG.md latest=${latestChangelogVersion}, ` +
+          `SYSTEM_PROMPT.md=${systemVersion} — bump the header and its changelog table too`
+      );
+    }
   }
 }
 
@@ -318,4 +333,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Governance check passed (${projectMode ? "project" : "template"} mode).`);
+console.log(`Governance check passed (${validationMode} mode).`);

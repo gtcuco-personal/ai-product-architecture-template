@@ -1,5 +1,32 @@
 # Changelog
 
+## 2026-09-06 — Independent project initialization and checks
+
+- Make template self-validation explicit with `--template`. Consumer README and
+  release history are independent of the policy version; old repositories
+  without a profile manifest receive legacy checks instead of template-only
+  fixture requirements. Keep `--project` for strict consumer validation.
+- Initialize a stable project-owned INDEX and a marked task-source pointer on
+  fresh profile application, without carrying this template's initiatives,
+  state, or central-roadmap source key. Require an explicit source/key/read/write
+  choice instead of creating a second backlog when SQLite or another source
+  already exists. Refuse customized inputs before removal and preserve edits on
+  repeated use.
+- Test independent consumer documents, legacy compatibility and protection of
+  customized initialization targets. Keep policy version ownership in the
+  existing header rather than duplicating it in the profile manifest.
+- Add Python CI for the demonstrated requirements/pytest consumer contract,
+  explicit failures for unsupported setups or empty suites, and offline
+  executable syntax/test fixtures. Preserve PR-only heavy checks and full-history
+  Gitleaks on PR and push.
+- Document ownership and initialization with optional, purpose-specific diagrams;
+  add concise architecture boundaries/failure guidance, and describe the actual
+  CI event policy without requiring a full C4 set.
+
+→ `scripts/`, `tests/template/`, `.github/workflows/ci.yml`, `README.md`,
+`SYSTEM_PROMPT.md`, `docs/2_ARCHITECTURE.md`, `docs/11_TESTING.md`,
+`docs/decisions/template/ODR-009-profile-scaffolding-contract.md`
+
 ## 2026-09-06 — a instrução do roadmap mandava escrever no ficheiro gerado
 
 O passo 4 de *After Every Code Task* dizia, sem condição: *"add an entry to `docs/5_ROADMAP_AND_TASKS.md`… Do not ask for permission. Do not use other formats."*
