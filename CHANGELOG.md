@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-07 — Governance traversal handles real consumer worktrees safely
+
+- `check-governance.mjs` now skips virtual environments, vendored dependencies
+  and nested worktrees while scanning Markdown, avoiding false failures and
+  unnecessary traversal outside repository-owned documentation.
+- Generated-roadmap validation now checks that the file exists before reading
+  it. A missing required roadmap still fails governance through the normal
+  validation message instead of crashing with an uncaught `ENOENT`.
+- Regression tests cover both behaviours.
+
+→ `scripts/check-governance.mjs`, `tests/template/scaffold.test.mjs`
+
 ## 2026-09-06 — Independent project initialization and checks
 
 - Make template self-validation explicit with `--template`. Consumer README and

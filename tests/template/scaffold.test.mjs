@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   cpSync,
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
   rmSync,
@@ -187,6 +188,32 @@ test("legacy repositories without a manifest or template fixtures validate norma
   const projectValidation = run(directory, "scripts/check-governance.mjs", ["--project"]);
   assert.equal(projectValidation.status, 1);
   assert.match(projectValidation.stderr, /has no product-evidence frontmatter/);
+});
+
+test("a missing generated roadmap reports a validation failure without crashing", (t) => {
+  const directory = copyTemplate(t);
+  rmSync(join(directory, "docs/5_ROADMAP_AND_TASKS.md"));
+
+  const validation = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(validation.status, 1);
+  assert.match(validation.stderr, /missing required file: docs\/5_ROADMAP_AND_TASKS\.md/);
+  assert.doesNotMatch(validation.stderr, /ENOENT|no such file or directory/i);
+});
+
+test("governance traversal ignores dependency, environment, and worktree directories", (t) => {
+  const directory = copyTemplate(t);
+
+  for (const ignored of [".venv", "venv", "vendor", ".worktrees"]) {
+    const nested = join(directory, ignored, "nested");
+    mkdirSync(nested, { recursive: true });
+    writeFileSync(
+      join(nested, "ignored.md"),
+      "References retired docs/4_SEO_AND_AEO.md and [a missing file](missing.md).\n",
+    );
+  }
+
+  const validation = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
 });
 
 test("a filled legacy contract is enforced by the normal governance check", (t) => {
