@@ -227,7 +227,7 @@ if (existsSync(resolve(root, "SYSTEM_PROMPT.md"))) {
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    if ([".git", "node_modules"].includes(entry.name)) return [];
+    if ([".git", ".venv", ".worktrees", "node_modules", "vendor", "venv"].includes(entry.name)) return [];
     const fullPath = resolve(directory, entry.name);
     return entry.isDirectory() ? walk(fullPath) : [fullPath];
   });
@@ -310,6 +310,7 @@ const GENERATED_FILES = ["docs/5_ROADMAP_AND_TASKS.md"];
 const GENERATED_HEADER = /^<!--\s*GERADO POR\s+(\S+)\s+—\s*(.*?)\s*-->\s*$/;
 
 for (const path of GENERATED_FILES) {
+  if (!existsSync(resolve(root, path))) continue;
   const content = read(path);
   if (!content) continue;
   const first = content.split("\n", 1)[0] ?? "";
