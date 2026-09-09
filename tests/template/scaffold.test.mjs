@@ -216,6 +216,37 @@ test("governance traversal ignores dependency, environment, and worktree directo
   assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
 });
 
+test("governance link validation ignores code examples but still rejects real broken links", (t) => {
+  const directory = copyTemplate(t);
+  const examples = join(directory, "docs/code-link-examples.md");
+  writeFileSync(
+    examples,
+    [
+      "# Link examples",
+      "",
+      "Inline `[link](url)` and ``[regex](\\+[0-9])`` examples.",
+      "",
+      "```md",
+      "[fenced](missing-fenced.md)",
+      "```",
+      "",
+      "~~~md",
+      "[tilde fenced](missing-tilde.md)",
+      "~~~",
+      "",
+    ].join("\n"),
+  );
+
+  const examplesOnly = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(examplesOnly.status, 0, `${examplesOnly.stdout}\n${examplesOnly.stderr}`);
+
+  writeFileSync(examples, `${readFileSync(examples, "utf8")}Real [broken](missing-real.md).\n`);
+  const realBrokenLink = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(realBrokenLink.status, 1);
+  assert.match(realBrokenLink.stderr, /broken local link: missing-real\.md/);
+  assert.doesNotMatch(realBrokenLink.stderr, /missing-fenced|missing-tilde|\\\+\[0-9\]|url/);
+});
+
 test("a filled legacy contract is enforced by the normal governance check", (t) => {
   const directory = copyTemplate(t);
   rmSync(join(directory, "tests/template"), { recursive: true, force: true });

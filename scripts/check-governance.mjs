@@ -77,6 +77,19 @@ function read(path) {
   return readFileSync(resolve(root, path), "utf8");
 }
 
+function maskMarkdownCode(content) {
+  const preserveLines = (value) => value.replace(/[^\n]/g, " ");
+
+  // Links shown as examples inside fenced or inline code are data, not
+  // navigable Markdown. Mask them without changing offsets so diagnostics for
+  // real links keep their original line numbers.
+  const withoutFences = content.replace(
+    /^( {0,3})(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\2\s*$/gm,
+    preserveLines,
+  );
+  return withoutFences.replace(/(`+)([\s\S]*?)\1/g, preserveLines);
+}
+
 function fail(message) {
   failures.push(message);
 }
@@ -245,6 +258,7 @@ const retiredPaths = ["docs/4_SEO_AND_AEO.md", "docs/6_HEALTH_CHECK.md"];
 for (const absolutePath of markdownFiles) {
   const repoPath = relative(root, absolutePath);
   const content = readFileSync(absolutePath, "utf8");
+  const linkScanContent = maskMarkdownCode(content);
 
   if (!historicalFiles.has(repoPath)) {
     for (const retiredPath of retiredPaths) {
@@ -254,7 +268,7 @@ for (const absolutePath of markdownFiles) {
     }
   }
 
-  for (const match of content.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+  for (const match of linkScanContent.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
     let target = match[1].trim().replace(/^<|>$/g, "");
     if (/^(https?:|mailto:|#|\/)/.test(target)) continue;
     if (target.startsWith("../../security/")) continue; // GitHub repository UI route.

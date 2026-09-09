@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-09 — Governance link checks ignore Markdown code examples
+
+- `check-governance.mjs` now masks fenced and inline code before validating
+  local Markdown links, preserving offsets and line-number diagnostics.
+- Real broken links still fail; examples such as ``[link](url)`` and regex-like
+  targets inside code no longer create false failures in consumer histories or
+  generated roadmap views.
+- Regression coverage exercises inline code, backtick and tilde fences, and a
+  real broken link in the same document.
+
+→ `scripts/check-governance.mjs`, `tests/template/scaffold.test.mjs`
+
 ## 2026-09-07 — Governance traversal handles real consumer worktrees safely
 
 - `check-governance.mjs` now skips virtual environments, vendored dependencies
