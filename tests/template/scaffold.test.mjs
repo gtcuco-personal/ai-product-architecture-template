@@ -273,6 +273,36 @@ test("governance link validation ignores code examples but still rejects real br
   );
 });
 
+test("retired-path validation ignores code examples but still rejects prose references", (t) => {
+  const directory = copyTemplate(t);
+  const examples = join(directory, "docs/retired-path-examples.md");
+  writeFileSync(
+    examples,
+    [
+      "# Migration examples",
+      "",
+      "Legacy inline example: `docs/4_SEO_AND_AEO.md`.",
+      "",
+      "```text",
+      "docs/6_HEALTH_CHECK.md",
+      "```",
+      "",
+    ].join("\n"),
+  );
+
+  const examplesOnly = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(examplesOnly.status, 0, `${examplesOnly.stdout}\n${examplesOnly.stderr}`);
+
+  writeFileSync(
+    examples,
+    `${readFileSync(examples, "utf8")}Active prose reference: docs/4_SEO_AND_AEO.md.\n`,
+  );
+  const proseReference = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(proseReference.status, 1);
+  assert.match(proseReference.stderr, /references retired path: docs\/4_SEO_AND_AEO\.md/);
+  assert.doesNotMatch(proseReference.stderr, /docs\/6_HEALTH_CHECK\.md/);
+});
+
 test("a filled legacy contract is enforced by the normal governance check", (t) => {
   const directory = copyTemplate(t);
   rmSync(join(directory, "tests/template"), { recursive: true, force: true });

@@ -329,7 +329,7 @@ for (const absolutePath of markdownFiles) {
 
   if (!historicalFiles.has(repoPath)) {
     for (const retiredPath of retiredPaths) {
-      if (content.includes(retiredPath)) {
+      if (linkScanContent.includes(retiredPath)) {
         fail(`${repoPath} references retired path: ${retiredPath}`);
       }
     }
