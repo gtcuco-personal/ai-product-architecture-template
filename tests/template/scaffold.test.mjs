@@ -216,6 +216,93 @@ test("governance traversal ignores dependency, environment, and worktree directo
   assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
 });
 
+test("governance link validation ignores code examples but still rejects real broken links", (t) => {
+  const directory = copyTemplate(t);
+  const examples = join(directory, "docs/code-link-examples.md");
+  const unclosedFence = join(directory, "docs/unclosed-code-link-example.md");
+  writeFileSync(
+    examples,
+    [
+      "# Link examples",
+      "",
+      "Inline `[link](url)` and ``[regex](\\+[0-9])`` examples.",
+      "Double delimiter `` ` [nested](missing-nested.md) ` `` example.",
+      "",
+      "```md",
+      "[fenced](missing-fenced.md)",
+      "```",
+      "",
+      "~~~md",
+      "[tilde fenced](missing-tilde.md)",
+      "~~~~",
+      "",
+      "````md",
+      "[before short close](missing-before-short-close.md)",
+      "```",
+      "[after short close](missing-after-short-close.md)",
+      "`````",
+      "",
+    ].join("\n"),
+  );
+  writeFileSync(
+    unclosedFence,
+    [
+      "# Unclosed code example",
+      "",
+      "```md",
+      "[unclosed](missing-unclosed.md)",
+      "",
+    ].join("\n"),
+  );
+
+  const examplesOnly = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(examplesOnly.status, 0, `${examplesOnly.stdout}\n${examplesOnly.stderr}`);
+
+  writeFileSync(
+    examples,
+    `${readFileSync(examples, "utf8")}Real [broken](missing-real.md).\n` +
+      "Literal unmatched delimiter: ` [mismatched](missing-mismatched.md) ``.\n",
+  );
+  const realBrokenLink = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(realBrokenLink.status, 1);
+  assert.match(realBrokenLink.stderr, /broken local link: missing-real\.md/);
+  assert.match(realBrokenLink.stderr, /broken local link: missing-mismatched\.md/);
+  assert.doesNotMatch(
+    realBrokenLink.stderr,
+    /missing-nested|missing-fenced|missing-tilde|missing-before-short-close|missing-after-short-close|missing-unclosed|\\\+\[0-9\]|url/,
+  );
+});
+
+test("retired-path validation ignores code examples but still rejects prose references", (t) => {
+  const directory = copyTemplate(t);
+  const examples = join(directory, "docs/retired-path-examples.md");
+  writeFileSync(
+    examples,
+    [
+      "# Migration examples",
+      "",
+      "Legacy inline example: `docs/4_SEO_AND_AEO.md`.",
+      "",
+      "```text",
+      "docs/6_HEALTH_CHECK.md",
+      "```",
+      "",
+    ].join("\n"),
+  );
+
+  const examplesOnly = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(examplesOnly.status, 0, `${examplesOnly.stdout}\n${examplesOnly.stderr}`);
+
+  writeFileSync(
+    examples,
+    `${readFileSync(examples, "utf8")}Active prose reference: docs/4_SEO_AND_AEO.md.\n`,
+  );
+  const proseReference = run(directory, "scripts/check-governance.mjs", ["--template"]);
+  assert.equal(proseReference.status, 1);
+  assert.match(proseReference.stderr, /references retired path: docs\/4_SEO_AND_AEO\.md/);
+  assert.doesNotMatch(proseReference.stderr, /docs\/6_HEALTH_CHECK\.md/);
+});
+
 test("a filled legacy contract is enforced by the normal governance check", (t) => {
   const directory = copyTemplate(t);
   rmSync(join(directory, "tests/template"), { recursive: true, force: true });
