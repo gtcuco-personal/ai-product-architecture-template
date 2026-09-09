@@ -78,16 +78,83 @@ function read(path) {
 }
 
 function maskMarkdownCode(content) {
-  const preserveLines = (value) => value.replace(/[^\n]/g, " ");
+  const masked = content.split("");
+  const maskRange = (start, end) => {
+    for (let index = start; index < end; index += 1) {
+      if (masked[index] !== "\n" && masked[index] !== "\r") {
+        masked[index] = " ";
+      }
+    }
+  };
 
-  // Links shown as examples inside fenced or inline code are data, not
-  // navigable Markdown. Mask them without changing offsets so diagnostics for
-  // real links keep their original line numbers.
-  const withoutFences = content.replace(
-    /^( {0,3})(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\2\s*$/gm,
-    preserveLines,
-  );
-  return withoutFences.replace(/(`+)([\s\S]*?)\1/g, preserveLines);
+  // Mask fenced code first. A closing fence may be longer than its opener;
+  // shorter runs and the other fence character do not close it. If no closing
+  // fence exists, the code block continues to EOF.
+  let openFence = null;
+  let lineStart = 0;
+  while (lineStart < content.length) {
+    const newlineIndex = content.indexOf("\n", lineStart);
+    const lineEnd = newlineIndex === -1 ? content.length : newlineIndex + 1;
+    const rawLine = content.slice(lineStart, newlineIndex === -1 ? content.length : newlineIndex);
+    const line = rawLine.endsWith("\r") ? rawLine.slice(0, -1) : rawLine;
+
+    if (openFence) {
+      const closingMatch = line.match(/^ {0,3}(`+|~+)[ \t]*$/);
+      if (
+        closingMatch &&
+        closingMatch[1][0] === openFence.character &&
+        closingMatch[1].length >= openFence.length
+      ) {
+        maskRange(openFence.start, lineEnd);
+        openFence = null;
+      }
+    } else {
+      const openingMatch = line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+      if (
+        openingMatch &&
+        !(openingMatch[1][0] === "`" && openingMatch[2].includes("`"))
+      ) {
+        openFence = {
+          character: openingMatch[1][0],
+          length: openingMatch[1].length,
+          start: lineStart,
+        };
+      }
+    }
+
+    lineStart = lineEnd;
+  }
+  if (openFence) maskRange(openFence.start, content.length);
+
+  // Code spans open and close only with maximal backtick runs of equal length.
+  // Do not split a longer run to close a shorter one: unmatched delimiters are
+  // literal Markdown and any links beside them must still be validated.
+  const runs = [];
+  for (let index = 0; index < content.length; index += 1) {
+    if (masked[index] !== "`") continue;
+    const start = index;
+    while (index + 1 < content.length && masked[index + 1] === "`") index += 1;
+    runs.push({ start, length: index - start + 1 });
+  }
+
+  const nextRunWithLength = new Array(runs.length).fill(-1);
+  const nextByLength = new Map();
+  for (let runIndex = runs.length - 1; runIndex >= 0; runIndex -= 1) {
+    const run = runs[runIndex];
+    nextRunWithLength[runIndex] = nextByLength.get(run.length) ?? -1;
+    nextByLength.set(run.length, runIndex);
+  }
+
+  for (let runIndex = 0; runIndex < runs.length; runIndex += 1) {
+    const closingRunIndex = nextRunWithLength[runIndex];
+    if (closingRunIndex === -1) continue;
+    const opening = runs[runIndex];
+    const closing = runs[closingRunIndex];
+    maskRange(opening.start, closing.start + closing.length);
+    runIndex = closingRunIndex;
+  }
+
+  return masked.join("");
 }
 
 function fail(message) {

@@ -219,12 +219,14 @@ test("governance traversal ignores dependency, environment, and worktree directo
 test("governance link validation ignores code examples but still rejects real broken links", (t) => {
   const directory = copyTemplate(t);
   const examples = join(directory, "docs/code-link-examples.md");
+  const unclosedFence = join(directory, "docs/unclosed-code-link-example.md");
   writeFileSync(
     examples,
     [
       "# Link examples",
       "",
       "Inline `[link](url)` and ``[regex](\\+[0-9])`` examples.",
+      "Double delimiter `` ` [nested](missing-nested.md) ` `` example.",
       "",
       "```md",
       "[fenced](missing-fenced.md)",
@@ -232,7 +234,23 @@ test("governance link validation ignores code examples but still rejects real br
       "",
       "~~~md",
       "[tilde fenced](missing-tilde.md)",
-      "~~~",
+      "~~~~",
+      "",
+      "````md",
+      "[before short close](missing-before-short-close.md)",
+      "```",
+      "[after short close](missing-after-short-close.md)",
+      "`````",
+      "",
+    ].join("\n"),
+  );
+  writeFileSync(
+    unclosedFence,
+    [
+      "# Unclosed code example",
+      "",
+      "```md",
+      "[unclosed](missing-unclosed.md)",
       "",
     ].join("\n"),
   );
@@ -240,11 +258,19 @@ test("governance link validation ignores code examples but still rejects real br
   const examplesOnly = run(directory, "scripts/check-governance.mjs", ["--template"]);
   assert.equal(examplesOnly.status, 0, `${examplesOnly.stdout}\n${examplesOnly.stderr}`);
 
-  writeFileSync(examples, `${readFileSync(examples, "utf8")}Real [broken](missing-real.md).\n`);
+  writeFileSync(
+    examples,
+    `${readFileSync(examples, "utf8")}Real [broken](missing-real.md).\n` +
+      "Literal unmatched delimiter: ` [mismatched](missing-mismatched.md) ``.\n",
+  );
   const realBrokenLink = run(directory, "scripts/check-governance.mjs", ["--template"]);
   assert.equal(realBrokenLink.status, 1);
   assert.match(realBrokenLink.stderr, /broken local link: missing-real\.md/);
-  assert.doesNotMatch(realBrokenLink.stderr, /missing-fenced|missing-tilde|\\\+\[0-9\]|url/);
+  assert.match(realBrokenLink.stderr, /broken local link: missing-mismatched\.md/);
+  assert.doesNotMatch(
+    realBrokenLink.stderr,
+    /missing-nested|missing-fenced|missing-tilde|missing-before-short-close|missing-after-short-close|missing-unclosed|\\\+\[0-9\]|url/,
+  );
 });
 
 test("a filled legacy contract is enforced by the normal governance check", (t) => {

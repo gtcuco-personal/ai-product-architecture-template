@@ -7,8 +7,9 @@
 - Real broken links still fail; examples such as ``[link](url)`` and regex-like
   targets inside code no longer create false failures in consumer histories or
   generated roadmap views.
-- Regression coverage exercises inline code, backtick and tilde fences, and a
-  real broken link in the same document.
+- Regression coverage exercises maximal backtick delimiters, longer closing
+  fences, short non-closing fences and unclosed fences, while proving real
+  broken links still fail validation.
 
 → `scripts/check-governance.mjs`, `tests/template/scaffold.test.mjs`
 
