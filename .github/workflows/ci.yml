@@ -1,6 +1,6 @@
 # CI — universal quality gate (governance template).
 #
-# ci-template-version: 4
+# ci-template-version: 5
 #
 # PROPRIEDADE: este ficheiro e do template. Nao se edita a mao num repo
 # consumidor — o `/sync-repos` sobrepoe-no. Jobs proprios de um repo (um teste
@@ -151,6 +151,20 @@ jobs:
       # obrigatorio — e se o script faltar, isso e dito em voz alta em vez de
       # passar calado, que e a diferenca entre este passo e o `test --if-present`
       # que saiu nesta mesma alteracao.
+      # v5: o passo de testes tinha sido REMOVIDO na v4, por eu ter verificado
+      # que o icon-site nao tinha script `test` e ter generalizado a partir de um
+      # repo so. O lusiberiastays2 tem — `test`, `test:watch`, `test:coverage` —
+      # e a v4 teria deixado de lhe correr os testes de frontend, em silencio.
+      # Volta na forma honesta: corre quando existe, e diz quando nao existe.
+      # A diferenca para o `--if-present` e que a ausencia deixa de ser sucesso.
+      - name: Testes (onde houver script `test`)
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s.test?0:1)"; then
+            if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run test; else npm run test; fi
+          else
+            echo "::notice::Sem script \`test\` no package.json — nada a correr. Se este repo tem testes, declarar o script para o CI os executar."
+          fi
       - name: Type-check (onde houver TypeScript)
         if: steps.detect.outputs.node == 'true'
         run: |
