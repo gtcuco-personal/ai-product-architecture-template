@@ -1,5 +1,19 @@
 # CI — universal quality gate (governance template).
 #
+# ci-template-version: 4
+#
+# PROPRIEDADE: este ficheiro e do template. Nao se edita a mao num repo
+# consumidor — o `/sync-repos` sobrepoe-no. Jobs proprios de um repo (um teste
+# de mutacao, um drift de deploy, um relatorio) vivem num ficheiro de workflow
+# SEPARADO, que o sync nunca toca. Ai vale a pena usar `on: pull_request: paths:`
+# nativo: quando os caminhos nao batem, o GitHub nem agenda runner — custo zero.
+#
+# Porque existe o marcador de versao acima: ate 2026-09-22 o sync verificava se
+# o ci.yml *continha* governance-check, detect-ci-mode, audit e gitleaks. Um
+# ficheiro duas versoes atrasado contem tudo isso na mesma. O icon-site levou a
+# etiqueta «v3.1» a 07/09, a v3.1 real so existiu a 09/09, e ninguem deu por
+# isso durante duas semanas — ate os minutos de Actions da org acabarem.
+#
 # Auto-detecta o stack: cada job só age se os ficheiros relevantes existirem,
 # por isso é SEGURO em qualquer repo — num repo só de docs/dados os jobs
 # concluem verdes sem fazer nada; num webapp correm a sério.
@@ -59,14 +73,44 @@ jobs:
       python: ${{ steps.d.outputs.python }}
       python_supported: ${{ steps.d.outputs.python_supported }}
       template: ${{ steps.d.outputs.template }}
+      touched_code: ${{ steps.p.outputs.touched_code }}
+      touched_deno: ${{ steps.p.outputs.touched_deno }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          fetch-depth: 0
       - id: d
         run: node scripts/detect-ci-mode.mjs --github-output >> "$GITHUB_OUTPUT"
+      # O `detect` diz o que EXISTE no repo. Isto diz o que MUDOU no PR — que e
+      # outra pergunta, e a que faltava: metade do trabalho destes repos e
+      # conteudo e documentacao, e um .md nao parte um build.
+      #
+      # Na duvida, corre tudo. Se o intervalo de diff nao for calculavel, ou se
+      # o proprio workflow mudar, as duas saidas ficam `true`. Testar a mais
+      # custa minutos; testar a menos custa um bug em producao.
+      - id: p
+        shell: bash
+        run: |
+          tudo() { printf 'touched_code=true\ntouched_deno=true\n' >> "$GITHUB_OUTPUT"; exit 0; }
+          BASE="${{ github.event.pull_request.base.sha }}"
+          [ -n "$BASE" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null || tudo
+          CHANGED=$(git diff --name-only "$BASE...HEAD") || tudo
+          echo "Alterado:"; echo "$CHANGED" | sed 's/^/  /'
+
+          echo "$CHANGED" | grep -qE '^\.github/workflows/' && tudo
+
+          CODE='^(src/|lib/|app/|public/|scripts/|tests/|index\.html|package\.json|package-lock\.json|bun\.lockb|requirements\.txt|pyproject\.toml|vite\.config\.|tsconfig|tailwind\.config\.|postcss\.config\.|eslint\.config\.|supabase/migrations/)'
+          # Extensao obrigatoria: ha documentacao a viver dentro de
+          # supabase/functions/ (ex. DEPLOY_LEDGER.md), e um .md nao precisa de
+          # `deno check`. Apanhado a testar este filtro contra commits reais.
+          DENO='^supabase/functions/.*\.(ts|js|mjs|json|jsonc)$'
+
+          echo "$CHANGED" | grep -qE "$CODE" && echo "touched_code=true" >> "$GITHUB_OUTPUT" || echo "touched_code=false" >> "$GITHUB_OUTPUT"
+          echo "$CHANGED" | grep -qE "$DENO" && echo "touched_deno=true" >> "$GITHUB_OUTPUT" || echo "touched_deno=false" >> "$GITHUB_OUTPUT"
 
   build-test:
     needs: detect
-    if: github.event_name == 'pull_request' && needs.detect.outputs.node != 'false'
+    if: github.event_name == 'pull_request' && needs.detect.outputs.node != 'false' && needs.detect.outputs.touched_code != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -102,12 +146,25 @@ jobs:
       - if: steps.detect.outputs.node == 'true'
         run: |
           if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present lint; else npm run lint --if-present; fi
+      # Os bundlers transpilam sem verificar tipos: um acesso a campo inexistente
+      # passa verde e so rebenta em producao. Onde ha tsconfig, o typecheck e
+      # obrigatorio — e se o script faltar, isso e dito em voz alta em vez de
+      # passar calado, que e a diferenca entre este passo e o `test --if-present`
+      # que saiu nesta mesma alteracao.
+      - name: Type-check (onde houver TypeScript)
+        if: steps.detect.outputs.node == 'true'
+        run: |
+          if ! ls tsconfig*.json >/dev/null 2>&1; then
+            echo "sem tsconfig — nada a verificar"; exit 0
+          fi
+          if node -e "const s=require('./package.json').scripts||{}; process.exit(s.typecheck?0:1)"; then
+            if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run typecheck; else npm run typecheck; fi
+          else
+            echo "::warning::Ha tsconfig mas nao ha script \`typecheck\` no package.json — o build transpila sem verificar tipos e nada no CI o faz. Acrescentar \"typecheck\": \"tsc --noEmit\"."
+          fi
       - if: steps.detect.outputs.node == 'true'
         run: |
           if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present build; else npm run build --if-present; fi
-      - if: steps.detect.outputs.node == 'true'
-        run: |
-          if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present test; else npm run test --if-present; fi
       - name: npm dependency audit (block high/critical)
         if: steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock == 'true'
         run: npm audit --audit-level=high
@@ -117,7 +174,7 @@ jobs:
 
   python-test:
     needs: detect
-    if: github.event_name == 'pull_request' && needs.detect.outputs.python != 'false'
+    if: github.event_name == 'pull_request' && needs.detect.outputs.python != 'false' && needs.detect.outputs.touched_code != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -164,7 +221,7 @@ jobs:
 
   deno-check:
     needs: detect
-    if: github.event_name == 'pull_request' && needs.detect.outputs.deno != 'false'
+    if: github.event_name == 'pull_request' && needs.detect.outputs.deno != 'false' && needs.detect.outputs.touched_deno != 'false'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
