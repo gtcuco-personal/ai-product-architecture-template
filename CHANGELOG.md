@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-22 — `ci.yml` v4: o `detect` diz também o que mudou, e o `typecheck` passa a existir
+
+Os 2 000 minutos de Actions da org `q-liri` esgotaram a 20/09. A investigação deu em três buracos deste template, não do repo que ficou sem CI.
+
+**1 — metade do trabalho não toca em código e paga como se tocasse.** No `icon-site`, 91 dos 183 commits do mês em `main` foram só conteúdo ou documentação; no `lusiberiastays2`, 65 de 112. O `detect` respondia «que stack existe neste repo?» — certo para saber se há `package.json`, errado para saber se vale a pena compilar. Ganha `touched_code` e `touched_deno`, calculados no mesmo job (~2 s, não um job novo); `build-test`, `python-test` e `deno-check` passam a exigir stack **e** mudança relevante. Na dúvida, corre tudo: diff incalculável ou mudança no próprio workflow põe as saídas a `true`.
+
+**2 — não havia `typecheck`.** Corria-se `lint` e `build`, e os bundlers transpilam sem verificar tipos: um acesso a campo inexistente passava verde. O `icon-site` tinha acrescentado o passo por sua conta a 06/09, depois de o build do Lovable falhar dois dias seguidos sem ninguém ver. Agora corre onde houver `tsconfig*.json`, e onde houver `tsconfig` sem script `typecheck` emite aviso explícito em vez de passar calado.
+
+**3 — não havia como saber que versão um repo tinha.** Daí o `ci-template-version: 4` no cabeçalho. O `icon-site` sincronizou «v3.1» a 07/09; a v3.1 real só existiu a 09/09, e a auditoria deu-o por conforme durante duas semanas porque verificava *features presentes*, não versão. A verificação por versão está em `agents-and-skills` #314.
+
+Escrita no cabeçalho, a regra de propriedade: **o `ci.yml` é do template e não se edita à mão num repo consumidor**; jobs próprios do repo vivem em ficheiro de workflow separado, onde `on: pull_request: paths:` nativo não gasta runner nenhum quando os caminhos não batem.
+
+Sai o `npm run test --if-present` / `bun run --if-present test`: não há script `test` nestes repos, e o `--if-present` fazia a ausência passar por sucesso.
+
 ## 2026-09-09 — Governance link checks ignore Markdown code examples
 
 - `check-governance.mjs` now masks fenced and inline code before validating
