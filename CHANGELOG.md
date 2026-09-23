@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-22 — `ci.yml` v5: o passo de testes volta, na forma honesta
+
+Correcção de um erro da v4, apanhado antes de propagar. A v4 removeu `npm run test --if-present` com o argumento de que não existe script `test` nestes repos — argumento verificado **num repo só**, o `icon-site`. O `lusiberiastays2` tem `test`, `test:watch` e `test:coverage`, e a v4 teria deixado de lhe correr os testes de frontend **em silêncio**, que é precisamente o modo de falha que a v4 dizia estar a combater.
+
+O passo volta, mas não como estava: corre `npm run test` quando o script existe, e emite `::notice::` explícito quando não existe. A diferença para o `--if-present` é que a ausência deixa de se apresentar como sucesso. Mesma forma que o `typecheck` da v4.
+
+Lição, que é a mesma do achado que originou a v4: uma verificação feita num repo não é uma verificação da frota.
+
 ## 2026-09-22 — `ci.yml` v4: o `detect` diz também o que mudou, e o `typecheck` passa a existir
 
 Os 2 000 minutos de Actions da org `q-liri` esgotaram a 20/09. A investigação deu em três buracos deste template, não do repo que ficou sem CI.
