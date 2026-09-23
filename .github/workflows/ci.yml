@@ -1,6 +1,6 @@
 # CI — universal quality gate (governance template).
 #
-# ci-template-version: 5
+# ci-template-version: 6
 #
 # PROPRIEDADE: este ficheiro e do template. Nao se edita a mao num repo
 # consumidor — o `/sync-repos` sobrepoe-no. Jobs proprios de um repo (um teste
@@ -76,9 +76,21 @@ jobs:
       touched_code: ${{ steps.p.outputs.touched_code }}
       touched_deno: ${{ steps.p.outputs.touched_deno }}
     steps:
+      # Checkout RASO de proposito. A v5 punha `fetch-depth: 0` aqui, para o
+      # `git diff` do passo seguinte ter a historia. Medido a 23/09/2026 no
+      # lusiberiastays2 (428 MB de .git, 3305 commits), quatro corridas do dia:
+      # 15s, 18s, 166s e 310s. Na corrida de 310s, o detalhe por passo mostra
+      # **304s no proprio checkout** — o resto do job leva 2s.
+      #
+      # Nao e custo constante, e variancia: o mesmo checkout ora leva 15s ora
+      # leva 5 minutos. E variancia que nao ha razao para correr, porque este
+      # job nao precisa de historia nenhuma — so precisa da lista de ficheiros
+      # alterados, e essa vem da API. Um gate que existe para poupar minutos nao
+      # pode arriscar gastar mais do que poupa.
+      #
+      # O `gitleaks` mantem `fetch-depth: 0` porque varre mesmo a historia toda:
+      # ai o custo e o proposito.
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-        with:
-          fetch-depth: 0
       - id: d
         run: node scripts/detect-ci-mode.mjs --github-output >> "$GITHUB_OUTPUT"
       # O `detect` diz o que EXISTE no repo. Isto diz o que MUDOU no PR — que e
@@ -90,11 +102,16 @@ jobs:
       # custa minutos; testar a menos custa um bug em producao.
       - id: p
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           tudo() { printf 'touched_code=true\ntouched_deno=true\n' >> "$GITHUB_OUTPUT"; exit 0; }
-          BASE="${{ github.event.pull_request.base.sha }}"
-          [ -n "$BASE" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null || tudo
-          CHANGED=$(git diff --name-only "$BASE...HEAD") || tudo
+
+          # Ficheiros alterados pela API, nao por `git diff`: nao exige historia
+          # local, logo o checkout pode ser raso. `--paginate` cobre PRs com
+          # mais de 100 ficheiros. Falha na chamada ou lista vazia -> corre tudo.
+          CHANGED=$(gh api --paginate "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --jq '.[].filename' 2>/dev/null) || tudo
+          [ -n "$CHANGED" ] || tudo
           echo "Alterado:"; echo "$CHANGED" | sed 's/^/  /'
 
           echo "$CHANGED" | grep -qE '^\.github/workflows/' && tudo
