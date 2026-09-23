@@ -1,5 +1,17 @@
 # Changelog
 
+
+## 2026-09-23 — `ci.yml` v6: o `detect` deixa de clonar a história
+
+Regressão introduzida pela v5, apanhada a medir consumo real e não a rever código. Para calcular que ficheiros mudaram, a v5 pôs `fetch-depth: 0` no checkout do `detect` — um job que existe **para poupar minutos**.
+
+Medido no `lusiberiastays2` (428 MB de `.git`, 3 305 commits), quatro corridas do mesmo dia: **15 s, 18 s, 166 s e 310 s**. Na de 310 s, o detalhe por passo mostra **304 s no próprio checkout**; o resto do job leva 2 s. Não é custo constante — é **variância**: o mesmo checkout ora leva 15 s ora leva cinco minutos.
+
+É variância que não há razão para correr. O `detect` não precisa de história: precisa da lista de ficheiros alterados, e essa vem da API (`pulls/{n}/files`, com `--paginate` para PRs grandes). Checkout raso, e o `GH_TOKEN` do próprio workflow. A regra «na dúvida corre tudo» mantém-se: falha da chamada ou lista vazia põe as duas saídas a `true`.
+
+O `gitleaks` mantém `fetch-depth: 0` — varre mesmo a história toda, ali o custo é o propósito.
+
+**Nota sobre como isto apareceu.** A primeira leitura foi «a história é cara», baseada no contraste com o `gitleaks` a 21 s. Errada: o `gitleaks` só prova que às vezes é barata. Foi o detalhe por passo que deu a resposta — e a diferença entre as duas leituras é a diferença entre corrigir a causa e corrigir uma correlação.
 ## 2026-09-22 — `ci.yml` v5: o passo de testes volta, na forma honesta
 
 Correcção de um erro da v4, apanhado antes de propagar. A v4 removeu `npm run test --if-present` com o argumento de que não existe script `test` nestes repos — argumento verificado **num repo só**, o `icon-site`. O `lusiberiastays2` tem `test`, `test:watch` e `test:coverage`, e a v4 teria deixado de lhe correr os testes de frontend **em silêncio**, que é precisamente o modo de falha que a v4 dizia estar a combater.
