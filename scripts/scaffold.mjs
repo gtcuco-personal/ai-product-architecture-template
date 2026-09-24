@@ -10,7 +10,7 @@ const manifestPath = resolve(root, "template-profile.json");
 const indexPath = "INDEX.md";
 const roadmapPath = "docs/5_ROADMAP_AND_TASKS.md";
 const pristineSourceDigests = {
-  [indexPath]: "a6b804e6f72079d4b5aad3719209386d3974f555485b489fb005d8fb37a9fb72",
+  [indexPath]: "ca25b033d0a582cb50466d59534f58e85b110852d4679beefefa274d9ccba95b",
   [roadmapPath]: "0a0ca4ddcb32ee4e1feea9ae6cbefb01814a864dbb1e0b6315b9dc8355e40468",
 };
 
@@ -67,7 +67,8 @@ const profiles = {
 function cleanIndex() {
   return `# [Repo Name] — Index
 
-> Stable pointer map. Keep operational state in its declared source of truth.
+> Stable pointer map (ODR-011). History → \`CHANGELOG.md\`. Decisions → \`docs/decisions/\`.
+> Tasks and state → the source declared on the first line of \`docs/5_ROADMAP_AND_TASKS.md\`.
 
 ## Folder map
 
@@ -78,6 +79,13 @@ function cleanIndex() {
 - \`scripts/\` — repository automation and validation utilities
 
 Add project-specific folders as they are created.
+
+## Convention
+
+1. Mandatory at the root of every repository governed by this template.
+2. **Changes only when the structure changes** — a folder added, moved or removed. Content changes do not touch it; CI requires it only then.
+3. **No dates, no change summaries, no status** ("in progress", "pending", "done"). History → \`CHANGELOG.md\`; tasks and state → the source declared in \`docs/5_ROADMAP_AND_TASKS.md\` (ODR-011 §4).
+4. Map folders, not files. A folder with enough inside to need its own map gets a \`README.md\` there.
 `;
 }
 

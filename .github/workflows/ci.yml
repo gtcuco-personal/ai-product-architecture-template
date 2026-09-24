@@ -1,6 +1,6 @@
 # CI — universal quality gate (governance template).
 #
-# ci-template-version: 6
+# ci-template-version: 7
 #
 # PROPRIEDADE: este ficheiro e do template. Nao se edita a mao num repo
 # consumidor — o `/sync-repos` sobrepoe-no. Jobs proprios de um repo (um teste
@@ -35,7 +35,8 @@
 #                Falha o build se encontrar um segredo real.
 #   governance-check : valida a estrutura em todos os runs. Em pull requests,
 #                alterações a artefactos rastreados (incluindo docs/decisions)
-#                exigem actualizações tanto no INDEX.md como no CHANGELOG.md.
+#                exigem CHANGELOG.md; o INDEX.md só quando uma pasta de
+#                artefactos aparece, desaparece ou muda de sítio (ODR-011).
 #   template-tests : no template original, valida os quatro perfis e executa
 #                mini-projectos reais npm, Bun e Deno. Após aplicar um perfil,
 #                tests/template é removido e este job termina como skip seguro.
@@ -326,12 +327,16 @@ jobs:
           fi
 
   # Gate de governance: valida a estrutura em todos os runs. Num PR que
-  # adiciona/altera artefactos rastreados, exige INDEX.md e CHANGELOG.md. Se nenhum
-  # caminho de artefacto existir no repo, o grep nao casa e o job conclui verde.
-  # A validacao estrutural corre sempre; a comparacao de ficheiros alterados so
-  # corre em pull_request, porque push a main nao tem contexto de PR.
-  # Motivacao: um PR pode shippar artefactos (ex. videos, edge fns, decisoes) e
-  # nunca tocar no INDEX -> drift silencioso entre o repo e o seu mapa.
+  # adiciona/altera artefactos rastreados, exige CHANGELOG.md sempre, e INDEX.md
+  # só quando a estrutura muda (pasta de artefactos criada, removida ou movida).
+  # Se nenhum caminho de artefacto mudar, o grep nao casa e o job conclui verde.
+  # A comparacao de ficheiros alterados so corre em pull_request (push a main
+  # nao tem contexto de PR).
+  # Porque o INDEX saiu da regra geral (v7): exigi-lo em CADA PR de artefactos
+  # obrigava a escrever-lhe qualquer coisa, e o que se escrevia era uma linha de
+  # diario ("Last updated/Anterior") — 142 dessas num repo so. O INDEX e um mapa
+  # estavel (ODR-011); o drift que o gate evitava e o de pastas, e esse continua
+  # a bloquear.
   governance-check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -341,20 +346,42 @@ jobs:
           fetch-depth: 0
       - name: Validate governance structure
         run: node scripts/check-governance.mjs
-      - name: INDEX e CHANGELOG devem acompanhar mudancas de artefactos
+      - name: CHANGELOG com artefactos; INDEX so quando a estrutura muda
         if: github.event_name == 'pull_request'
         run: |
           BASE="${{ github.event.pull_request.base.sha }}"
-          CHANGED=$(git diff --name-only "$BASE"...HEAD)
+          # --no-renames: uma pasta movida aparece como removida + criada (senão só se via o destino).
+          CHANGED=$(git diff --name-only --no-renames "$BASE"...HEAD)
           ART='^(public/videos/|supabase/functions/|supabase/migrations/|stakeholders/|pitches/|research/|decisions/|docs/decisions/|meetings/)'
           if echo "$CHANGED" | grep -qE "$ART"; then
             missing=0
-            for required in INDEX.md CHANGELOG.md; do
-              if ! echo "$CHANGED" | grep -qx "$required"; then
-                echo "::error::PR toca artefactos rastreados sem actualizar $required."
-                missing=1
-              fi
-            done
+            # CHANGELOG: toda a mudança de artefactos conta a história.
+            if ! echo "$CHANGED" | grep -qx CHANGELOG.md; then
+              echo "::error::PR toca artefactos rastreados sem actualizar CHANGELOG.md."
+              missing=1
+            fi
+            # INDEX: só quando a ESTRUTURA muda — uma pasta de artefactos (a raiz, ou a pasta
+            # logo abaixo dela) que existe de um lado e não do outro. Mexer em conteúdo não
+            # toca no mapa (ODR-011); exigi-lo em cada PR era o que gerava o diário no INDEX.
+            structural=""
+            while IFS= read -r path; do
+              [ -n "$path" ] || continue
+              root=$(printf '%s\n' "$path" | grep -oE "$ART")
+              rest=${path#"$root"}
+              units="${root%/}"
+              case "$rest" in */*) units="$units ${root}${rest%%/*}" ;; esac
+              for unit in $units; do
+                in_base=0; in_head=0
+                git cat-file -e "$BASE:$unit" 2>/dev/null && in_base=1
+                git cat-file -e "HEAD:$unit" 2>/dev/null && in_head=1
+                [ "$in_base" = "$in_head" ] || structural="$structural$unit"$'\n'
+              done
+            done <<< "$(echo "$CHANGED" | grep -E "$ART")"
+            if [ -n "$structural" ] && ! echo "$CHANGED" | grep -qx INDEX.md; then
+              echo "::error::PR cria ou remove pastas de artefactos sem actualizar INDEX.md:"
+              printf '%s' "$structural" | sort -u | sed '/^$/d; s/^/  - /'
+              missing=1
+            fi
             echo "Artefactos alterados:"
             echo "$CHANGED" | grep -E "$ART" | sed 's/^/  - /'
             exit "$missing"

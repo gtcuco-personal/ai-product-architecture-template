@@ -14,7 +14,7 @@ what is not there; do not recreate it.
 
 1. If `template-profile.json` exists, read it first and treat its removed paths
    as intentionally disabled modules.
-2. Read `INDEX.md` for the repository map and current initiatives.
+2. Read `INDEX.md` for the repository map (a stable map — no status or history; ODR-011).
 3. If `tasks/lessons.md` exists, read it for repo-specific corrections.
 4. Use the Context Loading Policy in `CLAUDE.md` to select only the documents
    relevant to the task. Treat its Claude-specific tool and subagent sections

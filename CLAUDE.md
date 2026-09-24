@@ -159,23 +159,16 @@ Para qualquer biblioteca, framework, SDK, API ou CLI listada no **Tech Stack** a
 
 > Não usar Context7 para: lógica de negócio, refactoring, code review, conceitos gerais de programação.
 
-## INDEX.md — mandatory governance file
+## INDEX.md — stable map
 
-**Every repo governed by this template must have an `INDEX.md` at the root.** It is a live map of active initiatives, folder purpose, and archived work. Treat it with the same priority as `CHANGELOG.md` and `docs/5_ROADMAP_AND_TASKS.md`.
+**Every repo governed by this template has an `INDEX.md` at the root: a stable map of where things are** (ODR-011). It is not a changelog, not a status board, and not a list of initiatives.
 
-### How agents must use it
+### How agents use it
 
-1. **Always read `INDEX.md` first** when entering a repo, before exploring with `find`/`grep`. It saves tokens and gives the canonical map.
-2. **If `INDEX.md` has `[preencher]` placeholders** (never populated), offer to auto-populate it from the roadmap, stakeholder folder, and folder structure — before continuing with the user's task.
-3. **If `INDEX.md` is stale** (date > 30 days or missing recent initiatives visible in roadmap/commits), flag it and offer to refresh.
-
-### Maintenance obligations
-
-- `/sync-repos` audits presence and auto-populates on first creation
-- `/sync-docs` refreshes the INDEX on every sync (active initiatives from roadmap, archive from completed items, updates "Last updated")
-- Every PR that adds, moves, or removes artifacts in `stakeholders/`, `pitches/`, `research/`, `decisions/`, `meetings/` (or equivalent) must update `INDEX.md` — same rule as CHANGELOG and roadmap
-
-See `INDEX.md` template for the required structure.
+1. **Read `INDEX.md` first** when entering a repo, before exploring with `find`/`grep` — it is the cheapest map.
+2. **Update it only when the structure changes**: a folder added, moved or removed. CI requires it only then.
+3. **Never write history, dates or status into it.** What changed → `CHANGELOG.md`. What is pending or in progress → the task source declared in `docs/5_ROADMAP_AND_TASKS.md`. Decisions → `docs/decisions/`.
+4. An INDEX full of dated entries is a migration to do, not a template to follow: move each entry to its real home (pending → task source, history → CHANGELOG, rule → docs) and delete it from the INDEX only after the destination is confirmed.
 
 ## Related Projects
 

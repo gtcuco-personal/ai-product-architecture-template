@@ -331,7 +331,7 @@ test("consumer releases and hand-maintained roadmaps are independent from the te
   assert.equal(validation.status, 0, `${validation.stdout}\n${validation.stderr}`);
   assert.match(validation.stdout, /Governance check passed \(project mode\)/);
 
-  replace(join(directory, "SYSTEM_PROMPT.md"), [["> Version: 3.1", "> Consumer policy"]]);
+  replace(join(directory, "SYSTEM_PROMPT.md"), [["> Version: 3.2", "> Consumer policy"]]);
   const invalidPolicy = run(directory, "scripts/check-governance.mjs");
   assert.equal(invalidPolicy.status, 1);
   assert.match(invalidPolicy.stderr, /SYSTEM_PROMPT\.md has no parseable Version header/);
@@ -344,19 +344,19 @@ test("explicit template mode enforces template fixtures and release coherence", 
   assert.equal(baseline.status, 0, `${baseline.stdout}\n${baseline.stderr}`);
   assert.match(baseline.stdout, /Governance check passed \(template mode\)/);
 
-  replace(join(directory, "README.md"), [["Shared operating policy (v3.1", "Shared operating policy (v9.9"]]);
+  replace(join(directory, "README.md"), [["Shared operating policy (v3.2", "Shared operating policy (v9.9"]]);
   rmSync(join(directory, "tests/template/fixtures/npm"), { recursive: true, force: true });
 
   const validation = run(directory, "scripts/check-governance.mjs", ["--template"]);
   assert.equal(validation.status, 1);
-  assert.match(validation.stderr, /version drift: SYSTEM_PROMPT\.md=3\.1, README\.md=9\.9/);
+  assert.match(validation.stderr, /version drift: SYSTEM_PROMPT\.md=3\.2, README\.md=9\.9/);
   assert.match(validation.stderr, /missing required file: tests\/template\/fixtures\/npm\/package\.json/);
 });
 
 test("scaffold refuses a customized INDEX before removing optional modules", (t) => {
   const directory = copyTemplate(t);
   replace(join(directory, "INDEX.md"), [
-    ["## 📁 Folder map", "Custom consumer note.\n\n## 📁 Folder map"],
+    ["## Folder map", "Custom consumer note.\n\n## Folder map"],
   ]);
 
   const applied = run(directory, "scripts/scaffold.mjs", ["--profile", "minimal", "--apply"]);
