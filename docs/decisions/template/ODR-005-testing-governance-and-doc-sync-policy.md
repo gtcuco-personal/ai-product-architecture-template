@@ -52,6 +52,8 @@ When any file is added to or removed from `docs/`, four locations **must** be up
 
 **`INDEX.md`** — update only if the new doc represents an active initiative visible in the roadmap. Governance docs (testing strategy, compliance frameworks) do not need INDEX entries.
 
+> **Superseded in part by ODR-011 (2026-08-27):** `INDEX.md` maps folders and never lists initiatives or status. A new doc inside an existing folder does not touch it.
+
 ### Rationale
 
 This policy formalises what was already implicitly expected (ODR-001 documents the trigger matrix; ODR-002 documents namespace conventions) but was never stated as a 4-point checklist. Without it, new docs exist but are invisible to agents and humans.

@@ -67,7 +67,7 @@ tests ran.
 | `python-test` | Pull request and root `requirements.txt` or a Python `[project]`/`[build-system]` in `pyproject.toml` exists | Supports root requirements with a direct pytest declaration; installs them on Python 3.12, checks syntax and runs `python -m pytest tests`; unsupported setup and missing/empty tests fail explicitly |
 | `gitleaks` | Always | Full-history secret scan (`gitleaks detect`, not just the diff), including Markdown; the downloaded binary is checksum-verified before execution |
 | `deno-check` | Pull request and `supabase/functions/*/index.ts` exist | `deno check` on every edge function (they sit **outside** the frontend `tsconfig`, so `build`/`lint` are blind to them). Network-tolerant: a CDN outage (esm.sh/deno.land 5xx) **warns** but does not fail — only real type errors fail. |
-| `governance-check` | Pull request | Validates consumer/legacy governance, local Markdown links and retired paths; PRs touching tracked artifacts must update both `INDEX.md` and `CHANGELOG.md` |
+| `governance-check` | Pull request | Validates consumer/legacy governance, local Markdown links and retired paths; PRs touching tracked artifacts must update `CHANGELOG.md`; `INDEX.md` only when an artifact folder is added, moved or removed |
 | `template-tests` | Pull request and template fixtures exist | Explicitly validates `--template`, exercises profile initialization and independent consumer documents, then runs the executable CI fixtures |
 
 Workflow triggers: PRs + pushes to `main`. On a push, only Gitleaks runs. Build,

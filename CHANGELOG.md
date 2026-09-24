@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [3.2] — 2026-09-24 — INDEX.md passa a ser só mapa; o CI deixa de o exigir em cada PR (`ci.yml` v7)
+
+A ODR-011 (3.0) já tinha decidido que o `INDEX.md` mapeia artefactos e não resume alterações. Seis sítios do template continuavam a dizer o contrário, e um deles obrigava a violá-la:
+
+- **O gate do `governance-check` exigia alterar o `INDEX.md` em toda a PR que tocasse artefactos** (edge functions, migrations, decisões, research…), mesmo sem mudança de estrutura. A forma mais barata de o satisfazer era acrescentar uma linha "Last updated / Anterior" — e é daí que vêm INDEX de 500–600 linhas, 142 dessas linhas num repo só. Passa a exigir o `CHANGELOG.md` sempre e o `INDEX.md` **só quando uma pasta de artefactos aparece, desaparece ou muda de sítio** (a raiz, ou a pasta logo abaixo dela). Usa `--no-renames`: sem isso, uma pasta movida só mostrava o destino. Provado em 9 casos num repo sintético, correndo o código tirado do próprio `ci.yml`.
+- **O próprio `INDEX.md` do template** tinha a cadeia "Last updated/Anterior", iniciativas "activas" desactualizadas, um arquivo e convenções a mandar datar cada alteração e a citar o `/sync-docs` (skill retirada). Passa a mapa de pastas + 4 convenções. A história que lá estava (v1.16–v2.3) já constava deste CHANGELOG.
+- **`scripts/scaffold.mjs`**: o `cleanIndex()` gera a mesma forma para repos novos, e o digest que protege o INDEX do template foi refrescado na mesma alteração (sem isso o scaffold recusa).
+- **`CLAUDE.md`** (secção do INDEX), **`AGENTS.md`**, **`docs/11_TESTING.md`** e uma nota na **ODR-005** deixam de descrever o INDEX como mapa de iniciativas com data a actualizar.
+
+A validação de conteúdo do INDEX (pastas cobertas, ponteiros válidos, sem diário) fica para uma versão seguinte, primeiro como aviso nos repos filhos e só depois como erro, quando os INDEX existentes tiverem sido migrados — cada entrada para o seu destino real antes de sair do INDEX.
+
 ## 2026-09-23 — `ci.yml` v6: o `detect` deixa de clonar a história
 
 Regressão introduzida pela v5, apanhada a medir consumo real e não a rever código. Para calcular que ficheiros mudaram, a v5 pôs `fetch-depth: 0` no checkout do `detect` — um job que existe **para poupar minutos**.

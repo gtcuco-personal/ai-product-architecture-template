@@ -1,6 +1,6 @@
 # SHARED AGENT OPERATING POLICY
 
-> Version: 3.1 — Universal template. All project-specific details live in `/docs/`.
+> Version: 3.2 — Universal template. All project-specific details live in `/docs/`.
 >
 > This is a checked-in project policy, not a runtime system prompt. The active
 > agent runtime determines instruction precedence; this file cannot override
