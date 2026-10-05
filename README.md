@@ -33,6 +33,7 @@ Governance and documentation template for AI product repositories. Provides a st
         ├── TEMPLATE.md          # ODR (Organisational Decision Record) format
         └── template/            # ODRs inherited from this base template
 ├── scripts/
+    ├── audit-gate.mjs           # Dependency audit gate with per-advisory, dated exceptions
     ├── check-governance.mjs     # Dependency-free governance self-check
     ├── detect-ci-mode.mjs       # npm/Bun/Deno/Python stack detection used by CI
     ├── run-python-ci.py         # Python syntax and existing pytest suite

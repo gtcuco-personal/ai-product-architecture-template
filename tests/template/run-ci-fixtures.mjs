@@ -38,6 +38,21 @@ function selected(mode) {
   return requestedMode === "all" || requestedMode === mode;
 }
 
+// O mesmo caminho do ci.yml v8: o audit gera o relatório JSON (o exit code não conta) e o
+// `audit-gate.mjs` decide. As fixtures não têm `.github/audit-allowlist.json`.
+const auditGate = join(templateTestsRoot, "..", "..", "scripts", "audit-gate.mjs");
+function auditThroughGate(pm, cwd) {
+  const report = runResult(pm, ["audit", "--json"], cwd);
+  const reportDir = mkdtempSync(join(tmpdir(), "ai-template-audit-report-"));
+  try {
+    const reportPath = join(reportDir, "audit.json");
+    writeFileSync(reportPath, report.stdout ?? "");
+    run(process.execPath, [auditGate, "--pm", pm, "--report", reportPath, "--level", "high"], cwd);
+  } finally {
+    rmSync(reportDir, { recursive: true, force: true });
+  }
+}
+
 if (selected("npm")) {
   const root = join(fixturesRoot, "npm");
   assert.deepEqual(detectCiMode(root), {
@@ -52,7 +67,7 @@ if (selected("npm")) {
   });
   run("npm", ["ci"], root);
   for (const script of ["lint", "build", "test"]) run("npm", ["run", script, "--if-present"], root);
-  run("npm", ["audit", "--audit-level=high"], root);
+  auditThroughGate("npm", root);
 }
 
 if (selected("bun")) {
@@ -70,7 +85,7 @@ if (selected("bun")) {
   try {
     run("bun", ["install", "--frozen-lockfile"], root);
     for (const script of ["lint", "build", "test"]) run("bun", ["run", "--if-present", script], root);
-    run("bun", ["audit", "--audit-level=high"], root);
+    auditThroughGate("bun", root);
   } finally {
     rmSync(join(root, "dist"), { recursive: true, force: true });
     rmSync(join(root, "node_modules"), { recursive: true, force: true });

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-10-05 — `ci.yml` v8: o audit de dependências passa a aceitar excepções datadas
+
+A 18/09/2026 saiu o GHSA-vfj7-8cjw-p6xm (`braces` ≤3.0.3, high, **sem versão corrigida**), que chega por `tailwindcss 3 › micromatch` a qualquer repo com Tailwind 3. Desde então o passo de audit falhou em **todos** os PRs com código desses repos, sem nada que um PR pudesse corrigir. No `lusiberiastays2`, os PRs #703 e #704 entraram por cima de um `build-test` vermelho — exactamente o hábito que um gate não pode ensinar.
+
+- **`scripts/audit-gate.mjs`** (novo, do template): lê o relatório JSON do `bun audit` ou do `npm audit` e falha em avisos high/critical. Relatório vazio ou ilegível é falha, nunca "sem avisos" — o exit code do audit deixa de ser o critério, porque é não-zero sempre que há avisos.
+- **`.github/audit-allowlist.json`** (do repo consumidor, o `/sync-repos` nunca toca): excepção por aviso **e** pacote, com `id` GHSA, `package`, `reason` (≥20 caracteres: porque não bloqueia e como se sai) e `review_by`. Passada a data, o gate volta a falhar. Excepção que já não corresponde a nenhum aviso é assinalada como removível.
+- **`ci.yml` v8**: os dois passos de audit (npm e Bun) passam a um só, que gera o relatório e chama o gate. `check-governance.mjs` exige o script; `run-ci-fixtures.mjs` passa as fixtures npm e Bun pelo mesmo caminho do CI.
+- **Testes:** `tests/template/audit-gate.test.mjs` — 12 casos (formas reais de bun e npm, heranças do npm contadas uma vez, relatório vazio, excepção válida/expirada/por pacote/sem uso, validação da lista, CLI). Verificado também contra o relatório real do `lusiberiastays2`: sem lista bloqueia o `braces`; com a lista passa.
+- `docs/12_DEPENDENCY_MANAGEMENT.md`: quando usar uma excepção e o formato.
+
+**Propagação:** os repos consumidores precisam de `ci.yml` v8 **e** de `scripts/audit-gate.mjs` na mesma corrida — o `ci.yml` v8 sem o script falha o passo de audit.
+
 
 ## [3.2] — 2026-09-24 — INDEX.md passa a ser só mapa; o CI deixa de o exigir em cada PR (`ci.yml` v7)
 
