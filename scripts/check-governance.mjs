@@ -42,6 +42,7 @@ const requiredFiles = [
   "docs/5_ROADMAP_AND_TASKS.md",
   "scripts/check-governance.mjs",
   "scripts/detect-ci-mode.mjs",
+  "scripts/audit-gate.mjs",
   "scripts/scaffold.mjs",
 ];
 

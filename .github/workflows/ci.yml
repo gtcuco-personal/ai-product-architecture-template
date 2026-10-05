@@ -1,6 +1,6 @@
 # CI — universal quality gate (governance template).
 #
-# ci-template-version: 7
+# ci-template-version: 8
 #
 # PROPRIEDADE: este ficheiro e do template. Nao se edita a mao num repo
 # consumidor — o `/sync-repos` sobrepoe-no. Jobs proprios de um repo (um teste
@@ -20,7 +20,8 @@
 #
 #   build-test : corre se houver package.json. Detecta Bun antes de npm para
 #                evitar package-locks stale em repos Lovable. Instala deps,
-#                corre lint/build/test se existirem e bloqueia audit high/critical.
+#                corre lint/build/test se existirem e bloqueia audit high/critical
+#                (excepções por aviso, com data de revisão, em .github/audit-allowlist.json).
 #   deno-check : corre se houver edge functions Deno (supabase/functions/*/index.ts),
 #                que ficam FORA do tsconfig do frontend — build/lint não as veem.
 #                Tolerante a falhas de rede do CDN (esm.sh/deno.land): avisa,
@@ -197,12 +198,20 @@ jobs:
       - if: steps.detect.outputs.node == 'true'
         run: |
           if [ "${{ steps.detect.outputs.package_manager }}" = "bun" ]; then bun run --if-present build; else npm run build --if-present; fi
-      - name: npm dependency audit (block high/critical)
-        if: steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock == 'true'
-        run: npm audit --audit-level=high
-      - name: Bun dependency audit (block high/critical)
-        if: steps.detect.outputs.package_manager == 'bun'
-        run: bun audit --audit-level=high
+      # v8: o audit continua a bloquear high/critical, mas um aviso pode ficar em excepção na lista
+      # do repo, `.github/audit-allowlist.json` (id GHSA + pacote + motivo + data de revisão; o
+      # `/sync-repos` nunca toca nesse ficheiro). Passada a data, volta a falhar. Origem: o
+      # GHSA-vfj7-8cjw-p6xm (`braces`, 18/09/2026, sem versão corrigida) pôs o audit vermelho em
+      # todos os PRs com código de repos com Tailwind 3 — um check sempre vermelho ensina a
+      # ignorá-lo, e a única saída era fazer merge por cima dele.
+      - name: Dependency audit (block high/critical; excepções em .github/audit-allowlist.json)
+        if: steps.detect.outputs.package_manager == 'bun' || (steps.detect.outputs.package_manager == 'npm' && steps.detect.outputs.npm_lock == 'true')
+        run: |
+          pm="${{ steps.detect.outputs.package_manager }}"
+          # O exit code do audit não serve: é não-zero sempre que há avisos. O gate decide pelo
+          # relatório, e um relatório vazio ou ilegível é falha, nunca "sem avisos".
+          if [ "$pm" = "bun" ]; then bun audit --json > "$RUNNER_TEMP/audit.json" || true; else npm audit --json > "$RUNNER_TEMP/audit.json" || true; fi
+          node scripts/audit-gate.mjs --pm "$pm" --report "$RUNNER_TEMP/audit.json" --level high
 
   python-test:
     needs: detect

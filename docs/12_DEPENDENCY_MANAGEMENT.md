@@ -121,13 +121,28 @@ updates:
 
 **CI enforcement when the relevant lockfile exists:**
 ```bash
-# Block build on critical/high vulnerabilities
-npm audit --audit-level=high
-bun audit --audit-level=high
+# Block build on critical/high vulnerabilities (what ci.yml v8 runs)
+bun audit --json > audit.json || true     # or: npm audit --json > audit.json || true
+node scripts/audit-gate.mjs --pm bun --report audit.json --level high
 
 # Python
 pip-audit --vulnerability-service=osv --fail-on CRITICAL,HIGH
 ```
+
+**Exceptions — `.github/audit-allowlist.json` (repo-owned; `/sync-repos` never touches it).** Use only when a High/Critical advisory has **no fixed version reachable today** and the vulnerable code does not reach users (e.g. build-only tooling). One entry per advisory and package, all four fields mandatory:
+
+```json
+[
+  {
+    "id": "GHSA-vfj7-8cjw-p6xm",
+    "package": "braces",
+    "reason": "Build-only (tailwindcss 3 › micromatch › braces), never shipped to the browser; no fixed version. Exit: migrate to Tailwind 4.",
+    "review_by": "2026-12-31"
+  }
+]
+```
+
+When `review_by` passes, the gate fails again until someone decides: fix it, or renew the date with an updated reason. An entry that no longer matches any finding is flagged as removable. An empty or unreadable audit report is a failure, never "no findings".
 
 > For exploited CVEs in EU market products: also apply CRA vulnerability disclosure obligations (ENISA 24h + users 72h, in force from 11 Sep 2026). See `SECURITY.md` and `docs/13_COMPLIANCE_FRAMEWORKS.md`.
 
